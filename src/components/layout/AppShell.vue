@@ -1,0 +1,33 @@
+<template>
+  <div class="app-shell">
+    <aside class="app-sidebar" aria-label="主导航">
+      <div class="brand">
+        <span class="brand-mark">A</span>
+        <div>
+          <strong>Ameya</strong>
+          <small>雨夜世界观整理</small>
+        </div>
+      </div>
+      <nav class="nav-list">
+        <RouterLink to="/">项目</RouterLink>
+        <RouterLink to="/projects">工作台</RouterLink>
+        <RouterLink to="/settings">设置</RouterLink>
+      </nav>
+    </aside>
+
+    <main class="app-main">
+      <RouterView />
+    </main>
+
+    <aside class="context-panel" aria-label="上下文">
+      <h2>上下文</h2>
+      <p>选择项目或实体后，这里显示反链、任务和审计摘要。</p>
+    </aside>
+
+    <footer class="status-bar">
+      <span>本地优先</span>
+      <span>Windows</span>
+      <span>AI 可选</span>
+    </footer>
+  </div>
+</template>
