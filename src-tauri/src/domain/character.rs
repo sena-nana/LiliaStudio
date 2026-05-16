@@ -107,6 +107,14 @@ impl<'a> CharacterRepository<'a> {
         let characters = statement.query_map(params![project_id], map_character)?.collect();
         characters
     }
+
+    pub fn restore(&self, id: &str) -> rusqlite::Result<()> {
+        self.connection.execute(
+            "UPDATE characters SET deleted_at = NULL, updated_at = ?2 WHERE id = ?1",
+            params![id, now()],
+        )?;
+        Ok(())
+    }
 }
 
 fn map_character(row: &rusqlite::Row<'_>) -> rusqlite::Result<Character> {

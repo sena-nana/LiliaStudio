@@ -109,6 +109,18 @@ impl<'a> RelationRepository<'a> {
             .collect();
         relations
     }
+
+    pub fn list_project(&self, project_id: &str) -> rusqlite::Result<Vec<Relation>> {
+        let mut statement = self.connection.prepare(
+            "SELECT id, project_id, source_type, source_id, target_type, target_id, relation_type,
+                    description, confidence, directed, created_at, updated_at, deleted_at
+             FROM relations
+             WHERE project_id = ?1 AND deleted_at IS NULL
+             ORDER BY updated_at DESC",
+        )?;
+        let relations = statement.query_map(params![project_id], map_relation)?.collect();
+        relations
+    }
 }
 
 fn map_relation(row: &rusqlite::Row<'_>) -> rusqlite::Result<Relation> {

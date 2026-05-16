@@ -152,6 +152,15 @@ impl<'a> EventRepository<'a> {
         events
     }
 
+    pub fn soft_delete(&self, id: &str) -> rusqlite::Result<()> {
+        let timestamp = now();
+        self.connection.execute(
+            "UPDATE events SET deleted_at = ?2, updated_at = ?2 WHERE id = ?1",
+            params![id, timestamp],
+        )?;
+        Ok(())
+    }
+
     pub fn list_participants(&self, event_id: &str) -> rusqlite::Result<Vec<EventParticipant>> {
         let mut statement = self.connection.prepare(
             "SELECT id, event_id, entity_type, entity_id, role, created_at

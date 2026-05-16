@@ -19,6 +19,7 @@
           <button type="button" @click="createEntry">新增</button>
         </header>
         <p>世界观、物品、地点、阵营和资源。</p>
+        <EntryTemplatePanel v-model="entryType" />
         <ul>
           <li v-for="entry in libraryStore.entries" :key="entry.id">
             <strong>{{ entry.title }}</strong>
@@ -73,14 +74,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import EntryTemplatePanel from '@/components/entry/EntryTemplatePanel.vue'
+import { getTemplate } from '@/domain/entryTemplates'
 import { useLibraryStore } from '@/stores/libraryStore'
 import { useProjectStore } from '@/stores/projectStore'
 
 const route = useRoute()
 const projectStore = useProjectStore()
 const libraryStore = useLibraryStore()
+const entryType = ref('world_rule')
 
 const projectId = computed(() => {
   const value = route.params.projectId
@@ -105,13 +109,14 @@ watch(projectId, (id) => {
 
 async function createEntry() {
   if (!projectId.value) return
+  const template = getTemplate(entryType.value)
   await libraryStore.createEntry({
     projectId: projectId.value,
-    entryType: 'world_rule',
+    entryType: template.type,
     title: `新词条 ${libraryStore.entries.length + 1}`,
-    summary: '',
-    body: '',
-    tags: [],
+    summary: template.summary,
+    body: template.body,
+    tags: template.tags,
     status: 'draft',
   })
 }

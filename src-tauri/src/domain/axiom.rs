@@ -106,6 +106,10 @@ impl<'a> AxiomRepository<'a> {
             .collect();
         axioms
     }
+
+    pub fn list_active(&self, project_id: &str) -> rusqlite::Result<Vec<Axiom>> {
+        self.search(project_id, "")
+    }
 }
 
 fn map_axiom(row: &rusqlite::Row<'_>) -> rusqlite::Result<Axiom> {

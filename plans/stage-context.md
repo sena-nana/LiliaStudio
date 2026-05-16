@@ -3,8 +3,8 @@
 ## 当前阶段
 
 - 当前分支：`codex/ameya-implementation`
-- 已完成：M0 工程基线、M1 本地资料库
-- 下一阶段：M2 可视化编辑
+- 已完成：M0 工程基线、M1 本地资料库、M2 可视化编辑
+- 下一阶段：M3-M4 AI 与向量层
 
 ## 固定开发规范
 
@@ -45,21 +45,39 @@
 - `cd src-tauri; cargo test`: pass, 9 tests
 - `pnpm build`: pass
 
-## M2 目标
+## M2 已实现
 
-按路线图实现可视化编辑和基础资料流转：
+- Entry 模板：世界规则、物品、地点、阵营四类结构化模板。
+- 搜索服务：跨 Entry、Character、Event、Axiom 的本地关键词搜索。
+- 导入导出：项目 JSON archive 导出，导入时创建新项目副本。
+- 视图：搜索、图谱、时间线、备份页面和导航入口。
+- 后端 commands：`search_entities`、`export_project_archive`、`import_project_archive`。
+- 测试：后端搜索/导入导出集成测试，前端 search store 测试。
 
-1. Entry 模板与结构化创建表单。
-2. 全局关键词搜索。
-3. 关系反链面板和基础关系编辑。
-4. 图谱视图和时间线视图。
-5. 项目 JSON 导入导出与备份。
+## M2 验证结果
 
-## M2 设计约束
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 5 files, 6 tests
+- `cd src-tauri; cargo test`: pass, 11 tests
+- `pnpm build`: pass
 
-- 搜索和图谱必须无 AI 可用。
-- 图谱默认加载邻域，不一次渲染全项目。
-- 导入必须创建新项目，不覆盖现有数据。
-- 导出不得包含密钥、日志或完整 AI prompt。
-- UI 控件保持工作台风格，避免营销页和大面积装饰。
+## M3-M4 目标
+
+按路线图实现 AI Provider、任务队列、向量/RAG：
+
+1. 设置页和本机 provider 配置。
+2. OpenAI-compatible HTTP provider。
+3. CLI provider 抽象、Codex CLI、Claude CLI。
+4. AI job 队列与任务日志。
+5. Prompt 模板管理。
+6. DocumentChunk、Embedding、本地向量相似度检索。
+7. RAG 上下文包和叙事共鸣预警。
+
+## M3-M4 设计约束
+
+- AI Provider 必须可降级；未配置时不影响本地资料库。
+- API Key 不进入导出、日志或 git。
+- CLI 调用必须通过进程参数/模板解析，不用 shell 字符串拼接。
+- 向量检索先用本地 SQLite 存储和内存 cosine，接口保留替换空间。
+- 每个 AI 输出都保留 provider、输入摘要、状态和错误码。
 

@@ -11,6 +11,10 @@
       <nav class="nav-list">
         <RouterLink to="/">项目</RouterLink>
         <RouterLink to="/projects">工作台</RouterLink>
+        <RouterLink to="/search">搜索</RouterLink>
+        <RouterLink to="/graph">图谱</RouterLink>
+        <RouterLink to="/timeline">时间线</RouterLink>
+        <RouterLink to="/backup">备份</RouterLink>
         <RouterLink to="/settings">设置</RouterLink>
       </nav>
     </aside>

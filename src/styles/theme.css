@@ -259,3 +259,80 @@ select {
 .project-row span {
   color: #6b6a63;
 }
+
+.graph-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.graph-node {
+  display: grid;
+  gap: 4px;
+  min-height: 86px;
+  align-content: center;
+  border: 1px solid #c9d5ca;
+  border-radius: 8px;
+  background: #f5faf4;
+  padding: 12px;
+}
+
+.graph-node span {
+  color: #6b6a63;
+}
+
+.timeline {
+  display: grid;
+  gap: 14px;
+}
+
+.timeline article {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 16px;
+  border-left: 3px solid #3f6f55;
+  background: #fff;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.timeline time {
+  color: #3f6f55;
+  font-weight: 700;
+}
+
+.timeline h2,
+.timeline p {
+  margin: 0;
+}
+
+.archive-text {
+  min-height: 360px;
+  width: 100%;
+  resize: vertical;
+  border: 1px solid #c9c5b8;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: "Cascadia Mono", Consolas, monospace;
+}
+
+.template-panel {
+  display: grid;
+  gap: 8px;
+}
+
+.template-panel button {
+  display: grid;
+  gap: 3px;
+  text-align: left;
+}
+
+.template-panel button.active {
+  border-color: #3f6f55;
+  background: #f1f8f0;
+}
+
+.template-panel span {
+  color: #6b6a63;
+  font-size: 12px;
+}

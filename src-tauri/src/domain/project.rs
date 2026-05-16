@@ -79,6 +79,13 @@ impl<'a> ProjectRepository<'a> {
         self.list_with_clause("")
     }
 
+    pub fn create_with_name_suffix(&self, draft: ProjectDraft, suffix: &str) -> rusqlite::Result<Project> {
+        self.create(ProjectDraft {
+            name: format!("{}{}", draft.name, suffix),
+            description: draft.description,
+        })
+    }
+
     fn list_with_clause(&self, clause: &str) -> rusqlite::Result<Vec<Project>> {
         let sql = format!(
             "SELECT id, name, description, created_at, updated_at, archived_at
