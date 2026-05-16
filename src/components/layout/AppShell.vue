@@ -16,6 +16,12 @@
         <RouterLink to="/timeline">时间线</RouterLink>
         <RouterLink to="/backup">备份</RouterLink>
         <RouterLink to="/indexing">索引</RouterLink>
+        <RouterLink to="/audit">审计</RouterLink>
+        <RouterLink to="/growth">成长</RouterLink>
+        <RouterLink to="/simulation">模拟</RouterLink>
+        <RouterLink to="/agent">Agent</RouterLink>
+        <RouterLink to="/diagnostics">诊断</RouterLink>
+        <RouterLink to="/help">帮助</RouterLink>
         <RouterLink to="/settings">设置</RouterLink>
       </nav>
     </aside>

@@ -2,6 +2,7 @@ pub mod ai;
 pub mod commands;
 pub mod db;
 pub mod domain;
+pub mod logic;
 pub mod services;
 pub mod vector;
 
@@ -19,6 +20,8 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             commands::ai::default_ai_providers,
+            commands::character_growth::preview_trait_delta,
+            commands::diagnostics::diagnostics_summary,
             commands::health::health_check,
             commands::import_export::export_project_archive,
             commands::import_export::import_project_archive,
@@ -42,6 +45,7 @@ pub fn run() {
             commands::rag::index_chunks,
             commands::rag::preview_context_pack,
             commands::search::search_entities,
+            commands::simulation::run_simulation,
             commands::vector::preview_chunks
         ])
         .run(tauri::generate_context!())

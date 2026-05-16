@@ -1,4 +1,6 @@
 pub mod ai;
+pub mod character_growth;
+pub mod diagnostics;
 pub mod health;
 pub mod import_export;
 pub mod jobs;
@@ -7,4 +9,5 @@ pub mod projects;
 pub mod prompts;
 pub mod rag;
 pub mod search;
+pub mod simulation;
 pub mod vector;

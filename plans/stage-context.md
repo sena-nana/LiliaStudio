@@ -3,8 +3,8 @@
 ## 当前阶段
 
 - 当前分支：`codex/ameya-implementation`
-- 已完成：M0 工程基线、M1 本地资料库、M2 可视化编辑、M3-M4 AI 与向量层
-- 下一阶段：M5-M8 逻辑审计、角色成长、Agent、模拟与交付
+- 已完成：M0 工程基线、M1 本地资料库、M2 可视化编辑、M3-M4 AI 与向量层、M5-M8 逻辑审计/角色成长/Agent/模拟/交付骨架
+- 下一阶段：产品化增强和真实 Provider 联调
 
 ## 固定开发规范
 
@@ -78,17 +78,36 @@
 - `cd src-tauri; cargo test`: pass, 16 tests
 - `pnpm build`: pass
 
-## M5-M8 目标
+## M5-M8 已实现
 
-按路线图实现上层智能工作流和 Windows 交付：
+- 逻辑审计：确定性事实冲突检测、最小冲突集合、规则型修复建议。
+- 角色成长：事件影响 TraitDelta 和来源追踪的属性状态。
+- 模拟：规则型结构化模拟报告。
+- Commands/API/UI：审计、角色成长、模拟、Agent、诊断、帮助页面和工作流 store。
+- 命令面板：`Ctrl+K` 打开基础命令入口。
+- 诊断：本机版本、平台和数据库摘要。
+- 测试与交付：Playwright 冒烟测试、Windows Tauri build 脚本、README 打包说明。
 
-1. 确定性逻辑冲突检测和 QuickXplain 风格 MUS。
-2. 冲突修复建议与审计报告。
-3. 角色事件影响、属性快照和成长热图。
-4. 行为合理性校验、Agent 聊天、补完问题、叙事模拟和平行时空。
-5. 附件、命令面板、诊断、帮助、Playwright 冒烟测试和 Windows 打包。
+## M5-M8 验证结果
 
-## M5-M8 设计约束
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 7 files, 9 tests
+- `cd src-tauri; cargo test`: pass, 19 tests
+- `pnpm build`: pass
+- `pnpm test:e2e`: pass, 1 test
+- `pnpm tauri build`: pass, produced `src-tauri/target/release/bundle/nsis/Ameya_0.1.0_x64-setup.exe`
+
+## 后续产品化目标
+
+当前已完成全功能骨架。后续应优先增强：
+
+1. OpenAI-compatible、Claude CLI、Codex CLI 的真实调用和错误分类。
+2. 设置保存与 Windows Credential Manager 密钥存储。
+3. 审计报告、模拟报告、角色成长记录的持久化详情页。
+4. 图谱交互、时间线过滤和附件管理。
+5. UI 视觉 QA、安装包签名、升级策略和大项目性能基准。
+
+## 后续设计约束
 
 - 智能工作流先提供无 AI 的规则型/结构化结果，AI 只增强说明。
 - 审计和修复建议不得自动改写用户资料。

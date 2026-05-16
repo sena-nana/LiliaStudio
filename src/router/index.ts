@@ -7,6 +7,12 @@ import GraphView from '@/views/GraphView.vue'
 import TimelineView from '@/views/TimelineView.vue'
 import BackupView from '@/views/BackupView.vue'
 import IndexingView from '@/views/IndexingView.vue'
+import AuditReportView from '@/views/AuditReportView.vue'
+import CharacterGrowthView from '@/views/CharacterGrowthView.vue'
+import SimulationView from '@/views/SimulationView.vue'
+import AgentChatView from '@/views/AgentChatView.vue'
+import DiagnosticsView from '@/views/DiagnosticsView.vue'
+import HelpView from '@/views/HelpView.vue'
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -18,6 +24,12 @@ export const router = createRouter({
     { path: '/timeline/:projectId?', name: 'timeline', component: TimelineView },
     { path: '/backup/:projectId?', name: 'backup', component: BackupView },
     { path: '/indexing/:projectId?', name: 'indexing', component: IndexingView },
+    { path: '/audit/:projectId?', name: 'audit', component: AuditReportView },
+    { path: '/growth/:projectId?', name: 'growth', component: CharacterGrowthView },
+    { path: '/simulation/:projectId?', name: 'simulation', component: SimulationView },
+    { path: '/agent/:projectId?', name: 'agent', component: AgentChatView },
+    { path: '/diagnostics', name: 'diagnostics', component: DiagnosticsView },
+    { path: '/help', name: 'help', component: HelpView },
     { path: '/settings', name: 'settings', component: SettingsView },
   ],
 })
