@@ -133,3 +133,58 @@ CREATE TABLE IF NOT EXISTS axioms (
 
 CREATE INDEX IF NOT EXISTS idx_axioms_project_subject
 ON axioms(project_id, deleted_at, subject, predicate);
+
+CREATE TABLE IF NOT EXISTS document_chunks (
+  id TEXT PRIMARY KEY,
+  project_id TEXT NOT NULL,
+  source_type TEXT NOT NULL,
+  source_id TEXT NOT NULL,
+  ordinal INTEGER NOT NULL,
+  text TEXT NOT NULL,
+  content_hash TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  UNIQUE(source_type, source_id, ordinal),
+  FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_document_chunks_project
+ON document_chunks(project_id, source_type, source_id);
+
+CREATE TABLE IF NOT EXISTS embeddings (
+  id TEXT PRIMARY KEY,
+  chunk_id TEXT NOT NULL,
+  model TEXT NOT NULL,
+  dimensions INTEGER NOT NULL,
+  vector_json TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  UNIQUE(chunk_id, model),
+  FOREIGN KEY (chunk_id) REFERENCES document_chunks(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_embeddings_chunk
+ON embeddings(chunk_id);
+
+CREATE TABLE IF NOT EXISTS prompt_templates (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  purpose TEXT NOT NULL,
+  template TEXT NOT NULL,
+  built_in INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ai_jobs (
+  id TEXT PRIMARY KEY,
+  project_id TEXT,
+  provider_kind TEXT NOT NULL,
+  job_type TEXT NOT NULL,
+  status TEXT NOT NULL,
+  input_summary TEXT NOT NULL DEFAULT '',
+  output_text TEXT NOT NULL DEFAULT '',
+  error_message TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);

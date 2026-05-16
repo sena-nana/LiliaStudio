@@ -3,8 +3,8 @@
 ## 当前阶段
 
 - 当前分支：`codex/ameya-implementation`
-- 已完成：M0 工程基线、M1 本地资料库、M2 可视化编辑
-- 下一阶段：M3-M4 AI 与向量层
+- 已完成：M0 工程基线、M1 本地资料库、M2 可视化编辑、M3-M4 AI 与向量层
+- 下一阶段：M5-M8 逻辑审计、角色成长、Agent、模拟与交付
 
 ## 固定开发规范
 
@@ -61,23 +61,38 @@
 - `cd src-tauri; cargo test`: pass, 11 tests
 - `pnpm build`: pass
 
-## M3-M4 目标
+## M3-M4 已实现
 
-按路线图实现 AI Provider、任务队列、向量/RAG：
+- AI 基础：Provider 配置模型、OpenAI-compatible URL/响应解析、Claude/Codex CLI 默认模板、CLI 模板渲染和命令拆分。
+- AI 任务：`ai_jobs` 表、创建 queued job、任务列表。
+- Prompt 模板：内置逻辑审计、角色行为校验、叙事模拟模板。
+- 向量基础：文本切片、embedding 存储、cosine similarity、本地 vector search。
+- RAG：项目文本切片索引、context pack 预览。
+- 前端：设置页 provider/prompt/job 展示，索引页重建 DocumentChunk。
+- 测试：AI/CLI/OpenAI-compatible/vector 纯逻辑测试，RAG pipeline 测试，AI store 测试。
 
-1. 设置页和本机 provider 配置。
-2. OpenAI-compatible HTTP provider。
-3. CLI provider 抽象、Codex CLI、Claude CLI。
-4. AI job 队列与任务日志。
-5. Prompt 模板管理。
-6. DocumentChunk、Embedding、本地向量相似度检索。
-7. RAG 上下文包和叙事共鸣预警。
+## M3-M4 验证结果
 
-## M3-M4 设计约束
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 6 files, 8 tests
+- `cd src-tauri; cargo test`: pass, 16 tests
+- `pnpm build`: pass
 
-- AI Provider 必须可降级；未配置时不影响本地资料库。
-- API Key 不进入导出、日志或 git。
-- CLI 调用必须通过进程参数/模板解析，不用 shell 字符串拼接。
-- 向量检索先用本地 SQLite 存储和内存 cosine，接口保留替换空间。
-- 每个 AI 输出都保留 provider、输入摘要、状态和错误码。
+## M5-M8 目标
+
+按路线图实现上层智能工作流和 Windows 交付：
+
+1. 确定性逻辑冲突检测和 QuickXplain 风格 MUS。
+2. 冲突修复建议与审计报告。
+3. 角色事件影响、属性快照和成长热图。
+4. 行为合理性校验、Agent 聊天、补完问题、叙事模拟和平行时空。
+5. 附件、命令面板、诊断、帮助、Playwright 冒烟测试和 Windows 打包。
+
+## M5-M8 设计约束
+
+- 智能工作流先提供无 AI 的规则型/结构化结果，AI 只增强说明。
+- 审计和修复建议不得自动改写用户资料。
+- 角色最终属性必须可追溯到事件影响记录。
+- 模拟报告必须保存为本地报告，可复制比较。
+- Windows 诊断导出必须脱敏密钥和完整 prompt。
 

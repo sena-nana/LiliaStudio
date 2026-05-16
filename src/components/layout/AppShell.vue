@@ -15,6 +15,7 @@
         <RouterLink to="/graph">图谱</RouterLink>
         <RouterLink to="/timeline">时间线</RouterLink>
         <RouterLink to="/backup">备份</RouterLink>
+        <RouterLink to="/indexing">索引</RouterLink>
         <RouterLink to="/settings">设置</RouterLink>
       </nav>
     </aside>

@@ -316,6 +316,26 @@ select {
   font-family: "Cascadia Mono", Consolas, monospace;
 }
 
+.provider-list {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 12px 0 0;
+  list-style: none;
+}
+
+.provider-list li {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid #ece9df;
+  padding-top: 8px;
+}
+
+.provider-list span {
+  overflow-wrap: anywhere;
+  color: #6b6a63;
+}
+
 .template-panel {
   display: grid;
   gap: 8px;

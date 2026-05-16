@@ -1,7 +1,9 @@
+pub mod ai;
 pub mod commands;
 pub mod db;
 pub mod domain;
 pub mod services;
+pub mod vector;
 
 pub mod test_support;
 
@@ -16,9 +18,12 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            commands::ai::default_ai_providers,
             commands::health::health_check,
             commands::import_export::export_project_archive,
             commands::import_export::import_project_archive,
+            commands::jobs::create_ai_job,
+            commands::jobs::list_ai_jobs,
             commands::library::create_axiom,
             commands::library::create_character,
             commands::library::create_entry,
@@ -33,7 +38,11 @@ pub fn run() {
             commands::projects::create_project,
             commands::projects::list_projects,
             commands::projects::update_project,
-            commands::search::search_entities
+            commands::prompts::list_prompt_templates_command,
+            commands::rag::index_chunks,
+            commands::rag::preview_context_pack,
+            commands::search::search_entities,
+            commands::vector::preview_chunks
         ])
         .run(tauri::generate_context!())
         .expect("failed to run Ameya");

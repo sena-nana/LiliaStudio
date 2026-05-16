@@ -1,5 +1,10 @@
+pub mod ai;
 pub mod health;
 pub mod import_export;
+pub mod jobs;
 pub mod library;
 pub mod projects;
+pub mod prompts;
+pub mod rag;
 pub mod search;
+pub mod vector;
