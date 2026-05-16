@@ -1,5 +1,12 @@
-import { vi } from 'vitest'
+import { beforeEach, vi } from 'vitest'
+
+const invokeMock = vi.fn()
 
 vi.mock('@tauri-apps/api/core', () => ({
-  invoke: vi.fn(),
+  invoke: invokeMock,
 }))
+
+beforeEach(() => {
+  invokeMock.mockReset()
+  invokeMock.mockResolvedValue(undefined)
+})

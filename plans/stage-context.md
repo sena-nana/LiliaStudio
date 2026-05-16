@@ -3,8 +3,8 @@
 ## 当前阶段
 
 - 当前分支：`codex/ameya-implementation`
-- 已完成：M0 工程基线
-- 下一阶段：M1 本地资料库
+- 已完成：M0 工程基线、M1 本地资料库
+- 下一阶段：M2 可视化编辑
 
 ## 固定开发规范
 
@@ -29,23 +29,37 @@
 - `pnpm test:unit`: pass, 2 files, 3 tests
 - `cd src-tauri; cargo test`: pass, 3 tests
 
-## M1 目标
+## M1 已实现
 
-按路线图实现无 AI 本地资料库：
+- SQLite schema 扩展：projects、entries、characters、events、event_participants、relations、axioms。
+- Rust domain/repository：Project、Entry、Character、Event、Relation、Axiom。
+- Tauri commands：Project CRUD，Entry/Character/Event/Axiom 创建与列表，Relation 创建与反链查询。
+- 前端 API/store：Project store、Library store。
+- UI：项目库支持创建/打开项目；工作台支持加载项目内词条、角色、事件、公理并创建基础记录。
+- 测试：repository 集成测试覆盖 Project/Entry/Character/Event/Relation/Axiom；前端 store 测试覆盖 Project 和 Library。
 
-1. Project CRUD：创建、列表、打开、重命名、归档。
-2. Entry CRUD：世界观、物品、地点、阵营、资源、文化、技术、魔法、笔记。
-3. Character CRUD：角色档案。
-4. Event CRUD：事件和参与者关联。
-5. Relation CRUD：跨实体关系和反链。
-6. Axiom CRUD：公理/三元组编辑。
-7. 前端页面接入本地数据库，基础导航可操作。
+## M1 验证结果
 
-## M1 设计约束
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 4 files, 5 tests
+- `cd src-tauri; cargo test`: pass, 9 tests
+- `pnpm build`: pass
 
-- 数据库主键统一使用前端/Rust 生成的字符串 ID，避免 SQLite rowid 泄漏到 UI。
-- 所有删除先软删除，保留 `deleted_at` 或 `archived_at`。
-- 列表默认隐藏软删除/归档数据。
-- 每个 repository 先写 Rust 测试，再实现。
-- 前端 store 和 API 先写 Vitest mock 测试，再接组件。
+## M2 目标
+
+按路线图实现可视化编辑和基础资料流转：
+
+1. Entry 模板与结构化创建表单。
+2. 全局关键词搜索。
+3. 关系反链面板和基础关系编辑。
+4. 图谱视图和时间线视图。
+5. 项目 JSON 导入导出与备份。
+
+## M2 设计约束
+
+- 搜索和图谱必须无 AI 可用。
+- 图谱默认加载邻域，不一次渲染全项目。
+- 导入必须创建新项目，不覆盖现有数据。
+- 导出不得包含密钥、日志或完整 AI prompt。
+- UI 控件保持工作台风格，避免营销页和大面积装饰。
 
