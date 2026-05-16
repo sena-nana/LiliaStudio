@@ -10,7 +10,7 @@ pub struct HealthInfo {
 }
 
 #[tauri::command]
-pub fn health_check(app: tauri::AppHandle) -> Result<HealthInfo, String> {
+pub fn health_check<R: tauri::Runtime>(app: tauri::AppHandle<R>) -> Result<HealthInfo, String> {
     let app_data_dir = app
         .path()
         .app_data_dir()

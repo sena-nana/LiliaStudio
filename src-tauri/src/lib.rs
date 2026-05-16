@@ -8,8 +8,10 @@ pub mod vector;
 
 pub mod test_support;
 
+type WindowsRuntime = tauri_runtime_wry::Wry<tauri::EventLoopMessage>;
+
 pub fn run() {
-    tauri::Builder::default()
+    tauri::Builder::<WindowsRuntime>::default()
         .setup(|app| {
             use tauri::Manager;
 
