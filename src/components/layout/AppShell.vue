@@ -1,40 +1,47 @@
 <template>
   <div class="app-shell">
-    <aside class="app-sidebar" aria-label="主导航">
+    <header class="app-header">
       <div class="brand">
         <span class="brand-mark">A</span>
         <div>
           <strong>Ameya</strong>
-          <small>雨夜世界观整理</small>
+          <small>{{ projectLabel }}</small>
         </div>
       </div>
-      <nav class="nav-list">
-        <RouterLink to="/">项目</RouterLink>
-        <RouterLink to="/projects">工作台</RouterLink>
-        <RouterLink to="/search">搜索</RouterLink>
-        <RouterLink to="/graph">图谱</RouterLink>
-        <RouterLink to="/timeline">时间线</RouterLink>
-        <RouterLink to="/backup">备份</RouterLink>
-        <RouterLink to="/indexing">索引</RouterLink>
-        <RouterLink to="/audit">审计</RouterLink>
-        <RouterLink to="/growth">成长</RouterLink>
-        <RouterLink to="/simulation">模拟</RouterLink>
-        <RouterLink to="/agent">Agent</RouterLink>
-        <RouterLink to="/diagnostics">诊断</RouterLink>
-        <RouterLink to="/jobs">任务</RouterLink>
-        <RouterLink to="/prompt-templates">模板</RouterLink>
-        <RouterLink to="/help">帮助</RouterLink>
-        <RouterLink to="/settings">设置</RouterLink>
-      </nav>
+
+      <ShellTopTabs :active-workspace="currentWorkspace" />
+
+      <div class="header-actions">
+        <RouterLink class="header-action" to="/search">搜索</RouterLink>
+        <details class="shell-menu">
+          <summary>更多</summary>
+          <div class="shell-menu-panel">
+            <RouterLink v-for="item in workspaceMenuEntries" :key="item.to" :to="item.to">
+              {{ item.label }}
+            </RouterLink>
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <aside class="app-sidebar" aria-label="集合栏">
+      <ShellCollectionRail
+        :workspace="currentWorkspace"
+        :active-collection="activeCollection"
+        @select="selectCollection"
+      />
     </aside>
 
     <main class="app-main">
       <RouterView />
     </main>
 
-    <aside class="context-panel" aria-label="上下文">
-      <h2>上下文</h2>
-      <p>选择项目或实体后，这里显示反链、任务和审计摘要。</p>
+    <aside class="context-panel" aria-label="Inspector">
+      <ShellInspector
+        :workspace="currentWorkspace"
+        :project-name="projectLabel"
+        :collection-name="activeCollectionLabel"
+      />
     </aside>
 
     <footer class="status-bar">
@@ -46,5 +53,58 @@
 </template>
 
 <script setup lang="ts">
-import JobStatusBar from "@/components/jobs/JobStatusBar.vue";
+import { computed, reactive, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import JobStatusBar from '@/components/jobs/JobStatusBar.vue'
+import ShellCollectionRail from '@/components/layout/ShellCollectionRail.vue'
+import ShellInspector from '@/components/layout/ShellInspector.vue'
+import ShellTopTabs from '@/components/layout/ShellTopTabs.vue'
+import {
+  getWorkspaceCollections,
+  resolveWorkspaceKey,
+  workspaceMenuEntries,
+  type WorkspaceKey,
+} from './workspaceModel'
+import { useProjectStore } from '@/stores/projectStore'
+
+const route = useRoute()
+const projectStore = useProjectStore()
+const currentWorkspace = ref<WorkspaceKey>('project')
+const activeCollections = reactive<Record<WorkspaceKey, string>>({
+  project: 'recent',
+  library: 'all',
+  character: 'all',
+  event: 'all',
+  rule: 'all',
+  relation: 'all',
+  analysis: 'search',
+})
+
+watch(
+  () => route.name,
+  (name) => {
+    currentWorkspace.value = resolveWorkspaceKey(name, currentWorkspace.value)
+    const collections = getWorkspaceCollections(currentWorkspace.value)
+    const selectedCollection = activeCollections[currentWorkspace.value]
+
+    if (!collections.some((collection) => collection.key === selectedCollection)) {
+      activeCollections[currentWorkspace.value] = collections[0]?.key ?? ''
+    }
+  },
+  { immediate: true },
+)
+
+const projectLabel = computed(() => projectStore.activeProject?.name ?? '选择或创建一个项目')
+const activeCollection = computed(() => activeCollections[currentWorkspace.value])
+const activeCollectionLabel = computed(() => {
+  return (
+    getWorkspaceCollections(currentWorkspace.value).find(
+      (collection) => collection.key === activeCollection.value,
+    )?.label ?? '未选择集合'
+  )
+})
+
+function selectCollection(collectionKey: string) {
+  activeCollections[currentWorkspace.value] = collectionKey
+}
 </script>

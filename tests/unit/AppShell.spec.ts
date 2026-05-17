@@ -5,8 +5,8 @@ import App from '@/App.vue'
 import { router } from '@/router'
 
 describe('AppShell', () => {
-  it('renders the primary navigation and tool layout', async () => {
-    router.push('/')
+  it('renders the workspace tabs, collection rail, and inspector scaffold', async () => {
+    await router.push('/')
     await router.isReady()
 
     const wrapper = mount(App, {
@@ -16,7 +16,11 @@ describe('AppShell', () => {
     })
 
     expect(wrapper.text()).toContain('Ameya')
-    expect(wrapper.text()).toContain('项目库')
-    expect(wrapper.text()).toContain('上下文')
+    expect(wrapper.text()).toContain('项目')
+    expect(wrapper.text()).toContain('资料')
+    expect(wrapper.text()).toContain('Inspector')
+    expect(wrapper.text()).toContain('任务空闲')
+
+    wrapper.unmount()
   })
 })
