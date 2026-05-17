@@ -392,6 +392,26 @@ select {
   font-weight: 700;
 }
 
+.settings-actions {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 12px;
+}
+
+.test-result {
+  color: #6b6a63;
+  overflow-wrap: anywhere;
+}
+
+.test-result.ok {
+  color: #3f6f55;
+}
+
+.test-result.error {
+  color: #9a3d32;
+}
+
 .command-palette {
   position: fixed;
   top: 72px;

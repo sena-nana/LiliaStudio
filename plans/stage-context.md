@@ -126,11 +126,31 @@
 - `pnpm test:e2e`: pass, 1 test
 - `pnpm tauri build`: pass, produced `src-tauri/target/release/bundle/nsis/Ameya_0.1.0_x64-setup.exe`
 
+## 产品化 P2 已实现
+
+- 对照路线图 T018，完成 OpenAI-compatible HTTP Provider 产品化。
+- 新增阶段方案：`plans/productization-openai-provider.md`。
+- Provider 核心：支持 Chat Completions 和 Embeddings 风格请求，统一构造 URL、Bearer token 和 JSON body。
+- 错误分类：结构化返回 `configMissing`、`authFailed`、`httpError`、`networkError`、`modelResponseInvalid`。
+- HTTP transport：使用 `ureq` blocking client，并关闭 HTTP status 自动错误，确保 401/403 可归类为鉴权失败。
+- Commands/API/store：新增 `test_openai_provider`、前端 API 和 Pinia store 测试结果。
+- UI：设置页提供 OpenAI-compatible Provider 测试按钮和结果展示。
+
+## 产品化 P2 验证结果
+
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 7 files, 11 tests
+- `cd src-tauri; cargo test --locked`: pass, 26 tests
+- `cd src-tauri; cargo check --locked`: pass
+- `pnpm build`: pass
+- `pnpm test:e2e`: pass, 1 test
+- `pnpm tauri build`: pass, produced `src-tauri/target/release/bundle/nsis/Ameya_0.1.0_x64-setup.exe`
+
 ## 下一阶段决策规则
 
 - 每完成一个阶段后，必须先对照 `plans/Tauri-Vue-Windows开发路线图.md` 和本文件选择下一阶段内容。
 - 优先选择能解除后续阻塞、能独立测试、能中文提交的阶段。
-- 当前建议下一阶段：对照路线图 T018-T021，补齐真实 Provider 调用和结构化错误分类，顺序建议为 T018 OpenAI-compatible HTTP Provider，再 T019 CLI 进程执行器。
+- 当前建议下一阶段：对照路线图 T019，补齐 Claude/Codex 共享 CLI 进程执行器，包括安全参数数组、超时、stdout/stderr 捕获、退出码和结构化错误分类。
 
 ## 后续设计约束
 

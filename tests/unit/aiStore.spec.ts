@@ -95,4 +95,23 @@ describe('aiStore', () => {
     expect(store.prompts[0].name).toBe('逻辑审计')
     expect(store.jobs[0].status).toBe('queued')
   })
+
+  it('stores OpenAI provider test results', async () => {
+    invokeMock.mockResolvedValueOnce({
+      ok: false,
+      message: '请先保存 OpenAI-compatible API Key',
+      error: {
+        code: 'configMissing',
+        message: '请先保存 OpenAI-compatible API Key',
+        status: null,
+      },
+    })
+
+    const store = useAiStore()
+    const result = await store.testOpenAiProvider()
+
+    expect(result.ok).toBe(false)
+    expect(store.openAiProviderTest?.error?.code).toBe('configMissing')
+    expect(invokeMock).toHaveBeenCalledWith('test_openai_provider')
+  })
 })

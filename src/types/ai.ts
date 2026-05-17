@@ -32,6 +32,25 @@ export interface AiProviderSettingsDraft {
   enabled: boolean
 }
 
+export type ProviderErrorCode =
+  | 'configMissing'
+  | 'authFailed'
+  | 'httpError'
+  | 'networkError'
+  | 'modelResponseInvalid'
+
+export interface ProviderError {
+  code: ProviderErrorCode
+  message: string
+  status: number | null
+}
+
+export interface OpenAiProviderTestResult {
+  ok: boolean
+  message: string
+  error: ProviderError | null
+}
+
 export interface TextChunk {
   ordinal: number
   text: string

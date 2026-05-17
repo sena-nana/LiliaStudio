@@ -8,6 +8,7 @@ import {
   loadAiProviderSettings,
   previewChunks,
   saveAiProviderSettings,
+  testOpenAiProvider,
 } from '@/api/ai'
 import type {
   AiJob,
@@ -16,6 +17,7 @@ import type {
   AiProviderSettingsDraft,
   AiProviderSettingsView,
   DocumentChunkRecord,
+  OpenAiProviderTestResult,
   PromptTemplate,
   TextChunk,
 } from '@/types/ai'
@@ -27,6 +29,7 @@ interface AiState {
   preview: TextChunk[]
   jobs: AiJob[]
   prompts: PromptTemplate[]
+  openAiProviderTest: OpenAiProviderTestResult | null
   loading: boolean
 }
 
@@ -38,6 +41,7 @@ export const useAiStore = defineStore('ai', {
     preview: [],
     jobs: [],
     prompts: [],
+    openAiProviderTest: null,
     loading: false,
   }),
   actions: {
@@ -49,6 +53,10 @@ export const useAiStore = defineStore('ai', {
     },
     async saveProviderSettings(drafts: AiProviderSettingsDraft[]) {
       this.providerSettings = await saveAiProviderSettings(drafts)
+    },
+    async testOpenAiProvider() {
+      this.openAiProviderTest = await testOpenAiProvider()
+      return this.openAiProviderTest
     },
     async loadPromptsAndJobs() {
       const [prompts, jobs] = await Promise.all([listPromptTemplates(), listAiJobs()])

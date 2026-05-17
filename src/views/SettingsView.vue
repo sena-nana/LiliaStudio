@@ -49,6 +49,14 @@
             <input v-model="provider.clearApiKey" type="checkbox" />
             清除已保存密钥
           </label>
+          <div class="settings-actions">
+            <button type="button" class="primary-button" :disabled="aiStore.loading" @click="testOpenAi">
+              测试 Provider
+            </button>
+            <span v-if="aiStore.openAiProviderTest" :class="['test-result', aiStore.openAiProviderTest.ok ? 'ok' : 'error']">
+              {{ aiStore.openAiProviderTest.message }}
+            </span>
+          </div>
         </div>
 
         <label v-else class="stacked-field">
@@ -140,6 +148,18 @@ async function saveSettings() {
 
 function loadPrompts() {
   void aiStore.loadPromptsAndJobs()
+}
+
+async function testOpenAi() {
+  statusMessage.value = ''
+  aiStore.loading = true
+  try {
+    await aiStore.testOpenAiProvider()
+  } catch (error) {
+    statusMessage.value = error instanceof Error ? error.message : String(error)
+  } finally {
+    aiStore.loading = false
+  }
 }
 
 function providerLabel(kind: AiProviderKind) {

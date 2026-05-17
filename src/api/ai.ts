@@ -7,6 +7,7 @@ import type {
   AiProviderSettingsView,
   ContextPack,
   DocumentChunkRecord,
+  OpenAiProviderTestResult,
   PromptTemplate,
   TextChunk,
 } from '@/types/ai'
@@ -27,6 +28,10 @@ export function saveAiProviderSettings(
   return callCommand<AiProviderSettingsView[]>('save_ai_provider_settings', { drafts }).then(
     (items) => items ?? [],
   )
+}
+
+export function testOpenAiProvider(): Promise<OpenAiProviderTestResult> {
+  return callCommand<OpenAiProviderTestResult>('test_openai_provider')
 }
 
 export function previewChunks(text: string, maxChars: number): Promise<TextChunk[]> {

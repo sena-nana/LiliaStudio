@@ -1,11 +1,36 @@
 use ameya_lib::{
     ai::{
         cli_provider::{render_command_template, split_command_line},
-        openai_compatible::{chat_url, embeddings_url, parse_chat_content, parse_embeddings},
+        openai_compatible::{
+            chat_url, embeddings_url, parse_chat_content, parse_embeddings, ChatMessage,
+            OpenAiCompatibleClient, OpenAiRequest, OpenAiResponse, OpenAiTransport, ProviderErrorCode,
+        },
         settings::{mask_secret, AiProviderConfig},
     },
     vector::{chunking::chunk_text, search::cosine_similarity},
 };
+use std::sync::Mutex;
+
+struct FakeTransport {
+    response: OpenAiResponse,
+    requests: Mutex<Vec<OpenAiRequest>>,
+}
+
+impl FakeTransport {
+    fn new(response: OpenAiResponse) -> Self {
+        Self {
+            response,
+            requests: Mutex::new(Vec::new()),
+        }
+    }
+}
+
+impl OpenAiTransport for FakeTransport {
+    fn post_json(&self, request: OpenAiRequest) -> Result<OpenAiResponse, ameya_lib::ai::openai_compatible::ProviderError> {
+        self.requests.lock().expect("request lock").push(request);
+        Ok(self.response.clone())
+    }
+}
 
 #[test]
 fn renders_cli_command_template_without_losing_quoted_prompt() {
@@ -43,6 +68,84 @@ fn parses_openai_compatible_responses() {
 
     assert_eq!(chat, "审计完成");
     assert_eq!(embeddings[0], vec![1.0, 0.0, 0.5]);
+}
+
+#[test]
+fn openai_provider_chat_sends_bearer_token_and_extracts_content() {
+    let transport = FakeTransport::new(OpenAiResponse {
+        status: 200,
+        body: r#"{"choices":[{"message":{"role":"assistant","content":"可用"}}]}"#.into(),
+    });
+    let client = OpenAiCompatibleClient::new(
+        "https://api.example.test/v1".into(),
+        "sk-test".into(),
+        transport,
+    );
+
+    let content = client
+        .chat(
+            "story-chat",
+            vec![ChatMessage {
+                role: "user".into(),
+                content: "ping".into(),
+            }],
+            0.2,
+        )
+        .expect("chat succeeds");
+
+    assert_eq!(content, "可用");
+    let requests = client.transport().requests.lock().expect("request lock");
+    assert_eq!(requests[0].url, "https://api.example.test/v1/chat/completions");
+    assert_eq!(requests[0].bearer_token, "sk-test");
+    assert!(requests[0].body.contains("\"model\":\"story-chat\""));
+}
+
+#[test]
+fn openai_provider_embeddings_returns_vectors_and_dimension() {
+    let transport = FakeTransport::new(OpenAiResponse {
+        status: 200,
+        body: r#"{"data":[{"embedding":[1.0,0.0]},{"embedding":[0.0,1.0]}]}"#.into(),
+    });
+    let client = OpenAiCompatibleClient::new(
+        "https://api.example.test/v1".into(),
+        "sk-test".into(),
+        transport,
+    );
+
+    let result = client
+        .embeddings("story-embed", vec!["月光剑".into(), "潮汐城".into()])
+        .expect("embedding succeeds");
+
+    assert_eq!(result.dimension, 2);
+    assert_eq!(result.vectors.len(), 2);
+}
+
+#[test]
+fn openai_provider_classifies_auth_failures() {
+    let transport = FakeTransport::new(OpenAiResponse {
+        status: 401,
+        body: r#"{"error":{"message":"invalid api key"}}"#.into(),
+    });
+    let client = OpenAiCompatibleClient::new(
+        "https://api.example.test/v1".into(),
+        "bad-key".into(),
+        transport,
+    );
+
+    let error = client
+        .chat(
+            "story-chat",
+            vec![ChatMessage {
+                role: "user".into(),
+                content: "ping".into(),
+            }],
+            0.2,
+        )
+        .expect_err("auth should fail");
+
+    assert_eq!(error.code, ProviderErrorCode::AuthFailed);
+    assert_eq!(error.status, Some(401));
+    assert!(error.message.contains("invalid api key"));
 }
 
 #[test]
