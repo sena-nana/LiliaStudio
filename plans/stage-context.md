@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-- 当前分支：`codex/ameya-implementation`
+- 当前分支：`main`
 - 已完成：M0 工程基线、M1 本地资料库、M2 可视化编辑、M3-M4 AI 与向量层、M5-M8 逻辑审计/角色成长/Agent/模拟/交付骨架
 - 下一阶段：产品化增强和真实 Provider 联调
 
@@ -146,11 +146,29 @@
 - `pnpm test:e2e`: pass, 1 test
 - `pnpm tauri build`: pass, produced `src-tauri/target/release/bundle/nsis/Ameya_0.1.0_x64-setup.exe`
 
+## 产品化 P3 已实现
+
+- 对照路线图 T019，完成 Claude/Codex 共享 CLI 进程执行器。
+- 新增阶段方案：`plans/productization-cli-runner.md`。
+- CLI 模板：新增 `CliInvocation`，将命令模板渲染为明确的 `program + args` 参数数组。
+- 安全执行：新增 `process_runner`，使用 `std::process::Command` 传入参数数组，不做 shell 拼接。
+- 执行结果：捕获 stdout/stderr，记录 exit code，非零退出码保留给上层 Provider 分类。
+- 超时处理：超时后终止子进程并返回 `ProcessRunErrorCode::TimedOut` 结构化错误。
+- 测试：覆盖模板变量渲染、参数数组构造、stdout/stderr/exit code 捕获和超时分类。
+
+## 产品化 P3 验证结果
+
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 7 files, 11 tests
+- `cd src-tauri; cargo test --locked`: pass
+- `cd src-tauri; cargo check --locked`: pass
+- `cd src-tauri; cargo test --locked --test ai_vector`: pass, 13 tests
+
 ## 下一阶段决策规则
 
 - 每完成一个阶段后，必须先对照 `plans/Tauri-Vue-Windows开发路线图.md` 和本文件选择下一阶段内容。
 - 优先选择能解除后续阻塞、能独立测试、能中文提交的阶段。
-- 当前建议下一阶段：对照路线图 T019，补齐 Claude/Codex 共享 CLI 进程执行器，包括安全参数数组、超时、stdout/stderr 捕获、退出码和结构化错误分类。
+- 当前建议下一阶段：对照路线图 T020，实现 Codex CLI Provider，基于共享执行器提供 `codex exec` 默认模板、CLI 可用性检测、简单 prompt 测试和缺失 CLI/鉴权失败/执行失败/超时分类。
 
 ## 后续设计约束
 

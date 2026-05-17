@@ -2,8 +2,16 @@ use thiserror::Error;
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum CliTemplateError {
+    #[error("command template produced an empty command")]
+    EmptyCommand,
     #[error("unterminated quote in command template")]
     UnterminatedQuote,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CliInvocation {
+    pub program: String,
+    pub args: Vec<String>,
 }
 
 pub fn render_command_template(
@@ -18,6 +26,25 @@ pub fn render_command_template(
         .replace("{prompt}", prompt)
         .replace("{max_turns}", &max_turns.to_string())
         .replace("{output_format}", output_format))
+}
+
+pub fn build_cli_invocation(
+    template: &str,
+    workspace: &str,
+    prompt: &str,
+    max_turns: u32,
+    output_format: &str,
+) -> Result<CliInvocation, CliTemplateError> {
+    let command = render_command_template(template, workspace, prompt, max_turns, output_format)?;
+    let mut parts = split_command_line(&command)?;
+    if parts.is_empty() {
+        return Err(CliTemplateError::EmptyCommand);
+    }
+    let program = parts.remove(0);
+    Ok(CliInvocation {
+        program,
+        args: parts,
+    })
 }
 
 pub fn split_command_line(command: &str) -> Result<Vec<String>, CliTemplateError> {
