@@ -1,9 +1,28 @@
 import { defineStore } from 'pinia'
-import { createAiJob, defaultAiProviders, indexChunks, listAiJobs, listPromptTemplates, previewChunks } from '@/api/ai'
-import type { AiJob, AiJobDraft, AiProviderConfig, DocumentChunkRecord, PromptTemplate, TextChunk } from '@/types/ai'
+import {
+  createAiJob,
+  defaultAiProviders,
+  indexChunks,
+  listAiJobs,
+  listPromptTemplates,
+  loadAiProviderSettings,
+  previewChunks,
+  saveAiProviderSettings,
+} from '@/api/ai'
+import type {
+  AiJob,
+  AiJobDraft,
+  AiProviderConfig,
+  AiProviderSettingsDraft,
+  AiProviderSettingsView,
+  DocumentChunkRecord,
+  PromptTemplate,
+  TextChunk,
+} from '@/types/ai'
 
 interface AiState {
   providers: AiProviderConfig[]
+  providerSettings: AiProviderSettingsView[]
   chunks: DocumentChunkRecord[]
   preview: TextChunk[]
   jobs: AiJob[]
@@ -14,6 +33,7 @@ interface AiState {
 export const useAiStore = defineStore('ai', {
   state: (): AiState => ({
     providers: [],
+    providerSettings: [],
     chunks: [],
     preview: [],
     jobs: [],
@@ -23,6 +43,12 @@ export const useAiStore = defineStore('ai', {
   actions: {
     async loadDefaults() {
       this.providers = await defaultAiProviders()
+    },
+    async loadProviderSettings() {
+      this.providerSettings = await loadAiProviderSettings()
+    },
+    async saveProviderSettings(drafts: AiProviderSettingsDraft[]) {
+      this.providerSettings = await saveAiProviderSettings(drafts)
     },
     async loadPromptsAndJobs() {
       const [prompts, jobs] = await Promise.all([listPromptTemplates(), listAiJobs()])

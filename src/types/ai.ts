@@ -10,6 +10,28 @@ export interface AiProviderConfig {
   enabled: boolean
 }
 
+export interface AiProviderSettingsView {
+  kind: AiProviderKind
+  baseUrl: string | null
+  apiKeyPreview: string | null
+  hasApiKey: boolean
+  chatModel: string | null
+  embeddingModel: string | null
+  commandTemplate: string | null
+  enabled: boolean
+}
+
+export interface AiProviderSettingsDraft {
+  kind: AiProviderKind
+  baseUrl: string | null
+  apiKey: string | null
+  clearApiKey: boolean
+  chatModel: string | null
+  embeddingModel: string | null
+  commandTemplate: string | null
+  enabled: boolean
+}
+
 export interface TextChunk {
   ordinal: number
   text: string

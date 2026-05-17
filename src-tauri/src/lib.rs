@@ -5,6 +5,7 @@ pub mod domain;
 pub mod logic;
 pub mod services;
 pub mod vector;
+pub mod windows;
 
 pub mod test_support;
 
@@ -22,6 +23,8 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             commands::ai::default_ai_providers,
+            commands::ai::load_ai_provider_settings,
+            commands::ai::save_ai_provider_settings,
             commands::character_growth::preview_trait_delta,
             commands::diagnostics::diagnostics_summary,
             commands::health::health_check,

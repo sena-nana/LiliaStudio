@@ -336,6 +336,62 @@ select {
   color: #6b6a63;
 }
 
+.provider-form {
+  display: grid;
+  gap: 14px;
+}
+
+.provider-form header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.provider-form header p {
+  margin: 4px 0 0;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.settings-grid label,
+.stacked-field {
+  display: grid;
+  gap: 6px;
+}
+
+.settings-grid input,
+.stacked-field textarea {
+  width: 100%;
+  border: 1px solid #c9c5b8;
+  border-radius: 6px;
+  padding: 9px 10px;
+  background: #fff;
+}
+
+.stacked-field textarea {
+  min-height: 84px;
+  resize: vertical;
+  font-family: "Cascadia Mono", Consolas, monospace;
+}
+
+.toggle-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #34342f;
+}
+
+.status-note {
+  margin: 0;
+  color: #3f6f55;
+  font-weight: 700;
+}
+
 .command-palette {
   position: fixed;
   top: 72px;

@@ -102,10 +102,35 @@
 当前已完成全功能骨架。后续应优先增强：
 
 1. OpenAI-compatible、Claude CLI、Codex CLI 的真实调用和错误分类。
-2. 设置保存与 Windows Credential Manager 密钥存储。
-3. 审计报告、模拟报告、角色成长记录的持久化详情页。
-4. 图谱交互、时间线过滤和附件管理。
-5. UI 视觉 QA、安装包签名、升级策略和大项目性能基准。
+2. 审计报告、模拟报告、角色成长记录的持久化详情页。
+3. 图谱交互、时间线过滤和附件管理。
+4. UI 视觉 QA、安装包签名、升级策略和大项目性能基准。
+
+## 产品化 P1 已实现
+
+- 对照路线图 T017，完成 AI Provider 设置产品化。
+- 新增阶段方案：`plans/productization-ai-settings.md`。
+- 后端设置：`ai-provider-settings.json` 仅保存非敏感字段和密钥存在状态。
+- 密钥存储：OpenAI-compatible API Key 通过 Windows Credential Manager 保存，业务层经 `SecretStore` trait 访问。
+- Commands/API/store：`load_ai_provider_settings`、`save_ai_provider_settings`、前端 API 和 Pinia store。
+- UI：设置页支持编辑 OpenAI-compatible、Codex CLI、Claude CLI 配置，保存后只显示脱敏密钥占位。
+- 测试稳定性：Playwright 改用独立 1430 端口和 `pnpm exec vite`，避免复用 1420 上的其他 Windows 进程。
+
+## 产品化 P1 验证结果
+
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 7 files, 10 tests
+- `cd src-tauri; cargo test --locked`: pass, 23 tests
+- `cd src-tauri; cargo check --locked`: pass
+- `pnpm build`: pass
+- `pnpm test:e2e`: pass, 1 test
+- `pnpm tauri build`: pass, produced `src-tauri/target/release/bundle/nsis/Ameya_0.1.0_x64-setup.exe`
+
+## 下一阶段决策规则
+
+- 每完成一个阶段后，必须先对照 `plans/Tauri-Vue-Windows开发路线图.md` 和本文件选择下一阶段内容。
+- 优先选择能解除后续阻塞、能独立测试、能中文提交的阶段。
+- 当前建议下一阶段：对照路线图 T018-T021，补齐真实 Provider 调用和结构化错误分类，顺序建议为 T018 OpenAI-compatible HTTP Provider，再 T019 CLI 进程执行器。
 
 ## 后续设计约束
 

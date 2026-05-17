@@ -3,6 +3,8 @@ import type {
   AiJob,
   AiJobDraft,
   AiProviderConfig,
+  AiProviderSettingsDraft,
+  AiProviderSettingsView,
   ContextPack,
   DocumentChunkRecord,
   PromptTemplate,
@@ -11,6 +13,20 @@ import type {
 
 export function defaultAiProviders(): Promise<AiProviderConfig[]> {
   return callCommand<AiProviderConfig[]>('default_ai_providers').then((items) => items ?? [])
+}
+
+export function loadAiProviderSettings(): Promise<AiProviderSettingsView[]> {
+  return callCommand<AiProviderSettingsView[]>('load_ai_provider_settings').then(
+    (items) => items ?? [],
+  )
+}
+
+export function saveAiProviderSettings(
+  drafts: AiProviderSettingsDraft[],
+): Promise<AiProviderSettingsView[]> {
+  return callCommand<AiProviderSettingsView[]>('save_ai_provider_settings', { drafts }).then(
+    (items) => items ?? [],
+  )
 }
 
 export function previewChunks(text: string, maxChars: number): Promise<TextChunk[]> {

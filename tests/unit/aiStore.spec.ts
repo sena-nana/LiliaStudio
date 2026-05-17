@@ -25,6 +25,65 @@ describe('aiStore', () => {
     expect(invokeMock).toHaveBeenCalledWith('index_chunks', { projectId: 'project_1', maxChars: 600 })
   })
 
+  it('loads and saves provider settings without exposing raw secrets', async () => {
+    invokeMock
+      .mockResolvedValueOnce([
+        {
+          kind: 'openAiCompatible',
+          baseUrl: 'https://llm.example/v1',
+          apiKeyPreview: 'sk-********1234',
+          hasApiKey: true,
+          chatModel: 'story-chat',
+          embeddingModel: 'story-embed',
+          commandTemplate: null,
+          enabled: true,
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          kind: 'openAiCompatible',
+          baseUrl: 'https://llm.example/v1',
+          apiKeyPreview: 'sk-********1234',
+          hasApiKey: true,
+          chatModel: 'story-chat',
+          embeddingModel: 'story-embed',
+          commandTemplate: null,
+          enabled: true,
+        },
+      ])
+
+    const store = useAiStore()
+    await store.loadProviderSettings()
+    await store.saveProviderSettings([
+      {
+        kind: 'openAiCompatible',
+        baseUrl: 'https://llm.example/v1',
+        apiKey: 'sk-live-secret-1234',
+        clearApiKey: false,
+        chatModel: 'story-chat',
+        embeddingModel: 'story-embed',
+        commandTemplate: null,
+        enabled: true,
+      },
+    ])
+
+    expect(store.providerSettings[0].apiKeyPreview).toBe('sk-********1234')
+    expect(invokeMock).toHaveBeenCalledWith('save_ai_provider_settings', {
+      drafts: [
+        {
+          kind: 'openAiCompatible',
+          baseUrl: 'https://llm.example/v1',
+          apiKey: 'sk-live-secret-1234',
+          clearApiKey: false,
+          chatModel: 'story-chat',
+          embeddingModel: 'story-embed',
+          commandTemplate: null,
+          enabled: true,
+        },
+      ],
+    })
+  })
+
   it('loads prompt templates and AI jobs', async () => {
     invokeMock
       .mockResolvedValueOnce([{ id: 'prompt_1', name: '逻辑审计' }])
