@@ -6,7 +6,9 @@ use ameya_lib::{
             OpenAiCompatibleClient, OpenAiRequest, OpenAiResponse, OpenAiTransport,
             ProviderErrorCode,
         },
-        process_runner::{run_process, ProcessRunErrorCode, ProcessRunSpec},
+        process_runner::{
+            run_process, run_process_until_cancelled, ProcessRunErrorCode, ProcessRunSpec,
+        },
         settings::{mask_secret, AiProviderConfig},
     },
     vector::{chunking::chunk_text, search::cosine_similarity},
@@ -131,6 +133,23 @@ fn process_runner_returns_structured_timeout_error() {
 
     assert_eq!(error.code, ProcessRunErrorCode::TimedOut);
     assert!(error.message.contains("timed out"));
+}
+
+#[test]
+fn process_runner_can_cancel_running_child_process() {
+    let started_at = std::time::Instant::now();
+    let spec = ProcessRunSpec {
+        program: current_test_binary(),
+        args: vec!["process_runner_child_sleep".into()],
+        working_dir: None,
+        timeout: Duration::from_secs(5),
+    };
+
+    let error =
+        run_process_until_cancelled(spec, || started_at.elapsed() >= Duration::from_millis(50))
+            .expect_err("sleeping process should be cancelled");
+
+    assert_eq!(error.code, ProcessRunErrorCode::Cancelled);
 }
 
 #[test]

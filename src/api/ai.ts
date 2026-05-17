@@ -1,7 +1,5 @@
 import { callCommand } from './client'
 import type {
-  AiJob,
-  AiJobDraft,
   AiProviderConfig,
   AiProviderSettingsDraft,
   AiProviderSettingsView,
@@ -63,12 +61,4 @@ export function previewContextPack(
 
 export function listPromptTemplates(): Promise<PromptTemplate[]> {
   return callCommand<PromptTemplate[]>('list_prompt_templates_command').then((items) => items ?? [])
-}
-
-export function listAiJobs(): Promise<AiJob[]> {
-  return callCommand<AiJob[]>('list_ai_jobs').then((items) => items ?? [])
-}
-
-export function createAiJob(draft: AiJobDraft): Promise<AiJob> {
-  return callCommand<AiJob>('create_ai_job', { draft })
 }

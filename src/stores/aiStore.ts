@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia'
 import {
-  createAiJob,
   defaultAiProviders,
   indexChunks,
-  listAiJobs,
   listPromptTemplates,
   loadAiProviderSettings,
   previewChunks,
@@ -12,6 +10,7 @@ import {
   testCodexCliProvider,
   testOpenAiProvider,
 } from '@/api/ai'
+import { createAiJob, listAiJobs } from '@/api/jobs'
 import type {
   AiJob,
   AiJobDraft,

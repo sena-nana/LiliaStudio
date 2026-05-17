@@ -7,11 +7,18 @@ pub struct Migration {
     pub sql: &'static str,
 }
 
-pub const MIGRATIONS: &[Migration] = &[Migration {
-    version: 1,
-    name: "init",
-    sql: include_str!("../../migrations/0001_init.sql"),
-}];
+pub const MIGRATIONS: &[Migration] = &[
+    Migration {
+        version: 1,
+        name: "init",
+        sql: include_str!("../../migrations/0001_init.sql"),
+    },
+    Migration {
+        version: 2,
+        name: "ai_job_queue",
+        sql: include_str!("../../migrations/0002_ai_job_queue.sql"),
+    },
+];
 
 pub fn run_migrations(connection: &mut Connection) -> rusqlite::Result<()> {
     connection.execute_batch(
@@ -64,10 +71,12 @@ mod tests {
         run_migrations(&mut connection).expect("first migration run succeeds");
         run_migrations(&mut connection).expect("second migration run succeeds");
 
-        assert_eq!(current_schema_version(&connection).unwrap(), 1);
+        assert_eq!(current_schema_version(&connection).unwrap(), 2);
         let count: i64 = connection
-            .query_row("SELECT COUNT(*) FROM schema_migrations", [], |row| row.get(0))
+            .query_row("SELECT COUNT(*) FROM schema_migrations", [], |row| {
+                row.get(0)
+            })
             .unwrap();
-        assert_eq!(count, 1);
+        assert_eq!(count, 2);
     }
 }

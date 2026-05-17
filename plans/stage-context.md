@@ -203,11 +203,30 @@
 - `pnpm build`: pass
 - `pnpm test:e2e`: pass, 1 test
 
+## 产品化 P6 已实现
+
+- 对照路线图 T022，完成 AI 后台任务队列与日志。
+- 新增阶段方案：`plans/productization-ai-job-queue.md`。
+- 后端队列：`ai_jobs` 扩展为 queued、running、succeeded、failed、cancelled 状态机，补充 started/finished/cancel/retry 字段。
+- 任务日志：新增 `ai_job_logs`，统一记录状态变化、摘要和错误，并对 `api_key=`、`apiKey=`、`Authorization: Bearer`、`sk-` 等敏感串脱敏。
+- 任务操作：前端支持当前 running job 查询、取消、重试；Rust service 层保留运行、成功、失败状态转换供后续调度器接入。
+- 前端：新增 job API、jobStore、任务页、底部状态栏任务显示，并让状态栏在非 Tauri 浏览器环境下可降级。
+- 稳定性：未知 job id 返回结构化错误，不再走 panic；迁移测试同步到 schema version 2。
+
+## 产品化 P6 验证结果
+
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 8 files, 16 tests
+- `cd src-tauri; cargo test --locked`: pass
+- `cd src-tauri; cargo check --locked`: pass
+- `pnpm build`: pass
+- `pnpm test:e2e`: pass, 1 test
+
 ## 下一阶段决策规则
 
 - 每完成一个阶段后，必须先对照 `plans/Tauri-Vue-Windows开发路线图.md` 和本文件选择下一阶段内容。
 - 优先选择能解除后续阻塞、能独立测试、能中文提交的阶段。
-- 当前建议下一阶段：对照路线图 T022，实现 AI 后台任务队列与日志，统一调度 OpenAI-compatible、Codex CLI、Claude CLI provider，并补齐任务状态、取消和重试。
+- 当前建议下一阶段：对照路线图 T023，实现 Prompt 模板管理，包括内置模板、用户副本、变量说明和预览。
 
 ## 后续设计约束
 

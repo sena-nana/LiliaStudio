@@ -86,6 +86,9 @@ pub fn map_cli_process_error(
             format!("{provider_label} CLI 进程读取失败：{}", error.message),
             None,
         ),
+        ProcessRunErrorCode::Cancelled => {
+            CliProviderError::execution_failed(format!("{provider_label} CLI 调用已取消"), None)
+        }
     }
 }
 

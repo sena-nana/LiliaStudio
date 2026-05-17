@@ -66,6 +66,18 @@ export interface CliProviderTestResult {
   output: string | null
 }
 
+export type AiJobStatus = 'queued' | 'running' | 'succeeded' | 'failed' | 'cancelled'
+
+export type AiJobLogLevel = 'info' | 'warning' | 'error'
+
+export interface AiJobLog {
+  id: string
+  jobId: string
+  level: AiJobLogLevel
+  message: string
+  createdAt: string
+}
+
 export interface TextChunk {
   ordinal: number
   text: string
@@ -98,10 +110,14 @@ export interface AiJob {
   projectId: string | null
   providerKind: string
   jobType: string
-  status: string
+  status: AiJobStatus
   inputSummary: string
   outputText: string
   errorMessage: string | null
+  startedAt: string | null
+  finishedAt: string | null
+  cancelRequestedAt: string | null
+  retryOfJobId: string | null
   createdAt: string
   updatedAt: string
 }

@@ -29,6 +29,7 @@ pub enum ProcessRunErrorCode {
     SpawnFailed,
     IoFailed,
     TimedOut,
+    Cancelled,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -72,9 +73,23 @@ impl ProcessRunError {
             message: format!("process timed out after {} ms", timeout.as_millis()),
         }
     }
+
+    fn cancelled() -> Self {
+        Self {
+            code: ProcessRunErrorCode::Cancelled,
+            message: "process cancelled".into(),
+        }
+    }
 }
 
 pub fn run_process(spec: ProcessRunSpec) -> Result<ProcessRunOutput, ProcessRunError> {
+    run_process_until_cancelled(spec, || false)
+}
+
+pub fn run_process_until_cancelled(
+    spec: ProcessRunSpec,
+    should_cancel: impl Fn() -> bool,
+) -> Result<ProcessRunOutput, ProcessRunError> {
     let mut command = Command::new(&spec.program);
     command.args(&spec.args);
     if let Some(working_dir) = &spec.working_dir {
@@ -101,6 +116,13 @@ pub fn run_process(spec: ProcessRunSpec) -> Result<ProcessRunOutput, ProcessRunE
     let deadline = Instant::now() + spec.timeout;
 
     let status = loop {
+        if should_cancel() {
+            let _ = child.kill();
+            let _ = child.wait();
+            let _ = stdout_reader.join();
+            let _ = stderr_reader.join();
+            return Err(ProcessRunError::cancelled());
+        }
         if let Some(status) = child
             .try_wait()
             .map_err(|error| ProcessRunError::io_failed(error.to_string()))?

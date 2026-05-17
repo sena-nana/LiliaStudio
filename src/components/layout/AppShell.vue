@@ -21,6 +21,7 @@
         <RouterLink to="/simulation">模拟</RouterLink>
         <RouterLink to="/agent">Agent</RouterLink>
         <RouterLink to="/diagnostics">诊断</RouterLink>
+        <RouterLink to="/jobs">任务</RouterLink>
         <RouterLink to="/help">帮助</RouterLink>
         <RouterLink to="/settings">设置</RouterLink>
       </nav>
@@ -38,7 +39,11 @@
     <footer class="status-bar">
       <span>本地优先</span>
       <span>Windows</span>
-      <span>AI 可选</span>
+      <JobStatusBar />
     </footer>
   </div>
 </template>
+
+<script setup lang="ts">
+import JobStatusBar from '@/components/jobs/JobStatusBar.vue'
+</script>

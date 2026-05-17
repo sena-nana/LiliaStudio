@@ -12,6 +12,7 @@ import CharacterGrowthView from '@/views/CharacterGrowthView.vue'
 import SimulationView from '@/views/SimulationView.vue'
 import AgentChatView from '@/views/AgentChatView.vue'
 import DiagnosticsView from '@/views/DiagnosticsView.vue'
+import JobsView from '@/views/JobsView.vue'
 import HelpView from '@/views/HelpView.vue'
 
 export const router = createRouter({
@@ -29,6 +30,7 @@ export const router = createRouter({
     { path: '/simulation/:projectId?', name: 'simulation', component: SimulationView },
     { path: '/agent/:projectId?', name: 'agent', component: AgentChatView },
     { path: '/diagnostics', name: 'diagnostics', component: DiagnosticsView },
+    { path: '/jobs', name: 'jobs', component: JobsView },
     { path: '/help', name: 'help', component: HelpView },
     { path: '/settings', name: 'settings', component: SettingsView },
   ],

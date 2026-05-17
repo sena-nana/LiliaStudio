@@ -8,5 +8,5 @@ fn runs_migrations_against_file_database() {
 
     migrations::run_migrations(&mut connection).expect("migrations run");
 
-    assert_eq!(migrations::current_schema_version(&connection).unwrap(), 1);
+    assert_eq!(migrations::current_schema_version(&connection).unwrap(), 2);
 }
