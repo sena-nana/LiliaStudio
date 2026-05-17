@@ -101,6 +101,38 @@ impl<'a> EventRepository<'a> {
         self.get(&id).map(|event| event.expect("created event should exist"))
     }
 
+    pub fn update(
+        &self,
+        id: &str,
+        draft: EventDraft,
+        participants: Vec<EventParticipantDraft>,
+    ) -> rusqlite::Result<Event> {
+        let tags = encode_json(&draft.tags)?;
+        self.connection.execute(
+            "UPDATE events
+             SET title = ?2, description = ?3, time_label = ?4, sort_key = ?5,
+                 start_label = ?6, end_label = ?7, location = ?8, importance = ?9,
+                 outcome = ?10, tags_json = ?11, updated_at = ?12
+             WHERE id = ?1",
+            params![
+                id,
+                draft.title,
+                draft.description,
+                draft.time_label,
+                draft.sort_key,
+                draft.start_label,
+                draft.end_label,
+                draft.location,
+                draft.importance,
+                draft.outcome,
+                tags,
+                now()
+            ],
+        )?;
+        self.replace_participants(id, participants)?;
+        self.get(id).map(|event| event.expect("updated event should exist"))
+    }
+
     pub fn replace_participants(
         &self,
         event_id: &str,

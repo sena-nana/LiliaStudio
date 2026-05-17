@@ -222,11 +222,30 @@
 - `pnpm build`: pass
 - `pnpm test:e2e`: pass, 1 test
 
+## 产品化 P7 已实现
+
+- 对照路线图 T023，完成 Prompt 模板管理。
+- 新增阶段方案：`plans/productization-prompt-template-management.md`。
+- 后端模板：扩展内置模板注册表，包含逻辑审计、补完问题、角色分析、角色行为校验、叙事模拟。
+- 模板能力：支持内置模板补齐与重置、复制为用户模板、保存用户模板、变量解析与说明、最终 prompt 预览和缺失变量提示。
+- Commands/API/store：新增 prompt template 独立 commands、`src/api/promptTemplates.ts` 和 `promptTemplateStore`，设置页不再承载模板列表。
+- UI：新增 Prompt 模板管理页、模板导航入口、模板编辑区、变量填写区和预览区；内置模板只读，需复制后编辑。
+- 测试：后端覆盖重置、复制编辑、变量说明、预览缺失变量；前端覆盖 store command 契约。
+
+## 产品化 P7 验证结果
+
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 9 files, 18 tests
+- `cd src-tauri; cargo test --locked`: pass
+- `cd src-tauri; cargo check --locked`: pass
+- `pnpm build`: pass
+- `pnpm test:e2e`: pass, 1 test
+
 ## 下一阶段决策规则
 
 - 每完成一个阶段后，必须先对照 `plans/Tauri-Vue-Windows开发路线图.md` 和本文件选择下一阶段内容。
 - 优先选择能解除后续阻塞、能独立测试、能中文提交的阶段。
-- 当前建议下一阶段：对照路线图 T023，实现 Prompt 模板管理，包括内置模板、用户副本、变量说明和预览。
+- 当前建议下一阶段：对照路线图 T024，复核并产品化文本切片 DocumentChunk；若现有 M3-M4 已满足 T024，则记录对照结果并推进到 T025 Embedding 存储。
 
 ## 后续设计约束
 

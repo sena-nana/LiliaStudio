@@ -75,6 +75,33 @@ impl<'a> CharacterRepository<'a> {
             .map(|character| character.expect("created character should exist"))
     }
 
+    pub fn update(&self, id: &str, draft: CharacterDraft) -> rusqlite::Result<Character> {
+        let aliases = encode_json(&draft.aliases)?;
+        let tags = encode_json(&draft.tags)?;
+        self.connection.execute(
+            "UPDATE characters
+             SET name = ?2, aliases_json = ?3, summary = ?4, appearance = ?5,
+                 goals = ?6, motivations = ?7, fears = ?8, faction = ?9,
+                 tags_json = ?10, updated_at = ?11
+             WHERE id = ?1",
+            params![
+                id,
+                draft.name,
+                aliases,
+                draft.summary,
+                draft.appearance,
+                draft.goals,
+                draft.motivations,
+                draft.fears,
+                draft.faction,
+                tags,
+                now()
+            ],
+        )?;
+        self.get(id)
+            .map(|character| character.expect("updated character should exist"))
+    }
+
     pub fn soft_delete(&self, id: &str) -> rusqlite::Result<()> {
         let timestamp = now();
         self.connection.execute(

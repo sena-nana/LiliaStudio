@@ -82,6 +82,39 @@ impl<'a> RelationRepository<'a> {
             .map(|relation| relation.expect("created relation should exist"))
     }
 
+    pub fn update(&self, id: &str, draft: RelationDraft) -> rusqlite::Result<Relation> {
+        self.connection.execute(
+            "UPDATE relations
+             SET source_type = ?2, source_id = ?3, target_type = ?4, target_id = ?5,
+                 relation_type = ?6, description = ?7, confidence = ?8,
+                 directed = ?9, updated_at = ?10
+             WHERE id = ?1",
+            params![
+                id,
+                draft.source.entity_type,
+                draft.source.entity_id,
+                draft.target.entity_type,
+                draft.target.entity_id,
+                draft.relation_type,
+                draft.description,
+                draft.confidence,
+                draft.directed as i64,
+                now()
+            ],
+        )?;
+        self.get(id)
+            .map(|relation| relation.expect("updated relation should exist"))
+    }
+
+    pub fn soft_delete(&self, id: &str) -> rusqlite::Result<()> {
+        let timestamp = now();
+        self.connection.execute(
+            "UPDATE relations SET deleted_at = ?2, updated_at = ?2 WHERE id = ?1",
+            params![id, timestamp],
+        )?;
+        Ok(())
+    }
+
     pub fn get(&self, id: &str) -> rusqlite::Result<Option<Relation>> {
         let mut statement = self.connection.prepare(
             "SELECT id, project_id, source_type, source_id, target_type, target_id, relation_type,

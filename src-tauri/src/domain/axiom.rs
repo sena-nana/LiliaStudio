@@ -76,6 +76,42 @@ impl<'a> AxiomRepository<'a> {
         self.get(&id).map(|axiom| axiom.expect("created axiom should exist"))
     }
 
+    pub fn update(&self, id: &str, draft: AxiomDraft) -> rusqlite::Result<Axiom> {
+        let tags = encode_json(&draft.tags)?;
+        self.connection.execute(
+            "UPDATE axioms
+             SET subject = ?2, predicate = ?3, object = ?4, scope_time = ?5,
+                 scope_location = ?6, certainty = ?7, source_entity_type = ?8,
+                 source_entity_id = ?9, natural_language = ?10, tags_json = ?11,
+                 updated_at = ?12
+             WHERE id = ?1",
+            params![
+                id,
+                draft.subject,
+                draft.predicate,
+                draft.object,
+                draft.scope_time,
+                draft.scope_location,
+                draft.certainty,
+                draft.source_entity_type,
+                draft.source_entity_id,
+                draft.natural_language,
+                tags,
+                now()
+            ],
+        )?;
+        self.get(id).map(|axiom| axiom.expect("updated axiom should exist"))
+    }
+
+    pub fn soft_delete(&self, id: &str) -> rusqlite::Result<()> {
+        let timestamp = now();
+        self.connection.execute(
+            "UPDATE axioms SET deleted_at = ?2, updated_at = ?2 WHERE id = ?1",
+            params![id, timestamp],
+        )?;
+        Ok(())
+    }
+
     pub fn get(&self, id: &str) -> rusqlite::Result<Option<Axiom>> {
         self.connection
             .query_row(

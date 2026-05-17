@@ -22,6 +22,7 @@
         <RouterLink to="/agent">Agent</RouterLink>
         <RouterLink to="/diagnostics">诊断</RouterLink>
         <RouterLink to="/jobs">任务</RouterLink>
+        <RouterLink to="/prompt-templates">模板</RouterLink>
         <RouterLink to="/help">帮助</RouterLink>
         <RouterLink to="/settings">设置</RouterLink>
       </nav>
@@ -45,5 +46,5 @@
 </template>
 
 <script setup lang="ts">
-import JobStatusBar from '@/components/jobs/JobStatusBar.vue'
+import JobStatusBar from "@/components/jobs/JobStatusBar.vue";
 </script>

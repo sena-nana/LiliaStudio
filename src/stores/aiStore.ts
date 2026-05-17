@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import {
   defaultAiProviders,
   indexChunks,
-  listPromptTemplates,
   loadAiProviderSettings,
   previewChunks,
   saveAiProviderSettings,
@@ -11,6 +10,7 @@ import {
   testOpenAiProvider,
 } from '@/api/ai'
 import { createAiJob, listAiJobs } from '@/api/jobs'
+import { listPromptTemplates } from '@/api/promptTemplates'
 import type {
   AiJob,
   AiJobDraft,

@@ -23,23 +23,29 @@
       <p>创建第一个项目后，词条、角色、事件和公理会围绕它组织。</p>
     </div>
     <div v-else class="project-list">
-      <button
+      <article
         v-for="project in projectStore.projects"
         :key="project.id"
-        type="button"
         class="project-row"
         :class="{ active: project.id === projectStore.activeProjectId }"
-        @click="openProject(project.id)"
       >
-        <strong>{{ project.name }}</strong>
-        <span>{{ project.description || '无描述' }}</span>
-      </button>
+        <button type="button" class="project-open-button" @click="openProject(project.id)">
+          <strong>{{ project.name }}</strong>
+          <span>{{ project.description || '无描述' }}</span>
+        </button>
+        <div class="project-edit-row">
+          <input v-model="editDrafts[project.id].name" placeholder="项目名称" />
+          <input v-model="editDrafts[project.id].description" placeholder="描述" />
+          <button type="button" @click="saveProject(project.id)">保存</button>
+          <button type="button" @click="archiveProject(project.id)">归档</button>
+        </div>
+      </article>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
+import { reactive, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProjectStore } from '@/stores/projectStore'
 
@@ -49,12 +55,23 @@ const draft = reactive({
   name: '',
   description: '',
 })
+const editDrafts = reactive<Record<string, { name: string; description: string }>>({})
 
-onMounted(() => {
-  void projectStore.loadProjects()
+watchEffect(() => {
+  for (const project of projectStore.projects) {
+    if (!editDrafts[project.id]) {
+      editDrafts[project.id] = {
+        name: project.name,
+        description: project.description,
+      }
+    }
+  }
 })
 
+void projectStore.loadProjects()
+
 async function createProject() {
+  if (!draft.name.trim()) return
   const project = await projectStore.createProject({
     name: draft.name.trim(),
     description: draft.description.trim(),
@@ -75,5 +92,19 @@ async function createDefaultProject() {
 async function openProject(id: string) {
   projectStore.selectProject(id)
   await router.push(`/projects/${id}`)
+}
+
+async function saveProject(id: string) {
+  const draft = editDrafts[id]
+  if (!draft?.name.trim()) return
+  await projectStore.updateProject(id, {
+    name: draft.name.trim(),
+    description: draft.description.trim(),
+  })
+}
+
+async function archiveProject(id: string) {
+  await projectStore.archiveProject(id)
+  delete editDrafts[id]
 }
 </script>

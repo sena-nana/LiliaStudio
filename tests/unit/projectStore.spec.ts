@@ -45,4 +45,43 @@ describe('projectStore', () => {
     })
     expect(store.projects.map((project) => project.name)).toEqual(['北境', '雨夜都市'])
   })
+
+  it('updates and archives projects through the API layer', async () => {
+    const store = useProjectStore()
+    store.projects = [
+      {
+        id: 'project_1',
+        name: '旧项目',
+        description: '',
+        createdAt: '2026-01-01T00:00:00Z',
+        updatedAt: '2026-01-01T00:00:00Z',
+        archivedAt: null,
+      },
+    ]
+    store.activeProjectId = 'project_1'
+    invokeMock
+      .mockResolvedValueOnce({
+        id: 'project_1',
+        name: '新项目',
+        description: '更新后的描述',
+        createdAt: '2026-01-01T00:00:00Z',
+        updatedAt: '2026-01-02T00:00:00Z',
+        archivedAt: null,
+      })
+      .mockResolvedValueOnce(undefined)
+
+    await store.updateProject('project_1', {
+      name: '新项目',
+      description: '更新后的描述',
+    })
+    await store.archiveProject('project_1')
+
+    expect(invokeMock).toHaveBeenCalledWith('update_project', {
+      id: 'project_1',
+      draft: { name: '新项目', description: '更新后的描述' },
+    })
+    expect(invokeMock).toHaveBeenCalledWith('archive_project', { id: 'project_1' })
+    expect(store.projects).toHaveLength(0)
+    expect(store.activeProjectId).toBeNull()
+  })
 })

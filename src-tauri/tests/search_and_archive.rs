@@ -5,6 +5,7 @@ use ameya_lib::{
         entry::{EntryDraft, EntryRepository},
         event::{EventDraft, EventRepository},
         project::{ProjectDraft, ProjectRepository},
+        relation::{EntityRef, RelationDraft, RelationRepository},
     },
     services::{
         import_export::{export_project, import_project},
@@ -129,4 +130,69 @@ fn export_and_import_project_creates_a_new_project_copy() {
     assert_ne!(imported.project.id, project.id);
     assert!(imported.project.name.contains("原始项目"));
     assert_eq!(EntryRepository::new(&connection).list_active(&imported.project.id).unwrap().len(), 1);
+}
+
+#[test]
+fn import_project_remaps_relation_entity_ids_to_imported_records() {
+    let connection = migrated_memory_database();
+    let projects = ProjectRepository::new(&connection);
+    let project = projects
+        .create(ProjectDraft {
+            name: "原始项目".into(),
+            description: "可导出".into(),
+        })
+        .unwrap();
+    let entries = EntryRepository::new(&connection);
+    let source = entries
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "item".into(),
+            title: "月光阔剑".into(),
+            summary: String::new(),
+            body: String::new(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+    let target = entries
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "technology".into(),
+            title: "精灵锻造".into(),
+            summary: String::new(),
+            body: String::new(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+    RelationRepository::new(&connection)
+        .create(RelationDraft {
+            project_id: project.id.clone(),
+            source: EntityRef::entry(source.id.clone()),
+            target: EntityRef::entry(target.id.clone()),
+            relation_type: "derived_from".into(),
+            description: String::new(),
+            confidence: 1.0,
+            directed: true,
+        })
+        .unwrap();
+
+    let archive = export_project(&connection, &project.id).unwrap();
+    let imported = import_project(&connection, archive).unwrap();
+    let imported_entries = EntryRepository::new(&connection)
+        .list_active(&imported.project.id)
+        .unwrap();
+    let imported_relations = RelationRepository::new(&connection)
+        .list_project(&imported.project.id)
+        .unwrap();
+
+    assert_eq!(imported_relations.len(), 1);
+    assert_ne!(imported_relations[0].source.entity_id, source.id);
+    assert_ne!(imported_relations[0].target.entity_id, target.id);
+    assert!(imported_entries
+        .iter()
+        .any(|entry| entry.id == imported_relations[0].source.entity_id));
+    assert!(imported_entries
+        .iter()
+        .any(|entry| entry.id == imported_relations[0].target.entity_id));
 }

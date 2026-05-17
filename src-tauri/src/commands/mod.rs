@@ -6,6 +6,7 @@ pub mod health;
 pub mod import_export;
 pub mod jobs;
 pub mod library;
+pub mod logic;
 pub mod projects;
 pub mod prompts;
 pub mod rag;

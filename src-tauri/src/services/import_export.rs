@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
 
@@ -56,8 +58,10 @@ pub fn import_project(
     )?;
 
     let entries = EntryRepository::new(connection);
+    let mut id_map = HashMap::new();
     for entry in archive.entries {
-        entries.create(EntryDraft {
+        let old_id = entry.id;
+        let created = entries.create(EntryDraft {
             project_id: project.id.clone(),
             entry_type: entry.entry_type,
             title: entry.title,
@@ -66,11 +70,13 @@ pub fn import_project(
             tags: entry.tags,
             status: entry.status,
         })?;
+        id_map.insert(entity_key("entry", &old_id), created.id);
     }
 
     let characters = CharacterRepository::new(connection);
     for character in archive.characters {
-        characters.create(CharacterDraft {
+        let old_id = character.id;
+        let created = characters.create(CharacterDraft {
             project_id: project.id.clone(),
             name: character.name,
             aliases: character.aliases,
@@ -82,11 +88,13 @@ pub fn import_project(
             faction: character.faction,
             tags: character.tags,
         })?;
+        id_map.insert(entity_key("character", &old_id), created.id);
     }
 
     let events = EventRepository::new(connection);
     for event in archive.events {
-        events.create(
+        let old_id = event.id;
+        let created = events.create(
             EventDraft {
                 project_id: project.id.clone(),
                 title: event.title,
@@ -102,11 +110,13 @@ pub fn import_project(
             },
             vec![],
         )?;
+        id_map.insert(entity_key("event", &old_id), created.id);
     }
 
     let axioms = AxiomRepository::new(connection);
     for axiom in archive.axioms {
-        axioms.create(AxiomDraft {
+        let old_id = axiom.id;
+        let created = axioms.create(AxiomDraft {
             project_id: project.id.clone(),
             subject: axiom.subject,
             predicate: axiom.predicate,
@@ -119,14 +129,15 @@ pub fn import_project(
             natural_language: axiom.natural_language,
             tags: axiom.tags,
         })?;
+        id_map.insert(entity_key("axiom", &old_id), created.id);
     }
 
     let relations = RelationRepository::new(connection);
     for relation in archive.relations {
         relations.create(RelationDraft {
             project_id: project.id.clone(),
-            source: relation.source,
-            target: relation.target,
+            source: remap_entity_ref(relation.source, &id_map),
+            target: remap_entity_ref(relation.target, &id_map),
             relation_type: relation.relation_type,
             description: relation.description,
             confidence: relation.confidence,
@@ -135,4 +146,19 @@ pub fn import_project(
     }
 
     Ok(ImportedProject { project })
+}
+
+fn remap_entity_ref(
+    entity_ref: crate::domain::relation::EntityRef,
+    id_map: &HashMap<String, String>,
+) -> crate::domain::relation::EntityRef {
+    let key = entity_key(&entity_ref.entity_type, &entity_ref.entity_id);
+    crate::domain::relation::EntityRef {
+        entity_type: entity_ref.entity_type,
+        entity_id: id_map.get(&key).cloned().unwrap_or(entity_ref.entity_id),
+    }
+}
+
+fn entity_key(entity_type: &str, entity_id: &str) -> String {
+    format!("{entity_type}:{entity_id}")
 }
