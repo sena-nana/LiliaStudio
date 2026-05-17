@@ -5,7 +5,7 @@ import App from '@/App.vue'
 import { router } from '@/router'
 
 describe('AppShell', () => {
-  it('renders the workspace tabs, collection rail, and inspector scaffold', async () => {
+  it('renders workspace tabs, collection rail, context panel, and status bar', async () => {
     await router.push('/')
     await router.isReady()
 
@@ -16,10 +16,11 @@ describe('AppShell', () => {
     })
 
     expect(wrapper.text()).toContain('Ameya')
-    expect(wrapper.text()).toContain('项目')
-    expect(wrapper.text()).toContain('资料')
-    expect(wrapper.text()).toContain('Inspector')
-    expect(wrapper.text()).toContain('任务空闲')
+    expect(wrapper.find('nav[aria-label="对象标签"]').text()).toContain('项目')
+    expect(wrapper.find('nav[aria-label="对象标签"]').text()).toContain('资料')
+    expect(wrapper.find('aside[aria-label="集合栏"]').exists()).toBe(true)
+    expect(wrapper.find('aside[aria-label="上下文面板"]').exists()).toBe(true)
+    expect(wrapper.find('footer.status-bar').text()).toContain('任务空闲')
 
     wrapper.unmount()
   })

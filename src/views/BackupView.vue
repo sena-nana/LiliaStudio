@@ -8,7 +8,7 @@
       <button type="button" class="primary-button" @click="exportArchive">导出 JSON</button>
     </header>
 
-    <textarea v-model="archiveText" class="archive-text" placeholder="导出的 JSON 会显示在这里，也可以粘贴 JSON 后导入。" />
+    <textarea v-model="archiveText" class="archive-text" placeholder="JSON" />
     <button type="button" class="primary-button" @click="importArchive">导入为新项目</button>
   </section>
 </template>

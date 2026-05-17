@@ -3,12 +3,12 @@
     <header class="view-header">
       <div>
         <p class="eyebrow">搜索</p>
-        <h1>项目内检索</h1>
+        <h1>搜索</h1>
       </div>
     </header>
 
     <form class="quick-create" @submit.prevent="runSearch">
-      <input v-model="query" placeholder="搜索词条、角色、事件和公理" />
+      <input v-model="query" placeholder="搜索" />
       <button type="submit">搜索</button>
     </form>
 

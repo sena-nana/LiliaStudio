@@ -8,7 +8,6 @@
       @click="$emit('update:modelValue', template.type)"
     >
       <strong>{{ template.label }}</strong>
-      <span>{{ template.summary }}</span>
     </button>
   </div>
 </template>

@@ -1,13 +1,8 @@
 <template>
   <section class="collection-rail" aria-label="集合栏">
     <header class="collection-rail-header">
-      <div>
-        <p class="eyebrow">集合</p>
-        <h2>{{ title }}</h2>
-      </div>
+      <h2>{{ title }}</h2>
     </header>
-
-    <p class="collection-rail-summary">{{ summary }}</p>
 
     <nav class="collection-list">
       <button
@@ -20,7 +15,6 @@
         @click="emit('select', collection.key)"
       >
         <strong>{{ collection.label }}</strong>
-        <span>{{ collection.description }}</span>
       </button>
     </nav>
   </section>
@@ -30,7 +24,6 @@
 import { computed } from 'vue'
 import {
   getWorkspaceCollections,
-  getWorkspaceSummary,
   workspaceTabs,
   type WorkspaceKey,
 } from './workspaceModel'
@@ -45,9 +38,8 @@ const emit = defineEmits<{
 }>()
 
 const collections = computed(() => getWorkspaceCollections(props.workspace))
-const summary = computed(() => getWorkspaceSummary(props.workspace))
 const title = computed(() => {
   const tab = workspaceTabs.find((item) => item.key === props.workspace)
-  return tab ? `${tab.label}集合` : '集合'
+  return tab ? tab.label : '集合'
 })
 </script>

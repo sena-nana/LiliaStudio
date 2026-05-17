@@ -3,7 +3,7 @@
     <header class="view-header">
       <div>
         <p class="eyebrow">设置</p>
-        <h1>本机配置</h1>
+        <h1>设置</h1>
       </div>
       <button
         type="button"
@@ -71,7 +71,7 @@
               :disabled="aiStore.loading"
               @click="testOpenAi"
             >
-              测试 Provider
+              测试
             </button>
             <span
               v-if="aiStore.openAiProviderTest"
@@ -97,7 +97,7 @@
               :disabled="aiStore.loading"
               @click="testCodexCli"
             >
-              测试 Codex CLI
+              测试
             </button>
             <span
               v-if="aiStore.codexCliProviderTest"
@@ -116,7 +116,7 @@
               :disabled="aiStore.loading"
               @click="testClaudeCli"
             >
-              测试 Claude CLI
+              测试
             </button>
             <span
               v-if="aiStore.claudeCliProviderTest"
@@ -134,14 +134,14 @@
       <section>
         <h2>Prompt 模板</h2>
         <RouterLink class="primary-button link-button" to="/prompt-templates"
-          >管理模板</RouterLink
+          >模板</RouterLink
         >
       </section>
 
       <section>
         <h2>AI 任务</h2>
         <RouterLink class="primary-button link-button" to="/jobs"
-          >查看任务</RouterLink
+          >任务</RouterLink
         >
       </section>
     </div>

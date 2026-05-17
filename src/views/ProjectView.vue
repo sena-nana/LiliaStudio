@@ -10,7 +10,6 @@
 
     <div v-if="!projectId" class="empty-state">
       <h2>未选择项目</h2>
-      <p>请先在项目库中创建或打开一个项目。</p>
     </div>
 
     <div v-else class="workspace-grid">
@@ -19,7 +18,6 @@
           <h2>词条</h2>
           <button type="button" @click="createEntry">新增</button>
         </header>
-        <p>世界观、物品、地点、阵营和资源。</p>
         <EntryTemplatePanel v-model="entryType" />
         <ul>
           <li v-for="entry in libraryStore.entries" :key="entry.id">
@@ -41,7 +39,6 @@
           <h2>角色</h2>
           <button type="button" @click="createCharacter">新增</button>
         </header>
-        <p>角色档案、目标、动机和阵营。</p>
         <ul>
           <li v-for="character in libraryStore.characters" :key="character.id">
             <button
@@ -62,7 +59,6 @@
           <h2>事件</h2>
           <button type="button" @click="createEvent">新增</button>
         </header>
-        <p>历史节点、参与者和结果。</p>
         <ul>
           <li v-for="event in libraryStore.events" :key="event.id">
             <button
@@ -83,7 +79,6 @@
           <h2>公理</h2>
           <button type="button" @click="createAxiom">新增</button>
         </header>
-        <p>物理法则、社会契约和逻辑约束。</p>
         <ul>
           <li v-for="axiom in libraryStore.axioms" :key="axiom.id">
             <button
@@ -104,7 +99,6 @@
           <h2>关系</h2>
           <button type="button" :disabled="entityOptions.length < 2" @click="createRelation">新增</button>
         </header>
-        <p>实体之间的来源、约束、参与和影响。</p>
         <ul>
           <li v-for="relation in libraryStore.relations" :key="relation.id">
             <button
@@ -124,7 +118,6 @@
         <header>
           <div>
             <h2>{{ editorTitle }}</h2>
-            <p>{{ editorSubtitle }}</p>
           </div>
           <div class="editor-actions">
             <button type="button" class="secondary-button" :disabled="!selected.id" @click="deleteSelected">
@@ -140,7 +133,7 @@
           <label>标题<input v-model="entryForm.title" /></label>
           <label>类型<input v-model="entryForm.entryType" /></label>
           <label>状态<input v-model="entryForm.status" /></label>
-          <label>标签<input v-model="entryTagsText" placeholder="用逗号分隔" /></label>
+          <label>标签<input v-model="entryTagsText" placeholder="标签" /></label>
           <label class="wide">摘要<textarea v-model="entryForm.summary" rows="3" /></label>
           <label class="wide">正文<textarea v-model="entryForm.body" rows="8" /></label>
         </div>
@@ -148,8 +141,8 @@
         <div v-else-if="selected.kind === 'character'" class="editor-form">
           <label>姓名<input v-model="characterForm.name" /></label>
           <label>阵营<input v-model="characterForm.faction" /></label>
-          <label>别名<input v-model="characterAliasesText" placeholder="用逗号分隔" /></label>
-          <label>标签<input v-model="characterTagsText" placeholder="用逗号分隔" /></label>
+          <label>别名<input v-model="characterAliasesText" placeholder="别名" /></label>
+          <label>标签<input v-model="characterTagsText" placeholder="标签" /></label>
           <label class="wide">摘要<textarea v-model="characterForm.summary" rows="3" /></label>
           <label>外貌<textarea v-model="characterForm.appearance" rows="4" /></label>
           <label>目标<textarea v-model="characterForm.goals" rows="4" /></label>
@@ -165,7 +158,7 @@
           <label>开始<input v-model="eventForm.startLabel" /></label>
           <label>结束<input v-model="eventForm.endLabel" /></label>
           <label>重要度<input v-model.number="eventForm.importance" min="0" max="10" type="number" /></label>
-          <label>标签<input v-model="eventTagsText" placeholder="用逗号分隔" /></label>
+          <label>标签<input v-model="eventTagsText" placeholder="标签" /></label>
           <label class="wide">描述<textarea v-model="eventForm.description" rows="4" /></label>
           <label class="wide">结果<textarea v-model="eventForm.outcome" rows="4" /></label>
         </div>
@@ -179,7 +172,7 @@
           <label>地点范围<input v-model="axiomForm.scopeLocation" /></label>
           <label>来源类型<input v-model="sourceEntityTypeText" /></label>
           <label>来源 ID<input v-model="sourceEntityIdText" /></label>
-          <label>标签<input v-model="axiomTagsText" placeholder="用逗号分隔" /></label>
+          <label>标签<input v-model="axiomTagsText" placeholder="标签" /></label>
           <label class="wide">自然语言<textarea v-model="axiomForm.naturalLanguage" rows="5" /></label>
         </div>
 
@@ -207,8 +200,7 @@
         </div>
 
         <div v-else class="empty-state compact">
-          <h2>选择一条记录</h2>
-          <p>左侧新增或选择资料后，可以在这里编辑并保存到本地数据库。</p>
+          <h2>未选择</h2>
         </div>
       </article>
     </div>
@@ -261,20 +253,17 @@ const projectId = computed(() => {
   const value = route.params.projectId;
   return typeof value === "string" && value.length > 0 ? value : projectStore.activeProjectId;
 });
-const projectTitle = computed(() => projectStore.activeProject?.name ?? "世界观资料编辑");
+const projectTitle = computed(() => projectStore.activeProject?.name ?? "资料");
 const editorTitle = computed(() => {
-  if (!selected.kind) return "资料编辑";
+  if (!selected.kind) return "资料";
   return {
-    entry: "编辑词条",
-    character: "编辑角色",
-    event: "编辑事件",
-    axiom: "编辑公理",
-    relation: "编辑关系",
+    entry: "词条",
+    character: "角色",
+    event: "事件",
+    axiom: "公理",
+    relation: "关系",
   }[selected.kind];
 });
-const editorSubtitle = computed(() =>
-  selected.id ? "保存后写入本地 SQLite 数据库。" : "选择或新增资料后开始编辑。",
-);
 const entityOptions = computed(() => [
   ...libraryStore.entries.map((entry) => ({
     key: makeEntityKey("entry", entry.id),

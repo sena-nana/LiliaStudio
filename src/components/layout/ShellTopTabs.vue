@@ -9,7 +9,6 @@
       :aria-current="tab.key === activeWorkspace ? 'page' : undefined"
     >
       <strong>{{ tab.label }}</strong>
-      <span>{{ tab.hint }}</span>
     </RouterLink>
   </nav>
 </template>

@@ -91,7 +91,6 @@
             class="variable-field"
           >
             <strong>{{ variable.name }}</strong>
-            <span>{{ variable.description }}</span>
             <input
               v-model="variableValues[variable.name]"
               :placeholder="variable.example"
@@ -246,7 +245,7 @@ function describeVisibleVariables(
     return (
       known.get(name) ?? {
         name,
-        description: "自定义变量，执行前填写对应文本。",
+        description: "",
         example: "",
       }
     );

@@ -15,7 +15,7 @@
 
 body {
   margin: 0;
-  min-width: 960px;
+  min-width: 0;
   min-height: 100vh;
   background: #f5f6f8;
 }
@@ -29,8 +29,8 @@ select {
 
 .app-shell {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr) 320px;
-  grid-template-rows: 56px minmax(0, 1fr) 32px;
+  grid-template-columns: clamp(160px, 16vw, 200px) minmax(0, 1fr) clamp(200px, 20vw, 240px);
+  grid-template-rows: 46px minmax(0, 1fr) 26px;
   grid-template-areas:
     "header header header"
     "sidebar main inspector"
@@ -41,10 +41,10 @@ select {
 .app-header {
   grid-area: header;
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr) auto;
+  grid-template-columns: clamp(150px, 18vw, 180px) minmax(0, 1fr) auto;
   align-items: center;
-  gap: 16px;
-  padding: 0 16px;
+  gap: 10px;
+  padding: 0 10px;
   border-bottom: 1px solid #e5e7eb;
   background: rgba(245, 246, 248, 0.92);
   backdrop-filter: blur(12px);
@@ -52,7 +52,7 @@ select {
 
 .brand {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   min-width: 0;
 }
@@ -60,12 +60,13 @@ select {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
   background: #111827;
   color: #fff;
   font-weight: 700;
+  font-size: 14px;
 }
 
 .brand strong,
@@ -82,10 +83,18 @@ select {
   color: #6b7280;
 }
 
+.brand strong {
+  font-size: 14px;
+}
+
+.brand small {
+  font-size: 11px;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .header-action,
@@ -100,11 +109,12 @@ select {
 .shell-menu summary {
   display: inline-flex;
   align-items: center;
-  min-height: 34px;
-  padding: 0 10px;
+  min-height: 28px;
+  padding: 0 8px;
   border: 1px solid #d1d5db;
   background: #ffffff;
   cursor: pointer;
+  font-size: 13px;
 }
 
 .shell-menu {
@@ -121,13 +131,13 @@ select {
 
 .shell-menu-panel {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 5px);
   right: 0;
   z-index: 30;
   display: grid;
   gap: 4px;
-  min-width: 150px;
-  padding: 6px;
+  min-width: 132px;
+  padding: 5px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   background: #ffffff;
@@ -135,7 +145,8 @@ select {
 }
 
 .shell-menu-panel a {
-  padding: 8px 10px;
+  padding: 6px 8px;
+  font-size: 13px;
 }
 
 .shell-menu-panel a:hover {
@@ -145,19 +156,21 @@ select {
 .workspace-tabs {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   min-width: 0;
   overflow: auto;
 }
 
 .workspace-tab {
-  display: grid;
-  gap: 2px;
-  min-width: 118px;
-  padding: 8px 10px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  min-width: 64px;
+  padding: 0 9px;
   border: 1px solid transparent;
   border-radius: 8px;
   color: #374151;
+  font-size: 13px;
   text-decoration: none;
 }
 
@@ -188,21 +201,26 @@ select {
 
 .collection-rail {
   display: grid;
-  gap: 12px;
-  padding: 16px 14px;
+  gap: 8px;
+  padding: 10px 8px;
 }
 
 .collection-rail-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
 }
 
 .collection-rail-header h2,
 .shell-inspector h2,
 .inspector-section h3 {
   margin: 0;
+}
+
+.collection-rail-header h2,
+.shell-inspector h2 {
+  font-size: 16px;
 }
 
 .collection-rail-summary {
@@ -214,18 +232,19 @@ select {
 
 .collection-list {
   display: grid;
-  gap: 6px;
+  gap: 3px;
 }
 
 .collection-item {
   display: grid;
-  gap: 2px;
+  gap: 1px;
   width: 100%;
-  padding: 9px 10px;
+  padding: 6px 8px;
   border: 1px solid transparent;
   border-radius: 8px;
   background: transparent;
   color: #374151;
+  font-size: 13px;
   text-align: left;
   cursor: pointer;
 }
@@ -245,7 +264,7 @@ select {
   grid-area: main;
   min-width: 0;
   overflow: auto;
-  padding: 20px;
+  padding: 12px;
 }
 
 .context-panel {
@@ -257,23 +276,25 @@ select {
 
 .shell-inspector {
   display: grid;
-  gap: 14px;
-  padding: 16px 14px;
+  gap: 10px;
+  padding: 10px;
+  font-size: 13px;
 }
 
-.shell-inspector-summary {
-  margin: 0;
-  color: #6b7280;
-}
-
-.inspector-section {
+.inspector-field,
+.inspector-actions {
   display: grid;
-  gap: 8px;
-  padding-top: 12px;
+  gap: 4px;
+  padding-top: 8px;
   border-top: 1px solid #e5e7eb;
 }
 
-.inspector-section a {
+.inspector-field span {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.inspector-actions a {
   color: #2563eb;
   text-decoration: none;
 }
@@ -282,8 +303,8 @@ select {
   grid-area: status;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 0 14px;
+  gap: 10px;
+  padding: 0 10px;
   border-top: 1px solid #1f2937;
   background: #111827;
   color: #f3f4f6;
@@ -292,13 +313,13 @@ select {
 
 .nav-list {
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .nav-list a {
   color: #34342f;
   text-decoration: none;
-  padding: 9px 10px;
+  padding: 6px 8px;
   border-radius: 6px;
 }
 
@@ -315,14 +336,14 @@ select {
 
 .view-stack {
   display: grid;
-  gap: 20px;
+  gap: 12px;
 }
 
 .view-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 10px;
 }
 
 .view-header h1,
@@ -334,13 +355,13 @@ select {
 }
 
 .view-header h1 {
-  font-size: 26px;
+  font-size: 21px;
   line-height: 1.2;
 }
 
 .eyebrow {
-  margin: 0 0 5px;
-  font-size: 12px;
+  margin: 0 0 3px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -348,7 +369,7 @@ select {
 .primary-button {
   border: 0;
   border-radius: 6px;
-  padding: 9px 14px;
+  padding: 6px 10px;
   background: #3f6f55;
   color: #fff;
   cursor: pointer;
@@ -357,7 +378,7 @@ select {
 .secondary-button {
   border: 1px solid #c9c5b8;
   border-radius: 6px;
-  padding: 8px 12px;
+  padding: 5px 9px;
   background: #f7f7f4;
   color: #34342f;
   cursor: pointer;
@@ -382,21 +403,21 @@ select {
 .quick-create,
 .project-row {
   border: 1px solid #d9d6ca;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #fff;
-  padding: 18px;
+  padding: 12px;
 }
 
 .job-card {
   display: grid;
-  gap: 12px;
+  gap: 8px;
 }
 
 .job-card-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 
 .job-card-header h2,
@@ -406,14 +427,14 @@ select {
 
 .job-card-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .job-card-actions button {
   border: 1px solid #c9c5b8;
   border-radius: 6px;
   background: #f7f7f4;
-  padding: 6px 10px;
+  padding: 5px 8px;
 }
 
 .job-summary,
@@ -426,26 +447,26 @@ select {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .job-log-list li {
   display: grid;
   gap: 2px;
-  padding-top: 8px;
+  padding-top: 6px;
   border-top: 1px solid #ece9df;
 }
 
 .tool-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 10px;
 }
 
 .workspace-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(260px, 1fr));
-  gap: 14px;
+  gap: 10px;
   align-items: start;
 }
 
@@ -455,7 +476,7 @@ select {
 
 .library-panel {
   display: grid;
-  gap: 12px;
+  gap: 8px;
   align-content: start;
   min-height: 220px;
 }
@@ -464,20 +485,20 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
 }
 
 .library-panel button {
   border: 1px solid #c9c5b8;
   border-radius: 6px;
   background: #f7f7f4;
-  padding: 6px 10px;
+  padding: 5px 8px;
   cursor: pointer;
 }
 
 .library-panel ul {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -487,7 +508,7 @@ select {
   display: grid;
   gap: 2px;
   border-top: 1px solid #ece9df;
-  padding-top: 8px;
+  padding-top: 6px;
 }
 
 .library-panel li span {
@@ -502,7 +523,7 @@ select {
   border: 1px solid transparent;
   border-radius: 6px;
   background: transparent;
-  padding: 8px;
+  padding: 6px;
   text-align: left;
 }
 
@@ -517,18 +538,18 @@ select {
 
 .library-editor {
   display: grid;
-  gap: 14px;
+  gap: 10px;
   border: 1px solid #d9d6ca;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #fff;
-  padding: 18px;
+  padding: 12px;
 }
 
 .library-editor header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 
 .library-editor h2,
@@ -538,18 +559,18 @@ select {
 
 .editor-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .editor-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(220px, 1fr));
-  gap: 12px;
+  gap: 8px;
 }
 
 .editor-form label {
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .editor-form .wide {
@@ -562,7 +583,7 @@ select {
   width: 100%;
   border: 1px solid #c9c5b8;
   border-radius: 6px;
-  padding: 9px 10px;
+  padding: 7px 8px;
   background: #fff;
 }
 
@@ -571,7 +592,7 @@ select {
 }
 
 .empty-state.compact {
-  padding: 14px;
+  padding: 10px;
 }
 
 .status-note.error {
@@ -580,8 +601,8 @@ select {
 
 .quick-create {
   display: grid;
-  grid-template-columns: minmax(180px, 260px) minmax(240px, 1fr) auto;
-  gap: 10px;
+  grid-template-columns: minmax(160px, 240px) minmax(200px, 1fr) auto;
+  gap: 8px;
   align-items: center;
 }
 
@@ -589,25 +610,25 @@ select {
   width: 100%;
   border: 1px solid #c9c5b8;
   border-radius: 6px;
-  padding: 9px 10px;
+  padding: 7px 8px;
 }
 
 .quick-create button {
   border: 0;
   border-radius: 6px;
-  padding: 9px 14px;
+  padding: 7px 10px;
   background: #344c3d;
   color: #fff;
 }
 
 .project-list {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .project-row {
   display: grid;
-  gap: 10px;
+  gap: 6px;
   width: 100%;
   text-align: left;
 }
@@ -623,7 +644,7 @@ select {
 
 .project-open-button {
   display: grid;
-  gap: 4px;
+  gap: 3px;
   width: 100%;
   border: 0;
   background: transparent;
@@ -635,7 +656,7 @@ select {
 .project-edit-row {
   display: grid;
   grid-template-columns: minmax(160px, 240px) minmax(180px, 1fr) auto auto;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
@@ -643,31 +664,31 @@ select {
   width: 100%;
   border: 1px solid #c9c5b8;
   border-radius: 6px;
-  padding: 8px 10px;
+  padding: 7px 8px;
 }
 
 .project-edit-row button {
   border: 1px solid #c9c5b8;
   border-radius: 6px;
   background: #f7f7f4;
-  padding: 8px 10px;
+  padding: 7px 8px;
 }
 
 .graph-board {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
+  gap: 8px;
 }
 
 .graph-node {
   display: grid;
   gap: 4px;
-  min-height: 86px;
+  min-height: 72px;
   align-content: center;
   border: 1px solid #c9d5ca;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #f5faf4;
-  padding: 12px;
+  padding: 10px;
 }
 
 .graph-node span {
@@ -676,17 +697,17 @@ select {
 
 .timeline {
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
 .timeline article {
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
-  gap: 16px;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 10px;
   border-left: 3px solid #3f6f55;
   background: #fff;
-  border-radius: 8px;
-  padding: 14px;
+  border-radius: 6px;
+  padding: 10px;
 }
 
 .timeline time {
@@ -700,18 +721,18 @@ select {
 }
 
 .archive-text {
-  min-height: 360px;
+  min-height: 320px;
   width: 100%;
   resize: vertical;
   border: 1px solid #c9c5b8;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 6px;
+  padding: 10px;
   font-family: "Cascadia Mono", Consolas, monospace;
 }
 
 .provider-list {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   padding: 0;
   margin: 12px 0 0;
   list-style: none;
@@ -719,9 +740,9 @@ select {
 
 .provider-list li {
   display: grid;
-  gap: 4px;
+  gap: 3px;
   border-top: 1px solid #ece9df;
-  padding-top: 8px;
+  padding-top: 6px;
 }
 
 .provider-list span {
@@ -731,31 +752,31 @@ select {
 
 .provider-form {
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
 .provider-form header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 
 .provider-form header p {
-  margin: 4px 0 0;
+  margin: 2px 0 0;
 }
 
 .settings-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(220px, 1fr));
-  gap: 12px;
+  gap: 8px;
 }
 
 .settings-grid label,
 .stacked-field,
 .cli-settings {
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .settings-grid input,
@@ -763,12 +784,12 @@ select {
   width: 100%;
   border: 1px solid #c9c5b8;
   border-radius: 6px;
-  padding: 9px 10px;
+  padding: 7px 8px;
   background: #fff;
 }
 
 .stacked-field textarea {
-  min-height: 84px;
+  min-height: 72px;
   resize: vertical;
   font-family: "Cascadia Mono", Consolas, monospace;
 }
@@ -776,7 +797,7 @@ select {
 .toggle-row {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   color: #34342f;
 }
 
@@ -790,7 +811,7 @@ select {
   display: flex;
   grid-column: 1 / -1;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .test-result {
@@ -808,17 +829,17 @@ select {
 
 .command-palette {
   position: fixed;
-  top: 72px;
+  top: 56px;
   left: 50%;
   z-index: 20;
   display: grid;
-  gap: 6px;
-  width: min(420px, calc(100vw - 32px));
+  gap: 4px;
+  width: min(380px, calc(100vw - 24px));
   transform: translateX(-50%);
   border: 1px solid #c9c5b8;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #fff;
-  padding: 10px;
+  padding: 8px;
   box-shadow: 0 16px 40px rgb(32 33 36 / 18%);
 }
 
@@ -826,7 +847,7 @@ select {
   border: 0;
   border-radius: 6px;
   background: transparent;
-  padding: 10px;
+  padding: 7px 8px;
   text-align: left;
   cursor: pointer;
 }
@@ -837,7 +858,7 @@ select {
 
 .template-panel {
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .template-panel button {
@@ -858,8 +879,8 @@ select {
 
 .prompt-template-layout {
   display: grid;
-  grid-template-columns: minmax(190px, 260px) minmax(360px, 1fr) minmax(260px, 340px);
-  gap: 14px;
+  grid-template-columns: minmax(170px, 230px) minmax(320px, 1fr) minmax(230px, 300px);
+  gap: 10px;
   align-items: start;
 }
 
@@ -867,20 +888,20 @@ select {
 .prompt-template-editor,
 .prompt-preview-panel {
   display: grid;
-  gap: 12px;
+  gap: 8px;
   border: 1px solid #d9d6ca;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #fff;
-  padding: 14px;
+  padding: 10px;
 }
 
 .prompt-template-list button {
   display: grid;
-  gap: 4px;
+  gap: 3px;
   border: 1px solid transparent;
   border-radius: 6px;
   background: transparent;
-  padding: 10px;
+  padding: 7px 8px;
   text-align: left;
   cursor: pointer;
 }
@@ -903,7 +924,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
 }
 
 .prompt-template-editor h2,
@@ -921,36 +942,65 @@ select {
 
 .variable-list {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .variable-field {
   display: grid;
-  gap: 5px;
+  gap: 4px;
 }
 
 .variable-field input {
   width: 100%;
   border: 1px solid #c9c5b8;
   border-radius: 6px;
-  padding: 8px 10px;
+  padding: 7px 8px;
 }
 
 .prompt-preview-output {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .prompt-preview-output pre {
-  min-height: 220px;
-  max-height: 440px;
+  min-height: 200px;
+  max-height: 420px;
   overflow: auto;
   margin: 0;
   border: 1px solid #ece9df;
   border-radius: 6px;
   background: #f7f7f4;
-  padding: 12px;
+  padding: 10px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   font-family: "Cascadia Mono", Consolas, monospace;
+}
+
+@media (max-width: 1100px) {
+  .workspace-grid,
+  .prompt-template-layout,
+  .tool-grid,
+  .settings-grid,
+  .editor-form,
+  .quick-create,
+  .project-edit-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .workspace-grid .library-editor,
+  .relation-panel {
+    grid-column: auto;
+  }
+
+  .timeline article {
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell {
+    grid-template-columns: clamp(150px, 20vw, 180px) minmax(0, 1fr) clamp(180px, 22vw, 220px);
+  }
+
+  .app-header {
+    grid-template-columns: clamp(140px, 18vw, 160px) minmax(0, 1fr) auto;
+  }
 }

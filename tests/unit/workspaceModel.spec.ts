@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
   getWorkspaceCollections,
-  getWorkspaceSummary,
   resolveWorkspaceKey,
   type WorkspaceKey,
   workspaceMenuEntries,
@@ -40,13 +39,13 @@ describe('workspaceModel', () => {
 
   it('exposes the Linear-style top tab order and paths', () => {
     expect(workspaceTabs).toEqual([
-      { key: 'project', label: '项目', to: '/', hint: '项目列表、导入导出、备份' },
-      { key: 'library', label: '资料', to: '/projects', hint: '词条、地点、物品、阵营、资源' },
-      { key: 'character', label: '角色', to: '/growth', hint: '角色档案、成长、事件经历' },
-      { key: 'event', label: '事件', to: '/timeline', hint: '时间线、参与者、因果链' },
-      { key: 'rule', label: '规则', to: '/audit', hint: '公理、法则、约束、例外' },
-      { key: 'relation', label: '关系', to: '/graph', hint: '反链、图谱、连接、置信度' },
-      { key: 'analysis', label: '分析', to: '/search', hint: '搜索、审计、模拟、任务' },
+      { key: 'project', label: '项目', to: '/' },
+      { key: 'library', label: '资料', to: '/projects' },
+      { key: 'character', label: '角色', to: '/growth' },
+      { key: 'event', label: '事件', to: '/timeline' },
+      { key: 'rule', label: '规则', to: '/audit' },
+      { key: 'relation', label: '关系', to: '/graph' },
+      { key: 'analysis', label: '分析', to: '/search' },
     ])
   })
 
@@ -126,17 +125,28 @@ describe('workspaceModel', () => {
   it('does not expose shared collection item objects', () => {
     const collections = getWorkspaceCollections('project')
     collections[0].label = '已被外部修改'
-    collections.push({ key: 'external', label: '外部项', description: '外部修改' })
+    collections.push({ key: 'external', label: '外部项' })
 
     expect(getWorkspaceCollections('project')[0].label).toBe('最近项目')
     expect(getWorkspaceCollections('project').map((item) => item.label)).not.toContain('外部项')
   })
 
-  it('returns a non-empty Chinese summary for each workspace', () => {
+  it('does not expose explanatory metadata for shell labels', () => {
     workspaceKeys.forEach((workspace) => {
-      const summary = getWorkspaceSummary(workspace)
-      expect(summary).toMatch(/[一-龥]/)
-      expect(summary.trim().length).toBeGreaterThan(0)
+      getWorkspaceCollections(workspace).forEach((collection) => {
+        expect(collection).toEqual({
+          key: expect.any(String),
+          label: expect.any(String),
+        })
+      })
+    })
+
+    workspaceTabs.forEach((tab) => {
+      expect(tab).toEqual({
+        key: expect.any(String),
+        label: expect.any(String),
+        to: expect.any(String),
+      })
     })
   })
 })

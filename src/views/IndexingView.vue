@@ -3,14 +3,14 @@
     <header class="view-header">
       <div>
         <p class="eyebrow">索引</p>
-        <h1>向量与上下文准备</h1>
+        <h1>索引</h1>
       </div>
-      <button type="button" class="primary-button" @click="runIndex">重建文本切片</button>
+      <button type="button" class="primary-button" @click="runIndex">重建</button>
     </header>
 
     <div class="empty-state">
-      <h2>DocumentChunk</h2>
-      <p>当前项目已生成 {{ aiStore.chunks.length }} 个文本切片。</p>
+      <h2>切片</h2>
+      <p>{{ aiStore.chunks.length }}</p>
     </div>
   </section>
 </template>

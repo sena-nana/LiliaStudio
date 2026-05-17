@@ -36,7 +36,7 @@
       <RouterView />
     </main>
 
-    <aside class="context-panel" aria-label="Inspector">
+    <aside class="context-panel" aria-label="上下文面板">
       <ShellInspector
         :workspace="currentWorkspace"
         :project-name="projectLabel"
@@ -94,7 +94,7 @@ watch(
   { immediate: true },
 )
 
-const projectLabel = computed(() => projectStore.activeProject?.name ?? '选择或创建一个项目')
+const projectLabel = computed(() => projectStore.activeProject?.name ?? '未选择项目')
 const activeCollection = computed(() => activeCollections[currentWorkspace.value])
 const activeCollectionLabel = computed(() => {
   return (
