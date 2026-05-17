@@ -5,6 +5,7 @@ import type {
   AiProviderConfig,
   AiProviderSettingsDraft,
   AiProviderSettingsView,
+  CliProviderTestResult,
   ContextPack,
   DocumentChunkRecord,
   OpenAiProviderTestResult,
@@ -32,6 +33,10 @@ export function saveAiProviderSettings(
 
 export function testOpenAiProvider(): Promise<OpenAiProviderTestResult> {
   return callCommand<OpenAiProviderTestResult>('test_openai_provider')
+}
+
+export function testCodexCliProvider(): Promise<CliProviderTestResult> {
+  return callCommand<CliProviderTestResult>('test_codex_cli_provider')
 }
 
 export function previewChunks(text: string, maxChars: number): Promise<TextChunk[]> {

@@ -1,3 +1,4 @@
+pub mod codex_cli;
 pub mod cli_provider;
 pub mod openai_compatible;
 pub mod process_runner;

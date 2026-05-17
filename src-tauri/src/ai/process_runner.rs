@@ -38,6 +38,19 @@ pub struct ProcessRunError {
     pub message: String,
 }
 
+pub trait ProcessRunner {
+    fn run(&self, spec: ProcessRunSpec) -> Result<ProcessRunOutput, ProcessRunError>;
+}
+
+#[derive(Debug, Default, Clone, Copy)]
+pub struct StdProcessRunner;
+
+impl ProcessRunner for StdProcessRunner {
+    fn run(&self, spec: ProcessRunSpec) -> Result<ProcessRunOutput, ProcessRunError> {
+        run_process(spec)
+    }
+}
+
 impl ProcessRunError {
     fn spawn_failed(message: impl Into<String>) -> Self {
         Self {

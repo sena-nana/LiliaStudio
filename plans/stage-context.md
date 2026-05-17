@@ -164,11 +164,30 @@
 - `cd src-tauri; cargo check --locked`: pass
 - `cd src-tauri; cargo test --locked --test ai_vector`: pass, 13 tests
 
+## 产品化 P4 已实现
+
+- 对照路线图 T020，完成 Codex CLI Provider。
+- 新增阶段方案：`plans/productization-codex-cli-provider.md`。
+- Provider 核心：新增 `codex_cli`，默认使用 `codex exec` 模板，支持用户自定义模板中的程序路径。
+- CLI 检测：使用模板解析出的程序执行 `--help`，可检测 Codex CLI 是否可用。
+- 测试调用：新增 `test_codex_cli_provider` command，执行简单 prompt 并返回文本结果。
+- 错误分类：共享 CLI 错误码覆盖 `missingCli`、`authFailed`、`executionFailed`、`timedOut`。
+- 前端入口：设置页 Codex CLI 区块提供测试按钮，API/store 保存测试结果。
+- 测试：覆盖默认模板、可用性检测、自定义程序路径、prompt 返回和四类失败分类。
+
+## 产品化 P4 验证结果
+
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 7 files, 12 tests
+- `cd src-tauri; cargo test --locked`: pass
+- `cd src-tauri; cargo check --locked`: pass
+- `pnpm build`: pass
+
 ## 下一阶段决策规则
 
 - 每完成一个阶段后，必须先对照 `plans/Tauri-Vue-Windows开发路线图.md` 和本文件选择下一阶段内容。
 - 优先选择能解除后续阻塞、能独立测试、能中文提交的阶段。
-- 当前建议下一阶段：对照路线图 T020，实现 Codex CLI Provider，基于共享执行器提供 `codex exec` 默认模板、CLI 可用性检测、简单 prompt 测试和缺失 CLI/鉴权失败/执行失败/超时分类。
+- 当前建议下一阶段：对照路线图 T021，实现 Claude CLI Provider，基于共享执行器提供 `claude -p --output-format json` 默认模板、CLI 可用性检测、text/json 输出解析和同 T020 的失败分类。
 
 ## 后续设计约束
 

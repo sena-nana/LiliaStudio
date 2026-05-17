@@ -1,5 +1,6 @@
 pub mod ai;
 pub mod character_growth;
+pub mod cli_providers;
 pub mod diagnostics;
 pub mod health;
 pub mod import_export;

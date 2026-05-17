@@ -1,4 +1,7 @@
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
+
+pub const DEFAULT_CLI_OUTPUT_FORMAT: &str = "text";
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum CliTemplateError {
@@ -12,6 +15,57 @@ pub enum CliTemplateError {
 pub struct CliInvocation {
     pub program: String,
     pub args: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub enum CliProviderErrorCode {
+    MissingCli,
+    AuthFailed,
+    ExecutionFailed,
+    TimedOut,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct CliProviderError {
+    pub code: CliProviderErrorCode,
+    pub message: String,
+    pub exit_code: Option<i32>,
+}
+
+impl CliProviderError {
+    pub fn missing_cli(message: impl Into<String>) -> Self {
+        Self {
+            code: CliProviderErrorCode::MissingCli,
+            message: message.into(),
+            exit_code: None,
+        }
+    }
+
+    pub fn auth_failed(message: impl Into<String>, exit_code: Option<i32>) -> Self {
+        Self {
+            code: CliProviderErrorCode::AuthFailed,
+            message: message.into(),
+            exit_code,
+        }
+    }
+
+    pub fn execution_failed(message: impl Into<String>, exit_code: Option<i32>) -> Self {
+        Self {
+            code: CliProviderErrorCode::ExecutionFailed,
+            message: message.into(),
+            exit_code,
+        }
+    }
+
+    pub fn timed_out(message: impl Into<String>) -> Self {
+        Self {
+            code: CliProviderErrorCode::TimedOut,
+            message: message.into(),
+            exit_code: None,
+        }
+    }
 }
 
 pub fn render_command_template(

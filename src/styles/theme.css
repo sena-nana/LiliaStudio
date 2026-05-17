@@ -359,7 +359,8 @@ select {
 }
 
 .settings-grid label,
-.stacked-field {
+.stacked-field,
+.cli-settings {
   display: grid;
   gap: 6px;
 }

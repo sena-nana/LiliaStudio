@@ -27,6 +27,7 @@ pub fn run() {
             commands::ai::save_ai_provider_settings,
             commands::ai::test_openai_provider,
             commands::character_growth::preview_trait_delta,
+            commands::cli_providers::test_codex_cli_provider,
             commands::diagnostics::diagnostics_summary,
             commands::health::health_check,
             commands::import_export::export_project_archive,

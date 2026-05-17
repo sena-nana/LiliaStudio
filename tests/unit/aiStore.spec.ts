@@ -114,4 +114,24 @@ describe('aiStore', () => {
     expect(store.openAiProviderTest?.error?.code).toBe('configMissing')
     expect(invokeMock).toHaveBeenCalledWith('test_openai_provider')
   })
+
+  it('stores Codex CLI provider test results', async () => {
+    invokeMock.mockResolvedValueOnce({
+      ok: false,
+      message: '未找到 Codex CLI，请先安装 codex 并确认 PATH 可用',
+      error: {
+        code: 'missingCli',
+        message: '未找到 Codex CLI，请先安装 codex 并确认 PATH 可用',
+        exitCode: null,
+      },
+      output: null,
+    })
+
+    const store = useAiStore()
+    const result = await store.testCodexCliProvider()
+
+    expect(result.ok).toBe(false)
+    expect(store.codexCliProviderTest?.error?.code).toBe('missingCli')
+    expect(invokeMock).toHaveBeenCalledWith('test_codex_cli_provider')
+  })
 })

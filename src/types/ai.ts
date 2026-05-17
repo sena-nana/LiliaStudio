@@ -51,6 +51,21 @@ export interface OpenAiProviderTestResult {
   error: ProviderError | null
 }
 
+export type CliProviderErrorCode = 'missingCli' | 'authFailed' | 'executionFailed' | 'timedOut'
+
+export interface CliProviderError {
+  code: CliProviderErrorCode
+  message: string
+  exitCode: number | null
+}
+
+export interface CliProviderTestResult {
+  ok: boolean
+  message: string
+  error: CliProviderError | null
+  output: string | null
+}
+
 export interface TextChunk {
   ordinal: number
   text: string

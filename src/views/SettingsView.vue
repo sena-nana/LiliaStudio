@@ -59,10 +59,23 @@
           </div>
         </div>
 
-        <label v-else class="stacked-field">
-          <span>命令模板</span>
-          <textarea v-model="provider.commandTemplate" rows="3" />
-        </label>
+        <div v-else class="cli-settings">
+          <label class="stacked-field">
+            <span>命令模板</span>
+            <textarea v-model="provider.commandTemplate" rows="3" />
+          </label>
+          <div v-if="provider.kind === 'codexCli'" class="settings-actions">
+            <button type="button" class="primary-button" :disabled="aiStore.loading" @click="testCodexCli">
+              测试 Codex CLI
+            </button>
+            <span
+              v-if="aiStore.codexCliProviderTest"
+              :class="['test-result', aiStore.codexCliProviderTest.ok ? 'ok' : 'error']"
+            >
+              {{ aiStore.codexCliProviderTest.message }}
+            </span>
+          </div>
+        </div>
       </section>
 
       <section>
@@ -155,6 +168,18 @@ async function testOpenAi() {
   aiStore.loading = true
   try {
     await aiStore.testOpenAiProvider()
+  } catch (error) {
+    statusMessage.value = error instanceof Error ? error.message : String(error)
+  } finally {
+    aiStore.loading = false
+  }
+}
+
+async function testCodexCli() {
+  statusMessage.value = ''
+  aiStore.loading = true
+  try {
+    await aiStore.testCodexCliProvider()
   } catch (error) {
     statusMessage.value = error instanceof Error ? error.message : String(error)
   } finally {
