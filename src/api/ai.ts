@@ -39,6 +39,10 @@ export function testCodexCliProvider(): Promise<CliProviderTestResult> {
   return callCommand<CliProviderTestResult>('test_codex_cli_provider')
 }
 
+export function testClaudeCliProvider(): Promise<CliProviderTestResult> {
+  return callCommand<CliProviderTestResult>('test_claude_cli_provider')
+}
+
 export function previewChunks(text: string, maxChars: number): Promise<TextChunk[]> {
   return callCommand<TextChunk[]>('preview_chunks', { text, maxChars }).then((items) => items ?? [])
 }

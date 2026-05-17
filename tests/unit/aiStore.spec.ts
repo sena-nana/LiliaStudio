@@ -134,4 +134,24 @@ describe('aiStore', () => {
     expect(store.codexCliProviderTest?.error?.code).toBe('missingCli')
     expect(invokeMock).toHaveBeenCalledWith('test_codex_cli_provider')
   })
+
+  it('stores Claude CLI provider test results', async () => {
+    invokeMock.mockResolvedValueOnce({
+      ok: false,
+      message: '未找到 Claude CLI，请先安装 claude 并确认 PATH 可用',
+      error: {
+        code: 'missingCli',
+        message: '未找到 Claude CLI，请先安装 claude 并确认 PATH 可用',
+        exitCode: null,
+      },
+      output: null,
+    })
+
+    const store = useAiStore()
+    const result = await store.testClaudeCliProvider()
+
+    expect(result.ok).toBe(false)
+    expect(store.claudeCliProviderTest?.error?.code).toBe('missingCli')
+    expect(invokeMock).toHaveBeenCalledWith('test_claude_cli_provider')
+  })
 })

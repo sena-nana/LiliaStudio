@@ -8,6 +8,7 @@ import {
   loadAiProviderSettings,
   previewChunks,
   saveAiProviderSettings,
+  testClaudeCliProvider,
   testCodexCliProvider,
   testOpenAiProvider,
 } from '@/api/ai'
@@ -33,6 +34,7 @@ interface AiState {
   prompts: PromptTemplate[]
   openAiProviderTest: OpenAiProviderTestResult | null
   codexCliProviderTest: CliProviderTestResult | null
+  claudeCliProviderTest: CliProviderTestResult | null
   loading: boolean
 }
 
@@ -46,6 +48,7 @@ export const useAiStore = defineStore('ai', {
     prompts: [],
     openAiProviderTest: null,
     codexCliProviderTest: null,
+    claudeCliProviderTest: null,
     loading: false,
   }),
   actions: {
@@ -65,6 +68,10 @@ export const useAiStore = defineStore('ai', {
     async testCodexCliProvider() {
       this.codexCliProviderTest = await testCodexCliProvider()
       return this.codexCliProviderTest
+    },
+    async testClaudeCliProvider() {
+      this.claudeCliProviderTest = await testClaudeCliProvider()
+      return this.claudeCliProviderTest
     },
     async loadPromptsAndJobs() {
       const [prompts, jobs] = await Promise.all([listPromptTemplates(), listAiJobs()])

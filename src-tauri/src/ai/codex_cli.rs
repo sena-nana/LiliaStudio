@@ -1,10 +1,11 @@
 use std::time::Duration;
 
 use crate::ai::{
-    cli_provider::{build_cli_invocation, CliInvocation, CliProviderError},
-    process_runner::{
-        ProcessRunError, ProcessRunErrorCode, ProcessRunOutput, ProcessRunSpec, ProcessRunner,
+    cli_provider::{
+        build_cli_invocation, classify_cli_failure, map_cli_process_error, CliInvocation,
+        CliProviderError,
     },
+    process_runner::{ProcessRunOutput, ProcessRunSpec, ProcessRunner},
 };
 
 pub const CODEX_TEST_PROMPT: &str = "Return the word ok.";
@@ -44,11 +45,15 @@ where
                 working_dir: None,
                 timeout: self.config.timeout,
             })
-            .map_err(map_codex_process_error)?;
+            .map_err(|error| map_cli_process_error("Codex", "codex", error))?;
         if output.exit_code == Some(0) {
             Ok(())
         } else {
-            Err(classify_codex_failure(output, "Codex CLI 可用性检测失败"))
+            Err(classify_cli_failure(
+                "Codex",
+                output,
+                "Codex CLI 可用性检测失败",
+            ))
         }
     }
 
@@ -68,12 +73,12 @@ where
                 working_dir: Some(self.config.workspace.clone()),
                 timeout: self.config.timeout,
             })
-            .map_err(map_codex_process_error)?;
+            .map_err(|error| map_cli_process_error("Codex", "codex", error))?;
 
         if output.exit_code == Some(0) {
             extract_codex_text(output)
         } else {
-            Err(classify_codex_failure(output, "Codex CLI 执行失败"))
+            Err(classify_cli_failure("Codex", output, "Codex CLI 执行失败"))
         }
     }
 
@@ -104,48 +109,4 @@ fn extract_codex_text(output: ProcessRunOutput) -> Result<String, CliProviderErr
         "Codex CLI 未返回可显示内容",
         output.exit_code,
     ))
-}
-
-fn classify_codex_failure(output: ProcessRunOutput, prefix: &str) -> CliProviderError {
-    let combined = format!("{}\n{}", output.stdout, output.stderr);
-    if looks_like_auth_failure(&combined) {
-        CliProviderError::auth_failed(
-            "Codex CLI 鉴权失败，请先登录 Codex CLI 或确认凭据可用",
-            output.exit_code,
-        )
-    } else {
-        let exit_label = output
-            .exit_code
-            .map(|code| code.to_string())
-            .unwrap_or_else(|| "unknown".into());
-        let details = combined.trim();
-        let message = if details.is_empty() {
-            format!("{prefix}，退出码 {exit_label}")
-        } else {
-            format!("{prefix}，退出码 {exit_label}：{details}")
-        };
-        CliProviderError::execution_failed(message, output.exit_code)
-    }
-}
-
-fn map_codex_process_error(error: ProcessRunError) -> CliProviderError {
-    match error.code {
-        ProcessRunErrorCode::SpawnFailed => {
-            CliProviderError::missing_cli("未找到 Codex CLI，请先安装 codex 并确认 PATH 可用")
-        }
-        ProcessRunErrorCode::TimedOut => {
-            CliProviderError::timed_out(format!("Codex CLI 调用超时：{}", error.message))
-        }
-        ProcessRunErrorCode::IoFailed => CliProviderError::execution_failed(
-            format!("Codex CLI 进程读取失败：{}", error.message),
-            None,
-        ),
-    }
-}
-
-fn looks_like_auth_failure(output: &str) -> bool {
-    let normalized = output.to_ascii_lowercase();
-    ["auth", "login", "api key", "apikey", "401", "unauthorized"]
-        .iter()
-        .any(|needle| normalized.contains(needle))
 }

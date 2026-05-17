@@ -75,6 +75,17 @@
               {{ aiStore.codexCliProviderTest.message }}
             </span>
           </div>
+          <div v-if="provider.kind === 'claudeCli'" class="settings-actions">
+            <button type="button" class="primary-button" :disabled="aiStore.loading" @click="testClaudeCli">
+              测试 Claude CLI
+            </button>
+            <span
+              v-if="aiStore.claudeCliProviderTest"
+              :class="['test-result', aiStore.claudeCliProviderTest.ok ? 'ok' : 'error']"
+            >
+              {{ aiStore.claudeCliProviderTest.message }}
+            </span>
+          </div>
         </div>
       </section>
 
@@ -180,6 +191,18 @@ async function testCodexCli() {
   aiStore.loading = true
   try {
     await aiStore.testCodexCliProvider()
+  } catch (error) {
+    statusMessage.value = error instanceof Error ? error.message : String(error)
+  } finally {
+    aiStore.loading = false
+  }
+}
+
+async function testClaudeCli() {
+  statusMessage.value = ''
+  aiStore.loading = true
+  try {
+    await aiStore.testClaudeCliProvider()
   } catch (error) {
     statusMessage.value = error instanceof Error ? error.message : String(error)
   } finally {

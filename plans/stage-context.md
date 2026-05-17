@@ -183,11 +183,31 @@
 - `cd src-tauri; cargo check --locked`: pass
 - `pnpm build`: pass
 
+## 产品化 P5 已实现
+
+- 对照路线图 T021，完成 Claude CLI Provider。
+- 新增阶段方案：`plans/productization-claude-cli-provider.md`。
+- Provider 核心：新增 `claude_cli`，默认使用 `claude -p --output-format json` 模板。
+- CLI 检测：使用模板解析出的程序执行 `--help`，支持自定义程序路径。
+- 测试调用：新增 `test_claude_cli_provider` command，执行简单 prompt 并返回文本结果。
+- 输出解析：支持 JSON `result`、`text`、`content` 文本数组，JSON 失败时回退原始 stdout。
+- 前端入口：设置页 Claude CLI 区块提供测试按钮，API/store 保存测试结果。
+- 测试：覆盖默认模板、可用性检测、自定义程序路径、JSON/text 输出解析和四类失败分类。
+
+## 产品化 P5 验证结果
+
+- `pnpm typecheck`: pass
+- `pnpm test:unit`: pass, 7 files, 13 tests
+- `cd src-tauri; cargo test --locked`: pass
+- `cd src-tauri; cargo check --locked`: pass
+- `pnpm build`: pass
+- `pnpm test:e2e`: pass, 1 test
+
 ## 下一阶段决策规则
 
 - 每完成一个阶段后，必须先对照 `plans/Tauri-Vue-Windows开发路线图.md` 和本文件选择下一阶段内容。
 - 优先选择能解除后续阻塞、能独立测试、能中文提交的阶段。
-- 当前建议下一阶段：对照路线图 T021，实现 Claude CLI Provider，基于共享执行器提供 `claude -p --output-format json` 默认模板、CLI 可用性检测、text/json 输出解析和同 T020 的失败分类。
+- 当前建议下一阶段：对照路线图 T022，实现 AI 后台任务队列与日志，统一调度 OpenAI-compatible、Codex CLI、Claude CLI provider，并补齐任务状态、取消和重试。
 
 ## 后续设计约束
 
