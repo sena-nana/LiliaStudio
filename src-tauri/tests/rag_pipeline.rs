@@ -30,12 +30,48 @@ fn indexes_entry_chunks_and_builds_context_pack() {
 
     let chunks = index_project_chunks(&connection, &project.id, 64).unwrap();
     assert_eq!(chunks.len(), 1);
-    upsert_embedding(&connection, &chunks[0].id, "test-embedding", vec![1.0, 0.0, 0.0]).unwrap();
+    upsert_embedding(
+        &connection,
+        &chunks[0].id,
+        "test-embedding",
+        vec![1.0, 0.0, 0.0],
+    )
+    .unwrap();
 
     let matches = vector_search(&connection, &project.id, vec![1.0, 0.0, 0.0], 5).unwrap();
     assert_eq!(matches[0].chunk_id, chunks[0].id);
 
-    let context = build_context_pack(&connection, &project.id, "潮汐能", vec![1.0, 0.0, 0.0]).unwrap();
+    let context =
+        build_context_pack(&connection, &project.id, "潮汐能", vec![1.0, 0.0, 0.0]).unwrap();
     assert!(context.items[0].text.contains("潮汐能"));
     assert_eq!(context.items[0].source_type, "entry");
+}
+
+#[test]
+fn indexes_entry_code_block_text_into_chunks() {
+    let connection = migrated_memory_database();
+    let project = ProjectRepository::new(&connection)
+        .create(ProjectDraft {
+            name: "代码块 RAG 项目".into(),
+            description: String::new(),
+        })
+        .unwrap();
+    EntryRepository::new(&connection)
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "world_rule".into(),
+            title: "月门规则".into(),
+            summary: String::new(),
+            body: r#"{"type":"doc","content":[{"type":"codeBlock","content":[{"type":"text","text":"moon_gate opens at high tide"}]}]}"#.into(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+
+    let chunks = index_project_chunks(&connection, &project.id, 256).unwrap();
+
+    assert!(chunks
+        .iter()
+        .any(|chunk| chunk.text.contains("moon_gate opens at high tide")));
+    assert!(chunks.iter().all(|chunk| !chunk.text.contains("codeBlock")));
 }

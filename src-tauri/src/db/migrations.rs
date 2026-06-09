@@ -1,4 +1,6 @@
-use rusqlite::{params, Connection};
+use rusqlite::{functions::FunctionFlags, params, Connection};
+
+use crate::domain::entry_rich_text::normalize_entry_rich_text;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Migration {
@@ -18,9 +20,15 @@ pub const MIGRATIONS: &[Migration] = &[
         name: "ai_job_queue",
         sql: include_str!("../../migrations/0002_ai_job_queue.sql"),
     },
+    Migration {
+        version: 3,
+        name: "entry_rich_text",
+        sql: include_str!("../../migrations/0003_entry_rich_text.sql"),
+    },
 ];
 
 pub fn run_migrations(connection: &mut Connection) -> rusqlite::Result<()> {
+    register_migration_functions(connection)?;
     connection.execute_batch(
         "CREATE TABLE IF NOT EXISTS schema_migrations (
             version INTEGER PRIMARY KEY,
@@ -50,6 +58,18 @@ pub fn run_migrations(connection: &mut Connection) -> rusqlite::Result<()> {
     transaction.commit()
 }
 
+fn register_migration_functions(connection: &Connection) -> rusqlite::Result<()> {
+    connection.create_scalar_function(
+        "normalize_entry_rich_text",
+        1,
+        FunctionFlags::SQLITE_DETERMINISTIC,
+        |context| {
+            let value: String = context.get(0)?;
+            Ok(normalize_entry_rich_text(&value))
+        },
+    )
+}
+
 pub fn current_schema_version(connection: &Connection) -> rusqlite::Result<i64> {
     connection.query_row(
         "SELECT COALESCE(MAX(version), 0) FROM schema_migrations",
@@ -71,12 +91,12 @@ mod tests {
         run_migrations(&mut connection).expect("first migration run succeeds");
         run_migrations(&mut connection).expect("second migration run succeeds");
 
-        assert_eq!(current_schema_version(&connection).unwrap(), 2);
+        assert_eq!(current_schema_version(&connection).unwrap(), 3);
         let count: i64 = connection
             .query_row("SELECT COUNT(*) FROM schema_migrations", [], |row| {
                 row.get(0)
             })
             .unwrap();
-        assert_eq!(count, 2);
+        assert_eq!(count, 3);
     }
 }

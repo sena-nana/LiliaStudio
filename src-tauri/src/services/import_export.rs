@@ -7,6 +7,7 @@ use crate::domain::{
     axiom::{Axiom, AxiomDraft, AxiomRepository},
     character::{Character, CharacterDraft, CharacterRepository},
     entry::{Entry, EntryDraft, EntryRepository},
+    entry_rich_text::normalize_entry_rich_text,
     event::{Event, EventDraft, EventRepository},
     project::{Project, ProjectDraft, ProjectRepository},
     relation::{Relation, RelationDraft, RelationRepository},
@@ -30,12 +31,15 @@ pub struct ImportedProject {
     pub project: Project,
 }
 
-pub fn export_project(connection: &Connection, project_id: &str) -> rusqlite::Result<ProjectArchive> {
+pub fn export_project(
+    connection: &Connection,
+    project_id: &str,
+) -> rusqlite::Result<ProjectArchive> {
     let project = ProjectRepository::new(connection)
         .get(project_id)?
         .expect("project should exist for export");
     Ok(ProjectArchive {
-        version: 1,
+        version: 2,
         entries: EntryRepository::new(connection).list_active(project_id)?,
         characters: CharacterRepository::new(connection).list_active(project_id)?,
         events: EventRepository::new(connection).list_active(project_id)?,
@@ -65,8 +69,8 @@ pub fn import_project(
             project_id: project.id.clone(),
             entry_type: entry.entry_type,
             title: entry.title,
-            summary: entry.summary,
-            body: entry.body,
+            summary: normalize_entry_rich_text(&entry.summary),
+            body: normalize_entry_rich_text(&entry.body),
             tags: entry.tags,
             status: entry.status,
         })?;

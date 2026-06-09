@@ -134,8 +134,20 @@
           <label>类型<input v-model="entryForm.entryType" /></label>
           <label>状态<input v-model="entryForm.status" /></label>
           <label>标签<input v-model="entryTagsText" placeholder="标签" /></label>
-          <label class="wide">摘要<textarea v-model="entryForm.summary" rows="3" /></label>
-          <label class="wide">正文<textarea v-model="entryForm.body" rows="8" /></label>
+          <div class="wide rich-text-field">
+            <span class="field-label">摘要</span>
+            <Suspense>
+              <RichTextEditor v-model="entryForm.summary" />
+              <template #fallback><div class="rich-text-loading">编辑器加载中</div></template>
+            </Suspense>
+          </div>
+          <div class="wide rich-text-field">
+            <span class="field-label">正文</span>
+            <Suspense>
+              <RichTextEditor v-model="entryForm.body" />
+              <template #fallback><div class="rich-text-loading">编辑器加载中</div></template>
+            </Suspense>
+          </div>
         </div>
 
         <div v-else-if="selected.kind === 'character'" class="editor-form">
@@ -208,7 +220,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from "vue";
+import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import EntryTemplatePanel from "@/components/entry/EntryTemplatePanel.vue";
 import { getTemplate } from "@/domain/entryTemplates";
@@ -224,6 +236,8 @@ import type {
 } from "@/types/library";
 
 type RecordKind = "entry" | "character" | "event" | "axiom" | "relation" | null;
+
+const RichTextEditor = defineAsyncComponent(() => import("@/components/RichTextEditor.vue"));
 
 const route = useRoute();
 const projectStore = useProjectStore();
