@@ -138,3 +138,12 @@ export interface RelationDraft {
   confidence: number
   directed: boolean
 }
+
+export interface LibraryProjectSnapshot {
+  projectId: string
+  entries: Entry[]
+  characters: Character[]
+  events: EventRecord[]
+  axioms: Axiom[]
+  relations: Relation[]
+}

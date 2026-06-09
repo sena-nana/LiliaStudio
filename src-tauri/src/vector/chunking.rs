@@ -12,7 +12,11 @@ pub fn chunk_text(text: &str, max_chars: usize) -> Vec<TextChunk> {
     let mut chunks = Vec::new();
     let mut ordinal = 0;
 
-    for paragraph in text.split("\n\n").map(str::trim).filter(|part| !part.is_empty()) {
+    for paragraph in text
+        .split("\n\n")
+        .map(str::trim)
+        .filter(|part| !part.is_empty())
+    {
         if paragraph.chars().count() <= max_chars {
             chunks.push(make_chunk(ordinal, paragraph));
             ordinal += 1;

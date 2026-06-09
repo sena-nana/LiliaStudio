@@ -73,7 +73,8 @@ impl<'a> AxiomRepository<'a> {
                 timestamp
             ],
         )?;
-        self.get(&id).map(|axiom| axiom.expect("created axiom should exist"))
+        self.get(&id)
+            .map(|axiom| axiom.expect("created axiom should exist"))
     }
 
     pub fn update(&self, id: &str, draft: AxiomDraft) -> rusqlite::Result<Axiom> {
@@ -100,7 +101,8 @@ impl<'a> AxiomRepository<'a> {
                 now()
             ],
         )?;
-        self.get(id).map(|axiom| axiom.expect("updated axiom should exist"))
+        self.get(id)
+            .map(|axiom| axiom.expect("updated axiom should exist"))
     }
 
     pub fn soft_delete(&self, id: &str) -> rusqlite::Result<()> {

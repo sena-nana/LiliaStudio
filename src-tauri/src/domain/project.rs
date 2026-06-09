@@ -38,7 +38,8 @@ impl<'a> ProjectRepository<'a> {
              VALUES (?1, ?2, ?3, ?4, ?4)",
             params![id, draft.name, draft.description, timestamp],
         )?;
-        self.get(&id).map(|project| project.expect("created project should exist"))
+        self.get(&id)
+            .map(|project| project.expect("created project should exist"))
     }
 
     pub fn update(&self, id: &str, draft: ProjectDraft) -> rusqlite::Result<Project> {
@@ -48,7 +49,8 @@ impl<'a> ProjectRepository<'a> {
              WHERE id = ?1",
             params![id, draft.name, draft.description, now()],
         )?;
-        self.get(id).map(|project| project.expect("updated project should exist"))
+        self.get(id)
+            .map(|project| project.expect("updated project should exist"))
     }
 
     pub fn archive(&self, id: &str) -> rusqlite::Result<()> {
@@ -79,7 +81,11 @@ impl<'a> ProjectRepository<'a> {
         self.list_with_clause("")
     }
 
-    pub fn create_with_name_suffix(&self, draft: ProjectDraft, suffix: &str) -> rusqlite::Result<Project> {
+    pub fn create_with_name_suffix(
+        &self,
+        draft: ProjectDraft,
+        suffix: &str,
+    ) -> rusqlite::Result<Project> {
         self.create(ProjectDraft {
             name: format!("{}{}", draft.name, suffix),
             description: draft.description,

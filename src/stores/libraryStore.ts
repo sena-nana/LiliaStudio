@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import * as libraryApi from '@/api/library'
+import { prependRecord, removeRecord, replaceRecord } from './collection'
 import type {
   Axiom,
   AxiomDraft,
@@ -39,18 +40,12 @@ export const useLibraryStore = defineStore('library', {
       this.loading = true
       this.error = null
       try {
-        const [entries, characters, events, axioms, relations] = await Promise.all([
-          libraryApi.listEntries(projectId),
-          libraryApi.listCharacters(projectId),
-          libraryApi.listEvents(projectId),
-          libraryApi.searchAxioms(projectId, ''),
-          libraryApi.listRelations(projectId),
-        ])
-        this.entries = entries
-        this.characters = characters
-        this.events = events
-        this.axioms = axioms
-        this.relations = relations
+        const snapshot = await libraryApi.loadProjectSnapshot(projectId)
+        this.entries = snapshot.entries
+        this.characters = snapshot.characters
+        this.events = snapshot.events
+        this.axioms = snapshot.axioms
+        this.relations = snapshot.relations
       } catch (error) {
         this.error = error instanceof Error ? error.message : String(error)
       } finally {
@@ -129,20 +124,3 @@ export const useLibraryStore = defineStore('library', {
     },
   },
 })
-
-function prependRecord<T>(items: T[], item: T) {
-  items.unshift(item)
-}
-
-function replaceRecord<T extends { id: string }>(items: T[], item: T) {
-  const index = items.findIndex((current) => current.id === item.id)
-  if (index >= 0) {
-    items.splice(index, 1, item)
-  } else {
-    items.unshift(item)
-  }
-}
-
-function removeRecord<T extends { id: string }>(items: T[], id: string): T[] {
-  return items.filter((item) => item.id !== id)
-}

@@ -1,4 +1,5 @@
-import { callCommand } from "./client";
+import { executeCommand, listResult } from "./client";
+import { commands } from "./commands";
 import type {
   PromptTemplate,
   PromptTemplateDraft,
@@ -7,34 +8,30 @@ import type {
 } from "@/types/ai";
 
 export function listPromptTemplates(): Promise<PromptTemplate[]> {
-  return callCommand<PromptTemplate[]>("list_prompt_templates").then(
-    (items) => items ?? [],
-  );
+  return executeCommand(commands.prompt.listTemplates).then(listResult);
 }
 
 export function copyPromptTemplate(
   templateId: string,
 ): Promise<PromptTemplate> {
-  return callCommand<PromptTemplate>("copy_prompt_template", { templateId });
+  return executeCommand(commands.prompt.copyTemplate, { templateId });
 }
 
 export function savePromptTemplate(
   draft: PromptTemplateDraft,
 ): Promise<PromptTemplate> {
-  return callCommand<PromptTemplate>("save_prompt_template", { draft });
+  return executeCommand(commands.prompt.saveTemplate, { draft });
 }
 
 export function resetBuiltinPromptTemplates(): Promise<PromptTemplate[]> {
-  return callCommand<PromptTemplate[]>("reset_builtin_prompt_templates").then(
-    (items) => items ?? [],
-  );
+  return executeCommand(commands.prompt.resetBuiltinTemplates).then(listResult);
 }
 
 export function previewPromptTemplate(
   template: string,
   values: PromptTemplateVariableValue[],
 ): Promise<PromptTemplatePreview> {
-  return callCommand<PromptTemplatePreview>("preview_prompt_template", {
+  return executeCommand(commands.prompt.previewTemplate, {
     request: { template, values },
   });
 }

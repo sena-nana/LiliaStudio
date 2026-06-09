@@ -106,10 +106,7 @@ pub fn restore_main_window_state<R: Runtime>(window: &WebviewWindow<R>, state: M
     }
 }
 
-pub fn persist_main_window_state<R: Runtime>(
-    app: &AppHandle<R>,
-    window: &WebviewWindow<R>,
-) {
+pub fn persist_main_window_state<R: Runtime>(app: &AppHandle<R>, window: &WebviewWindow<R>) {
     let Some(snapshot) = capture_main_window_snapshot(window) else {
         return;
     };

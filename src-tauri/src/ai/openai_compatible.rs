@@ -162,7 +162,8 @@ where
             bearer_token: self.api_key.clone(),
             body,
         })?;
-        let vectors = ensure_success(response).and_then(|body| parse_embeddings(&body).map_err(invalid_json))?;
+        let vectors = ensure_success(response)
+            .and_then(|body| parse_embeddings(&body).map_err(invalid_json))?;
         let dimension = vectors.first().map_or(0, Vec::len);
         Ok(EmbeddingResult { vectors, dimension })
     }
@@ -243,7 +244,11 @@ pub fn parse_chat_content(json: &str) -> Result<String, serde_json::Error> {
 
 pub fn parse_embeddings(json: &str) -> Result<Vec<Vec<f32>>, serde_json::Error> {
     let response: EmbeddingResponse = serde_json::from_str(json)?;
-    Ok(response.data.into_iter().map(|datum| datum.embedding).collect())
+    Ok(response
+        .data
+        .into_iter()
+        .map(|datum| datum.embedding)
+        .collect())
 }
 
 fn ensure_success(response: OpenAiResponse) -> Result<String, ProviderError> {

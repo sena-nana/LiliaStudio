@@ -1,4 +1,5 @@
-import { callCommand } from './client'
+import { executeCommand } from './client'
+import { commands } from './commands'
 
 export interface HealthInfo {
   appVersion: string
@@ -7,5 +8,5 @@ export interface HealthInfo {
 }
 
 export function healthCheck(): Promise<HealthInfo> {
-  return callCommand<HealthInfo>('health_check')
+  return executeCommand(commands.health.check)
 }

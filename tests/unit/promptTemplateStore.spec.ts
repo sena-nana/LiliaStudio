@@ -28,7 +28,7 @@ describe('promptTemplateStore', () => {
 
     expect(store.templates[0].id).toBe('prompt_1')
     expect(store.selectedTemplate?.id).toBe('prompt_1')
-    expect(invokeMock).toHaveBeenCalledWith('list_prompt_templates')
+    expect(invokeMock).toHaveBeenCalledWith('prompt_list_templates')
   })
 
   it('copies, saves, resets, and previews through commands', async () => {
@@ -49,8 +49,8 @@ describe('promptTemplateStore', () => {
     await store.resetBuiltins()
     await store.preview('{{question}}', [{ name: 'question', value: '是否冲突' }])
 
-    expect(invokeMock).toHaveBeenCalledWith('copy_prompt_template', { templateId: 'prompt_1' })
-    expect(invokeMock).toHaveBeenCalledWith('save_prompt_template', {
+    expect(invokeMock).toHaveBeenCalledWith('prompt_copy_template', { templateId: 'prompt_1' })
+    expect(invokeMock).toHaveBeenCalledWith('prompt_save_template', {
       draft: {
         id: 'prompt_copy',
         name: '自定义审计',
@@ -58,8 +58,8 @@ describe('promptTemplateStore', () => {
         template: '{{project_context}}',
       },
     })
-    expect(invokeMock).toHaveBeenCalledWith('reset_builtin_prompt_templates')
-    expect(invokeMock).toHaveBeenCalledWith('preview_prompt_template', {
+    expect(invokeMock).toHaveBeenCalledWith('prompt_reset_builtin_templates')
+    expect(invokeMock).toHaveBeenCalledWith('prompt_preview_template', {
       request: {
         template: '{{question}}',
         values: [{ name: 'question', value: '是否冲突' }],

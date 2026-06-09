@@ -22,7 +22,7 @@ pub struct OpenAiProviderTestResult {
 }
 
 #[tauri::command]
-pub fn default_ai_providers() -> Vec<AiProviderConfig> {
+pub fn ai_default_providers() -> Vec<AiProviderConfig> {
     vec![
         AiProviderConfig::codex_cli(),
         AiProviderConfig::claude_cli(),
@@ -30,7 +30,7 @@ pub fn default_ai_providers() -> Vec<AiProviderConfig> {
 }
 
 #[tauri::command]
-pub fn load_ai_provider_settings<R: tauri::Runtime>(
+pub fn ai_load_provider_settings<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
 ) -> Result<Vec<AiProviderSettingsView>, String> {
     let config_dir = app
@@ -41,7 +41,7 @@ pub fn load_ai_provider_settings<R: tauri::Runtime>(
 }
 
 #[tauri::command]
-pub fn save_ai_provider_settings<R: tauri::Runtime>(
+pub fn ai_save_provider_settings<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
     drafts: Vec<AiProviderSettingsDraft>,
 ) -> Result<Vec<AiProviderSettingsView>, String> {
@@ -53,7 +53,7 @@ pub fn save_ai_provider_settings<R: tauri::Runtime>(
 }
 
 #[tauri::command]
-pub fn test_openai_provider<R: tauri::Runtime>(
+pub fn ai_test_openai_provider<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
 ) -> Result<OpenAiProviderTestResult, String> {
     let config_dir = app

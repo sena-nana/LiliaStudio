@@ -208,8 +208,8 @@ fn read_stored_provider_settings(
         return Ok(default_stored_providers());
     }
 
-    let config_text = fs::read_to_string(&path)
-        .map_err(|error| format!("读取 AI Provider 设置失败：{error}"))?;
+    let config_text =
+        fs::read_to_string(&path).map_err(|error| format!("读取 AI Provider 设置失败：{error}"))?;
     if config_text.trim().is_empty() {
         return Ok(default_stored_providers());
     }
@@ -250,8 +250,12 @@ fn default_stored_provider(kind: AiProviderKind) -> StoredAiProviderSettings {
             command_template: None,
             enabled: false,
         },
-        AiProviderKind::CodexCli => StoredAiProviderSettings::from_config(AiProviderConfig::codex_cli()),
-        AiProviderKind::ClaudeCli => StoredAiProviderSettings::from_config(AiProviderConfig::claude_cli()),
+        AiProviderKind::CodexCli => {
+            StoredAiProviderSettings::from_config(AiProviderConfig::codex_cli())
+        }
+        AiProviderKind::ClaudeCli => {
+            StoredAiProviderSettings::from_config(AiProviderConfig::claude_cli())
+        }
     }
 }
 
@@ -281,7 +285,10 @@ impl StoredAiProviderSettings {
         Self {
             kind: config.kind,
             base_url: config.base_url,
-            has_api_key: config.api_key.as_ref().is_some_and(|secret| !secret.is_empty()),
+            has_api_key: config
+                .api_key
+                .as_ref()
+                .is_some_and(|secret| !secret.is_empty()),
             chat_model: config.chat_model,
             embedding_model: config.embedding_model,
             command_template: config.command_template,
@@ -289,10 +296,7 @@ impl StoredAiProviderSettings {
         }
     }
 
-    fn into_view(
-        self,
-        secret_store: &impl SecretStore,
-    ) -> Result<AiProviderSettingsView, String> {
+    fn into_view(self, secret_store: &impl SecretStore) -> Result<AiProviderSettingsView, String> {
         let secret = if self.has_api_key {
             secret_store.read_secret(&api_key_secret_name(&self.kind))?
         } else {
@@ -362,13 +366,11 @@ mod tests {
         assert!(!settings[0].enabled);
         assert!(!settings[0].has_api_key);
         assert_eq!(settings[1].kind, AiProviderKind::CodexCli);
-        assert!(
-            settings[1]
-                .command_template
-                .as_deref()
-                .expect("codex template")
-                .contains("codex exec")
-        );
+        assert!(settings[1]
+            .command_template
+            .as_deref()
+            .expect("codex template")
+            .contains("codex exec"));
         assert_eq!(settings[2].kind, AiProviderKind::ClaudeCli);
     }
 
@@ -387,12 +389,17 @@ mod tests {
             enabled: true,
         }];
 
-        let settings = save_provider_settings(config_dir.path(), drafts, &store).expect("settings save");
+        let settings =
+            save_provider_settings(config_dir.path(), drafts, &store).expect("settings save");
 
-        assert_eq!(settings[0].api_key_preview.as_deref(), Some("sk-********1234"));
+        assert_eq!(
+            settings[0].api_key_preview.as_deref(),
+            Some("sk-********1234")
+        );
         assert!(settings[0].has_api_key);
-        let config_text = std::fs::read_to_string(config_dir.path().join("ai-provider-settings.json"))
-            .expect("config file exists");
+        let config_text =
+            std::fs::read_to_string(config_dir.path().join("ai-provider-settings.json"))
+                .expect("config file exists");
         assert!(config_text.contains("llm.example"));
         assert!(!config_text.contains("sk-live-secret-1234"));
         assert_eq!(
@@ -423,7 +430,8 @@ mod tests {
             enabled: true,
         }];
 
-        let settings = save_provider_settings(config_dir.path(), drafts, &store).expect("settings save");
+        let settings =
+            save_provider_settings(config_dir.path(), drafts, &store).expect("settings save");
 
         assert!(!settings[0].has_api_key);
         assert_eq!(settings[0].api_key_preview, None);

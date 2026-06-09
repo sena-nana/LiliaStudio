@@ -131,7 +131,9 @@ impl<'a> CharacterRepository<'a> {
              WHERE project_id = ?1 AND deleted_at IS NULL
              ORDER BY updated_at DESC",
         )?;
-        let characters = statement.query_map(params![project_id], map_character)?.collect();
+        let characters = statement
+            .query_map(params![project_id], map_character)?
+            .collect();
         characters
     }
 

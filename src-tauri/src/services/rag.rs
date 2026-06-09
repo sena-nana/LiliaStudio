@@ -32,6 +32,15 @@ pub struct VectorMatch {
     pub score: f32,
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub struct VectorCandidate {
+    pub chunk_id: String,
+    pub source_type: String,
+    pub source_id: String,
+    pub text: String,
+    pub vector: Vec<f32>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct ContextPack {
@@ -119,6 +128,14 @@ pub fn vector_search(
     query_vector: Vec<f32>,
     limit: usize,
 ) -> rusqlite::Result<Vec<VectorMatch>> {
+    let candidates = load_vector_candidates(connection, project_id)?;
+    Ok(rank_vector_candidates(candidates, query_vector, limit))
+}
+
+pub fn load_vector_candidates(
+    connection: &Connection,
+    project_id: &str,
+) -> rusqlite::Result<Vec<VectorCandidate>> {
     let mut statement = connection.prepare(
         "SELECT c.id, c.source_type, c.source_id, c.text, e.vector_json
          FROM document_chunks c
@@ -134,23 +151,40 @@ pub fn vector_search(
                 Box::new(error),
             )
         })?;
-        let score = cosine_similarity(&query_vector, &vector).unwrap_or(0.0);
-        Ok(VectorMatch {
+        Ok(VectorCandidate {
             chunk_id: row.get(0)?,
             source_type: row.get(1)?,
             source_id: row.get(2)?,
             text: row.get(3)?,
-            score,
+            vector,
         })
     })?;
 
-    let mut matches = Vec::new();
+    let mut candidates = Vec::new();
     for row in rows {
-        matches.push(row?);
+        candidates.push(row?);
     }
+    Ok(candidates)
+}
+
+pub fn rank_vector_candidates(
+    candidates: Vec<VectorCandidate>,
+    query_vector: Vec<f32>,
+    limit: usize,
+) -> Vec<VectorMatch> {
+    let mut matches: Vec<_> = candidates
+        .into_iter()
+        .map(|candidate| VectorMatch {
+            chunk_id: candidate.chunk_id,
+            source_type: candidate.source_type,
+            source_id: candidate.source_id,
+            text: candidate.text,
+            score: cosine_similarity(&query_vector, &candidate.vector).unwrap_or(0.0),
+        })
+        .collect();
     matches.sort_by(|left, right| right.score.total_cmp(&left.score));
     matches.truncate(limit);
-    Ok(matches)
+    matches
 }
 
 pub fn build_context_pack(

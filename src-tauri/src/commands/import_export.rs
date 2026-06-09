@@ -6,7 +6,7 @@ use crate::{
 };
 
 #[tauri::command]
-pub fn export_project_archive(
+pub fn archive_export_project(
     state: State<'_, AppState>,
     project_id: String,
 ) -> Result<ProjectArchive, String> {
@@ -14,7 +14,7 @@ pub fn export_project_archive(
 }
 
 #[tauri::command]
-pub fn import_project_archive(
+pub fn archive_import_project(
     state: State<'_, AppState>,
     archive: ProjectArchive,
 ) -> Result<ImportedProject, String> {
