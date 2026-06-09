@@ -13,122 +13,34 @@
     </div>
 
     <div v-else class="workspace-grid">
-      <article class="library-panel">
-        <header>
-          <h2>词条</h2>
-          <button type="button" @click="createEntry">新增</button>
-        </header>
+      <LibraryRecordPanel
+        title="词条"
+        :rows="entryRows"
+        :selected="selected"
+        @create="createRecord('entry')"
+        @select="selectRecord"
+      >
         <EntryTemplatePanel v-model="entryType" />
-        <ul>
-          <li v-for="entry in libraryStore.entries" :key="entry.id">
-            <button
-              type="button"
-              class="record-row"
-              :class="{ active: selected.kind === 'entry' && selected.id === entry.id }"
-              @click="selectRecord('entry', entry.id)"
-            >
-              <strong>{{ entry.title }}</strong>
-              <span>{{ entryTypeLabel(entry.entryType) }} · {{ entryStatusLabel(entry.status) }}</span>
-            </button>
-          </li>
-        </ul>
-      </article>
+      </LibraryRecordPanel>
 
-      <article class="library-panel">
-        <header>
-          <h2>角色</h2>
-          <button type="button" @click="createCharacter">新增</button>
-        </header>
-        <ul>
-          <li v-for="character in libraryStore.characters" :key="character.id">
-            <button
-              type="button"
-              class="record-row"
-              :class="{ active: selected.kind === 'character' && selected.id === character.id }"
-              @click="selectRecord('character', character.id)"
-            >
-              <strong>{{ character.name }}</strong>
-              <span>{{ character.faction || "未分配阵营" }}</span>
-            </button>
-          </li>
-        </ul>
-      </article>
+      <LibraryRecordPanel
+        v-for="panel in secondaryPanels"
+        :key="panel.kind"
+        :title="panel.title"
+        :rows="panel.rows"
+        :selected="selected"
+        :panel-class="panel.panelClass"
+        :create-disabled="panel.createDisabled"
+        @create="createRecord(panel.kind)"
+        @select="selectRecord"
+      />
 
-      <article class="library-panel">
-        <header>
-          <h2>事件</h2>
-          <button type="button" @click="createEvent">新增</button>
-        </header>
-        <ul>
-          <li v-for="event in libraryStore.events" :key="event.id">
-            <button
-              type="button"
-              class="record-row"
-              :class="{ active: selected.kind === 'event' && selected.id === event.id }"
-              @click="selectRecord('event', event.id)"
-            >
-              <strong>{{ event.title }}</strong>
-              <span>{{ event.timeLabel || "未定时间" }}</span>
-            </button>
-          </li>
-        </ul>
-      </article>
-
-      <article class="library-panel">
-        <header>
-          <h2>公理</h2>
-          <button type="button" @click="createAxiom">新增</button>
-        </header>
-        <ul>
-          <li v-for="axiom in libraryStore.axioms" :key="axiom.id">
-            <button
-              type="button"
-              class="record-row"
-              :class="{ active: selected.kind === 'axiom' && selected.id === axiom.id }"
-              @click="selectRecord('axiom', axiom.id)"
-            >
-              <strong>{{ axiom.subject }}</strong>
-              <span>{{ axiom.predicate }} = {{ axiom.object }}</span>
-            </button>
-          </li>
-        </ul>
-      </article>
-
-      <article class="library-panel relation-panel">
-        <header>
-          <h2>关系</h2>
-          <button type="button" :disabled="entityOptions.length < 2" @click="createRelation">新增</button>
-        </header>
-        <ul>
-          <li v-for="relation in libraryStore.relations" :key="relation.id">
-            <button
-              type="button"
-              class="record-row"
-              :class="{ active: selected.kind === 'relation' && selected.id === relation.id }"
-              @click="selectRecord('relation', relation.id)"
-            >
-              <strong>{{ relation.relationType }}</strong>
-              <span>{{ entityLabel(relation.source) }} → {{ entityLabel(relation.target) }}</span>
-            </button>
-          </li>
-        </ul>
-      </article>
-
-      <article class="library-editor">
-        <header>
-          <div>
-            <h2>{{ editorTitle }}</h2>
-          </div>
-          <div class="editor-actions">
-            <button type="button" class="secondary-button" :disabled="!selected.id" @click="deleteSelected">
-              删除
-            </button>
-            <button type="button" class="primary-button" :disabled="!selected.id" @click="saveSelected">
-              保存
-            </button>
-          </div>
-        </header>
-
+      <LibraryEditorShell
+        :title="editorTitle"
+        :has-selection="Boolean(selected.id)"
+        @delete="deleteSelected"
+        @save="saveSelected"
+      >
         <div v-if="selected.kind === 'entry'" class="editor-form">
           <label>标题<input v-model="entryForm.title" /></label>
           <label>类型<input v-model="entryForm.entryType" /></label>
@@ -210,11 +122,7 @@
           <label class="toggle-row"><input v-model="relationForm.directed" type="checkbox" />有方向</label>
           <label class="wide">描述<textarea v-model="relationForm.description" rows="5" /></label>
         </div>
-
-        <div v-else class="empty-state compact">
-          <h2>未选择</h2>
-        </div>
-      </article>
+      </LibraryEditorShell>
     </div>
   </section>
 </template>
@@ -223,28 +131,62 @@
 import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import EntryTemplatePanel from "@/components/entry/EntryTemplatePanel.vue";
-import { entryStatusLabel, entryTypeLabel, entityTypeLabel } from "@/domain/displayLabels";
-import { getTemplate } from "@/domain/entryTemplates";
+import LibraryEditorShell from "@/components/library/LibraryEditorShell.vue";
+import LibraryRecordPanel from "@/components/library/LibraryRecordPanel.vue";
+import { entryStatusLabel, entryTypeLabel } from "@/domain/displayLabels";
+import {
+  axiomToDraft,
+  buildEntityOptions,
+  characterToDraft,
+  emptyAxiomDraft,
+  emptyCharacterDraft,
+  emptyEntryDraft,
+  emptyEventDraft,
+  emptyRelationDraft,
+  entityLabel,
+  entryToDraft,
+  eventToDraft,
+  makeEntityKey,
+  newAxiomDraft,
+  newCharacterDraft,
+  newEntryDraft,
+  newEventDraft,
+  newRelationDraft,
+  normalizeNullable,
+  parseEntityKey,
+  parseList,
+  relationToDraft,
+  type LibraryPanelRow,
+  type LibraryRecordKind,
+  type LibrarySelection,
+} from "@/domain/libraryWorkspace";
 import { useLibraryStore } from "@/stores/libraryStore";
 import { useProjectStore } from "@/stores/projectStore";
-import type {
-  AxiomDraft,
-  CharacterDraft,
-  EntityRef,
-  EntryDraft,
-  EventDraft,
-  RelationDraft,
-} from "@/types/library";
-
-type RecordKind = "entry" | "character" | "event" | "axiom" | "relation" | null;
+import type { AxiomDraft, CharacterDraft, EntryDraft, EventDraft, RelationDraft } from "@/types/library";
 
 const RichTextEditor = defineAsyncComponent(() => import("@/components/RichTextEditor.vue"));
+
+const editorTitles: Record<LibraryRecordKind, string> = {
+  entry: "词条",
+  character: "角色",
+  event: "事件",
+  axiom: "公理",
+  relation: "关系",
+};
+
+interface LibraryPanelConfig {
+  kind: LibraryRecordKind;
+  title: string;
+  rows: LibraryPanelRow[];
+  panelClass?: string;
+  createDisabled?: boolean;
+}
 
 const route = useRoute();
 const projectStore = useProjectStore();
 const libraryStore = useLibraryStore();
 const entryType = ref("world_rule");
-const selected = reactive<{ kind: RecordKind; id: string | null }>({
+const selected = reactive<LibrarySelection>({
   kind: null,
   id: null,
 });
@@ -269,33 +211,60 @@ const projectId = computed(() => {
   return typeof value === "string" && value.length > 0 ? value : projectStore.activeProjectId;
 });
 const projectTitle = computed(() => projectStore.activeProject?.name ?? "资料");
-const editorTitle = computed(() => {
-  if (!selected.kind) return "资料";
-  return {
-    entry: "词条",
-    character: "角色",
-    event: "事件",
-    axiom: "公理",
-    relation: "关系",
-  }[selected.kind];
-});
-const entityOptions = computed(() => [
-  ...libraryStore.entries.map((entry) => ({
-    key: makeEntityKey("entry", entry.id),
-    label: `词条：${entry.title}`,
+const editorTitle = computed(() => (selected.kind ? editorTitles[selected.kind] : "资料"));
+const entityOptions = computed(() => buildEntityOptions(libraryStore));
+
+const entryRows = computed<LibraryPanelRow[]>(() =>
+  libraryStore.entries.map((entry) => ({
+    id: entry.id,
+    kind: "entry",
+    title: entry.title,
+    meta: `${entryTypeLabel(entry.entryType)} · ${entryStatusLabel(entry.status)}`,
   })),
-  ...libraryStore.characters.map((character) => ({
-    key: makeEntityKey("character", character.id),
-    label: `角色：${character.name}`,
+);
+const characterRows = computed<LibraryPanelRow[]>(() =>
+  libraryStore.characters.map((character) => ({
+    id: character.id,
+    kind: "character",
+    title: character.name,
+    meta: character.faction || "未分配阵营",
   })),
-  ...libraryStore.events.map((event) => ({
-    key: makeEntityKey("event", event.id),
-    label: `事件：${event.title}`,
+);
+const eventRows = computed<LibraryPanelRow[]>(() =>
+  libraryStore.events.map((event) => ({
+    id: event.id,
+    kind: "event",
+    title: event.title,
+    meta: event.timeLabel || "未定时间",
   })),
-  ...libraryStore.axioms.map((axiom) => ({
-    key: makeEntityKey("axiom", axiom.id),
-    label: `公理：${axiom.subject}`,
+);
+const axiomRows = computed<LibraryPanelRow[]>(() =>
+  libraryStore.axioms.map((axiom) => ({
+    id: axiom.id,
+    kind: "axiom",
+    title: axiom.subject,
+    meta: `${axiom.predicate} = ${axiom.object}`,
   })),
+);
+const relationRows = computed<LibraryPanelRow[]>(() =>
+  libraryStore.relations.map((relation) => ({
+    id: relation.id,
+    kind: "relation",
+    title: relation.relationType,
+    meta: `${entityLabel(relation.source, entityOptions.value)} → ${entityLabel(relation.target, entityOptions.value)}`,
+  })),
+);
+const secondaryPanels = computed<LibraryPanelConfig[]>(() => [
+  { kind: "character", title: "角色", rows: characterRows.value },
+  { kind: "event", title: "事件", rows: eventRows.value },
+  { kind: "axiom", title: "公理", rows: axiomRows.value },
+  {
+    kind: "relation",
+    title: "关系",
+    rows: relationRows.value,
+    panelClass: "relation-panel",
+    createDisabled: entityOptions.value.length < 2,
+  },
 ]);
 
 onMounted(async () => {
@@ -314,91 +283,40 @@ watch(projectId, (id) => {
   }
 });
 
-async function createEntry() {
+async function createRecord(kind: LibraryRecordKind) {
   if (!projectId.value) return;
-  const template = getTemplate(entryType.value);
-  const entry = await libraryStore.createEntry({
-    projectId: projectId.value,
-    entryType: template.type,
-    title: `新词条 ${libraryStore.entries.length + 1}`,
-    summary: template.summary,
-    body: template.body,
-    tags: template.tags,
-    status: "draft",
-  });
-  selectRecord("entry", entry.id);
+  switch (kind) {
+    case "entry": {
+      const entry = await libraryStore.createEntry(newEntryDraft(projectId.value, entryType.value, libraryStore.entries.length));
+      selectRecord("entry", entry.id);
+      break;
+    }
+    case "character": {
+      const character = await libraryStore.createCharacter(newCharacterDraft(projectId.value, libraryStore.characters.length));
+      selectRecord("character", character.id);
+      break;
+    }
+    case "event": {
+      const event = await libraryStore.createEvent(newEventDraft(projectId.value, libraryStore.events.length));
+      selectRecord("event", event.id);
+      break;
+    }
+    case "axiom": {
+      const axiom = await libraryStore.createAxiom(newAxiomDraft(projectId.value));
+      selectRecord("axiom", axiom.id);
+      break;
+    }
+    case "relation": {
+      const draft = newRelationDraft(projectId.value, entityOptions.value);
+      if (!draft) return;
+      const relation = await libraryStore.createRelation(draft);
+      selectRecord("relation", relation.id);
+      break;
+    }
+  }
 }
 
-async function createCharacter() {
-  if (!projectId.value) return;
-  const character = await libraryStore.createCharacter({
-    projectId: projectId.value,
-    name: `新角色 ${libraryStore.characters.length + 1}`,
-    aliases: [],
-    summary: "",
-    appearance: "",
-    goals: "",
-    motivations: "",
-    fears: "",
-    faction: "",
-    tags: [],
-  });
-  selectRecord("character", character.id);
-}
-
-async function createEvent() {
-  if (!projectId.value) return;
-  const event = await libraryStore.createEvent({
-    projectId: projectId.value,
-    title: `新事件 ${libraryStore.events.length + 1}`,
-    description: "",
-    timeLabel: "",
-    sortKey: Date.now(),
-    startLabel: "",
-    endLabel: "",
-    location: "",
-    importance: 1,
-    outcome: "",
-    tags: [],
-  });
-  selectRecord("event", event.id);
-}
-
-async function createAxiom() {
-  if (!projectId.value) return;
-  const axiom = await libraryStore.createAxiom({
-    projectId: projectId.value,
-    subject: "新主体",
-    predicate: "定义",
-    object: "新对象",
-    scopeTime: "",
-    scopeLocation: "",
-    certainty: 1,
-    sourceEntityType: null,
-    sourceEntityId: null,
-    naturalLanguage: "",
-    tags: [],
-  });
-  selectRecord("axiom", axiom.id);
-}
-
-async function createRelation() {
-  if (!projectId.value || entityOptions.value.length < 2) return;
-  const source = parseEntityKey(entityOptions.value[0].key);
-  const target = parseEntityKey(entityOptions.value[1].key);
-  const relation = await libraryStore.createRelation({
-    projectId: projectId.value,
-    source,
-    target,
-    relationType: "关联",
-    description: "",
-    confidence: 1,
-    directed: true,
-  });
-  selectRecord("relation", relation.id);
-}
-
-function selectRecord(kind: Exclude<RecordKind, null>, id: string) {
+function selectRecord(kind: LibraryRecordKind, id: string) {
   selected.kind = kind;
   selected.id = id;
   syncSelectedForm();
@@ -411,233 +329,104 @@ function clearSelection() {
 
 async function saveSelected() {
   if (!projectId.value || !selected.kind || !selected.id) return;
-  if (selected.kind === "entry") {
-    await libraryStore.updateEntry(selected.id, {
-      ...entryForm,
-      projectId: projectId.value,
-      tags: parseList(entryTagsText.value),
-    });
-  } else if (selected.kind === "character") {
-    await libraryStore.updateCharacter(selected.id, {
-      ...characterForm,
-      projectId: projectId.value,
-      aliases: parseList(characterAliasesText.value),
-      tags: parseList(characterTagsText.value),
-    });
-  } else if (selected.kind === "event") {
-    await libraryStore.updateEvent(selected.id, {
-      ...eventForm,
-      projectId: projectId.value,
-      tags: parseList(eventTagsText.value),
-    });
-  } else if (selected.kind === "axiom") {
-    await libraryStore.updateAxiom(selected.id, {
-      ...axiomForm,
-      projectId: projectId.value,
-      sourceEntityType: normalizeNullable(sourceEntityTypeText.value),
-      sourceEntityId: normalizeNullable(sourceEntityIdText.value),
-      tags: parseList(axiomTagsText.value),
-    });
-  } else if (selected.kind === "relation") {
-    await libraryStore.updateRelation(selected.id, {
-      ...relationForm,
-      projectId: projectId.value,
-      source: parseEntityKey(relationSourceKey.value),
-      target: parseEntityKey(relationTargetKey.value),
-    });
-  }
+  const id = selected.id;
+  const currentProjectId = projectId.value;
+  const saveActions: Record<LibraryRecordKind, () => Promise<unknown>> = {
+    entry: () =>
+      libraryStore.updateEntry(id, {
+        ...entryForm,
+        projectId: currentProjectId,
+        tags: parseList(entryTagsText.value),
+      }),
+    character: () =>
+      libraryStore.updateCharacter(id, {
+        ...characterForm,
+        projectId: currentProjectId,
+        aliases: parseList(characterAliasesText.value),
+        tags: parseList(characterTagsText.value),
+      }),
+    event: () =>
+      libraryStore.updateEvent(id, {
+        ...eventForm,
+        projectId: currentProjectId,
+        tags: parseList(eventTagsText.value),
+      }),
+    axiom: () =>
+      libraryStore.updateAxiom(id, {
+        ...axiomForm,
+        projectId: currentProjectId,
+        sourceEntityType: normalizeNullable(sourceEntityTypeText.value),
+        sourceEntityId: normalizeNullable(sourceEntityIdText.value),
+        tags: parseList(axiomTagsText.value),
+      }),
+    relation: () =>
+      libraryStore.updateRelation(id, {
+        ...relationForm,
+        projectId: currentProjectId,
+        source: parseEntityKey(relationSourceKey.value),
+        target: parseEntityKey(relationTargetKey.value),
+      }),
+  };
+  await saveActions[selected.kind]();
   syncSelectedForm();
 }
 
 async function deleteSelected() {
   if (!selected.kind || !selected.id) return;
   const { kind, id } = selected;
-  if (kind === "entry") await libraryStore.deleteEntry(id);
-  if (kind === "character") await libraryStore.deleteCharacter(id);
-  if (kind === "event") await libraryStore.deleteEvent(id);
-  if (kind === "axiom") await libraryStore.deleteAxiom(id);
-  if (kind === "relation") await libraryStore.deleteRelation(id);
+  const deleteActions: Record<LibraryRecordKind, (recordId: string) => Promise<void>> = {
+    entry: (recordId) => libraryStore.deleteEntry(recordId),
+    character: (recordId) => libraryStore.deleteCharacter(recordId),
+    event: (recordId) => libraryStore.deleteEvent(recordId),
+    axiom: (recordId) => libraryStore.deleteAxiom(recordId),
+    relation: (recordId) => libraryStore.deleteRelation(recordId),
+  };
+  await deleteActions[kind](id);
   clearSelection();
 }
 
 function syncSelectedForm() {
-  if (selected.kind === "entry") {
-    const entry = libraryStore.entries.find((item) => item.id === selected.id);
-    if (!entry) return;
-    Object.assign(entryForm, {
-      projectId: entry.projectId,
-      entryType: entry.entryType,
-      title: entry.title,
-      summary: entry.summary,
-      body: entry.body,
-      tags: [...entry.tags],
-      status: entry.status,
-    });
-    entryTagsText.value = entry.tags.join(", ");
-  } else if (selected.kind === "character") {
-    const character = libraryStore.characters.find((item) => item.id === selected.id);
-    if (!character) return;
-    Object.assign(characterForm, {
-      projectId: character.projectId,
-      name: character.name,
-      aliases: [...character.aliases],
-      summary: character.summary,
-      appearance: character.appearance,
-      goals: character.goals,
-      motivations: character.motivations,
-      fears: character.fears,
-      faction: character.faction,
-      tags: [...character.tags],
-    });
-    characterAliasesText.value = character.aliases.join(", ");
-    characterTagsText.value = character.tags.join(", ");
-  } else if (selected.kind === "event") {
-    const event = libraryStore.events.find((item) => item.id === selected.id);
-    if (!event) return;
-    Object.assign(eventForm, {
-      projectId: event.projectId,
-      title: event.title,
-      description: event.description,
-      timeLabel: event.timeLabel,
-      sortKey: event.sortKey,
-      startLabel: event.startLabel,
-      endLabel: event.endLabel,
-      location: event.location,
-      importance: event.importance,
-      outcome: event.outcome,
-      tags: [...event.tags],
-    });
-    eventTagsText.value = event.tags.join(", ");
-  } else if (selected.kind === "axiom") {
-    const axiom = libraryStore.axioms.find((item) => item.id === selected.id);
-    if (!axiom) return;
-    Object.assign(axiomForm, {
-      projectId: axiom.projectId,
-      subject: axiom.subject,
-      predicate: axiom.predicate,
-      object: axiom.object,
-      scopeTime: axiom.scopeTime,
-      scopeLocation: axiom.scopeLocation,
-      certainty: axiom.certainty,
-      sourceEntityType: axiom.sourceEntityType,
-      sourceEntityId: axiom.sourceEntityId,
-      naturalLanguage: axiom.naturalLanguage,
-      tags: [...axiom.tags],
-    });
-    sourceEntityTypeText.value = axiom.sourceEntityType ?? "";
-    sourceEntityIdText.value = axiom.sourceEntityId ?? "";
-    axiomTagsText.value = axiom.tags.join(", ");
-  } else if (selected.kind === "relation") {
-    const relation = libraryStore.relations.find((item) => item.id === selected.id);
-    if (!relation) return;
-    Object.assign(relationForm, {
-      projectId: relation.projectId,
-      source: { ...relation.source },
-      target: { ...relation.target },
-      relationType: relation.relationType,
-      description: relation.description,
-      confidence: relation.confidence,
-      directed: relation.directed,
-    });
-    relationSourceKey.value = makeEntityKey(relation.source.entityType, relation.source.entityId);
-    relationTargetKey.value = makeEntityKey(relation.target.entityType, relation.target.entityId);
+  if (!selected.kind || !selected.id) return;
+  switch (selected.kind) {
+    case "entry": {
+      const entry = libraryStore.entries.find((item) => item.id === selected.id);
+      if (!entry) return;
+      Object.assign(entryForm, entryToDraft(entry));
+      entryTagsText.value = entry.tags.join(", ");
+      break;
+    }
+    case "character": {
+      const character = libraryStore.characters.find((item) => item.id === selected.id);
+      if (!character) return;
+      Object.assign(characterForm, characterToDraft(character));
+      characterAliasesText.value = character.aliases.join(", ");
+      characterTagsText.value = character.tags.join(", ");
+      break;
+    }
+    case "event": {
+      const event = libraryStore.events.find((item) => item.id === selected.id);
+      if (!event) return;
+      Object.assign(eventForm, eventToDraft(event));
+      eventTagsText.value = event.tags.join(", ");
+      break;
+    }
+    case "axiom": {
+      const axiom = libraryStore.axioms.find((item) => item.id === selected.id);
+      if (!axiom) return;
+      Object.assign(axiomForm, axiomToDraft(axiom));
+      sourceEntityTypeText.value = axiom.sourceEntityType ?? "";
+      sourceEntityIdText.value = axiom.sourceEntityId ?? "";
+      axiomTagsText.value = axiom.tags.join(", ");
+      break;
+    }
+    case "relation": {
+      const relation = libraryStore.relations.find((item) => item.id === selected.id);
+      if (!relation) return;
+      Object.assign(relationForm, relationToDraft(relation));
+      relationSourceKey.value = makeEntityKey(relation.source.entityType, relation.source.entityId);
+      relationTargetKey.value = makeEntityKey(relation.target.entityType, relation.target.entityId);
+      break;
+    }
   }
-}
-
-function emptyEntryDraft(projectId: string): EntryDraft {
-  return { projectId, entryType: "", title: "", summary: "", body: "", tags: [], status: "draft" };
-}
-
-function emptyCharacterDraft(projectId: string): CharacterDraft {
-  return {
-    projectId,
-    name: "",
-    aliases: [],
-    summary: "",
-    appearance: "",
-    goals: "",
-    motivations: "",
-    fears: "",
-    faction: "",
-    tags: [],
-  };
-}
-
-function emptyEventDraft(projectId: string): EventDraft {
-  return {
-    projectId,
-    title: "",
-    description: "",
-    timeLabel: "",
-    sortKey: 0,
-    startLabel: "",
-    endLabel: "",
-    location: "",
-    importance: 1,
-    outcome: "",
-    tags: [],
-  };
-}
-
-function emptyAxiomDraft(projectId: string): AxiomDraft {
-  return {
-    projectId,
-    subject: "",
-    predicate: "",
-    object: "",
-    scopeTime: "",
-    scopeLocation: "",
-    certainty: 1,
-    sourceEntityType: null,
-    sourceEntityId: null,
-    naturalLanguage: "",
-    tags: [],
-  };
-}
-
-function emptyRelationDraft(projectId: string): RelationDraft {
-  return {
-    projectId,
-    source: { entityType: "entry", entityId: "" },
-    target: { entityType: "entry", entityId: "" },
-    relationType: "",
-    description: "",
-    confidence: 1,
-    directed: true,
-  };
-}
-
-function parseList(value: string) {
-  return value
-    .split(/[,，]/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
-function normalizeNullable(value: string) {
-  const normalized = value.trim();
-  return normalized.length > 0 ? normalized : null;
-}
-
-function makeEntityKey(entityType: string, entityId: string) {
-  return `${entityType}:${entityId}`;
-}
-
-function parseEntityKey(key: string): EntityRef {
-  const separator = key.indexOf(":");
-  if (separator < 0) {
-    return { entityType: "entry", entityId: key };
-  }
-  return {
-    entityType: key.slice(0, separator),
-    entityId: key.slice(separator + 1),
-  };
-}
-
-function entityLabel(entity: EntityRef) {
-  return (
-    entityOptions.value.find((option) => option.key === makeEntityKey(entity.entityType, entity.entityId))
-      ?.label ?? `${entityTypeLabel(entity.entityType)}：${entity.entityId}`
-  );
 }
 </script>
