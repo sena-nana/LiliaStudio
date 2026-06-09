@@ -14,14 +14,21 @@
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
 import { useRouter } from 'vue-router'
-import { workspaceMenuEntries, workspaceTabs } from '@/components/layout/workspaceModel'
+import { SIDEBAR_FOOTER_LINKS, SIDEBAR_GLOBAL_ACTIONS, SIDEBAR_NAV } from '@/config/appShell'
 
 const router = useRouter()
 const open = ref(false)
 const firstCommandButton = ref<HTMLButtonElement | null>(null)
 const commands = computed(() => [
-  ...workspaceTabs.map((tab) => ({ label: tab.label, to: tab.to })),
-  ...workspaceMenuEntries,
+  ...SIDEBAR_GLOBAL_ACTIONS.filter((action) => action.to && !action.disabled).map((action) => ({
+    label: action.label,
+    to: action.to ?? '/',
+  })),
+  ...SIDEBAR_NAV.filter((item) => item.to && !item.disabled).map((item) => ({
+    label: item.label,
+    to: item.to ?? '/',
+  })),
+  ...SIDEBAR_FOOTER_LINKS.map((item) => ({ label: item.title ?? item.label, to: item.to })),
 ])
 
 function onKeydown(event: KeyboardEvent) {

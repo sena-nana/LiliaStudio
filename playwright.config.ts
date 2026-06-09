@@ -6,7 +6,7 @@ const baseURL = `http://127.0.0.1:${e2ePort}`
 export default defineConfig({
   testDir: 'tests/e2e',
   webServer: {
-    command: `pnpm exec vite --host 127.0.0.1 --port ${e2ePort} --strictPort`,
+    command: `yarn vite --host 127.0.0.1 --port ${e2ePort} --strictPort`,
     url: baseURL,
     reuseExistingServer: false,
     timeout: 120_000,
