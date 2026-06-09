@@ -23,7 +23,7 @@
 - Create: `src/views/PromptTemplateView.vue`，实现管理页面。
 - Modify: `src/components/layout/AppShell.vue`、`src/router/index.ts`、`src/styles/theme.css`，加入导航、路由和页面样式。
 - Create: `tests/unit/promptTemplateStore.spec.ts`，覆盖前端 store command 契约。
-- Modify: `plans/stage-context.md`，阶段完成后记录 P7 结果和下一阶段决策。
+- Modify: `plans/development-todo.md`，阶段完成后记录 P7 结果和下一阶段决策。
 
 ## Task 1：后端 Prompt 模板服务
 
@@ -259,9 +259,9 @@ pnpm test:e2e
 
 Expected: all pass. If Playwright creates `test-results/`, remove it before staging.
 
-- [ ] **Step 2: 更新上下文并提交**
+- [ ] **Step 2: 更新开发 Todo 并提交**
 
-Modify `plans/stage-context.md`:
+Modify `plans/development-todo.md`:
 
 - Add “产品化 P7 已实现”
 - Record verification results.

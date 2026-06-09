@@ -101,7 +101,7 @@ cd src-tauri; cargo check --locked
 
 ## 提交要求
 
-阶段完成后更新 `plans/stage-context.md`，然后中文提交：
+阶段完成后更新 `plans/development-todo.md`，然后中文提交：
 
 ```text
 产品化AI设置持久化
