@@ -22,7 +22,7 @@ describe('aiStore', () => {
 
     expect(store.providers[0].kind).toBe('codexCli')
     expect(store.chunks[0].id).toBe('chunk_1')
-    expect(invokeMock).toHaveBeenCalledWith('index_chunks', { projectId: 'project_1', maxChars: 600 })
+    expect(invokeMock).toHaveBeenCalledWith('rag_index_chunks', { projectId: 'project_1', maxChars: 600 })
   })
 
   it('loads and saves provider settings without exposing raw secrets', async () => {
@@ -68,7 +68,7 @@ describe('aiStore', () => {
     ])
 
     expect(store.providerSettings[0].apiKeyPreview).toBe('sk-********1234')
-    expect(invokeMock).toHaveBeenCalledWith('save_ai_provider_settings', {
+    expect(invokeMock).toHaveBeenCalledWith('ai_save_provider_settings', {
       drafts: [
         {
           kind: 'openAiCompatible',
@@ -112,7 +112,7 @@ describe('aiStore', () => {
 
     expect(result.ok).toBe(false)
     expect(store.openAiProviderTest?.error?.code).toBe('configMissing')
-    expect(invokeMock).toHaveBeenCalledWith('test_openai_provider')
+    expect(invokeMock).toHaveBeenCalledWith('ai_test_openai_provider')
   })
 
   it('stores Codex CLI provider test results', async () => {
@@ -132,7 +132,7 @@ describe('aiStore', () => {
 
     expect(result.ok).toBe(false)
     expect(store.codexCliProviderTest?.error?.code).toBe('missingCli')
-    expect(invokeMock).toHaveBeenCalledWith('test_codex_cli_provider')
+    expect(invokeMock).toHaveBeenCalledWith('ai_test_codex_cli_provider')
   })
 
   it('stores Claude CLI provider test results', async () => {
@@ -152,6 +152,6 @@ describe('aiStore', () => {
 
     expect(result.ok).toBe(false)
     expect(store.claudeCliProviderTest?.error?.code).toBe('missingCli')
-    expect(invokeMock).toHaveBeenCalledWith('test_claude_cli_provider')
+    expect(invokeMock).toHaveBeenCalledWith('ai_test_claude_cli_provider')
   })
 })

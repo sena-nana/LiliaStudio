@@ -98,7 +98,8 @@ impl<'a> EventRepository<'a> {
         )?;
 
         self.replace_participants(&id, participants)?;
-        self.get(&id).map(|event| event.expect("created event should exist"))
+        self.get(&id)
+            .map(|event| event.expect("created event should exist"))
     }
 
     pub fn update(
@@ -130,7 +131,8 @@ impl<'a> EventRepository<'a> {
             ],
         )?;
         self.replace_participants(id, participants)?;
-        self.get(id).map(|event| event.expect("updated event should exist"))
+        self.get(id)
+            .map(|event| event.expect("updated event should exist"))
     }
 
     pub fn replace_participants(
@@ -138,8 +140,10 @@ impl<'a> EventRepository<'a> {
         event_id: &str,
         participants: Vec<EventParticipantDraft>,
     ) -> rusqlite::Result<()> {
-        self.connection
-            .execute("DELETE FROM event_participants WHERE event_id = ?1", params![event_id])?;
+        self.connection.execute(
+            "DELETE FROM event_participants WHERE event_id = ?1",
+            params![event_id],
+        )?;
         for participant in participants {
             self.connection.execute(
                 "INSERT INTO event_participants
@@ -180,7 +184,9 @@ impl<'a> EventRepository<'a> {
              WHERE project_id = ?1 AND deleted_at IS NULL
              ORDER BY sort_key ASC, updated_at DESC",
         )?;
-        let events = statement.query_map(params![project_id], map_event)?.collect();
+        let events = statement
+            .query_map(params![project_id], map_event)?
+            .collect();
         events
     }
 

@@ -13,12 +13,14 @@ describe('libraryStore', () => {
   })
 
   it('loads the local project library collections', async () => {
-    invokeMock
-      .mockResolvedValueOnce([{ id: 'entry_1', projectId: 'project_1', title: '月光阔剑' }])
-      .mockResolvedValueOnce([{ id: 'character_1', projectId: 'project_1', name: '椎名' }])
-      .mockResolvedValueOnce([{ id: 'event_1', projectId: 'project_1', title: '围城战' }])
-      .mockResolvedValueOnce([{ id: 'axiom_1', projectId: 'project_1', subject: '月光金属' }])
-      .mockResolvedValueOnce([{ id: 'relation_1', projectId: 'project_1', relationType: 'derived_from' }])
+    invokeMock.mockResolvedValueOnce({
+      projectId: 'project_1',
+      entries: [{ id: 'entry_1', projectId: 'project_1', title: '月光阔剑' }],
+      characters: [{ id: 'character_1', projectId: 'project_1', name: '椎名' }],
+      events: [{ id: 'event_1', projectId: 'project_1', title: '围城战' }],
+      axioms: [{ id: 'axiom_1', projectId: 'project_1', subject: '月光金属' }],
+      relations: [{ id: 'relation_1', projectId: 'project_1', relationType: 'derived_from' }],
+    })
 
     const store = useLibraryStore()
     await store.loadProject('project_1')
@@ -28,11 +30,8 @@ describe('libraryStore', () => {
     expect(store.events).toHaveLength(1)
     expect(store.axioms).toHaveLength(1)
     expect(store.relations).toHaveLength(1)
-    expect(invokeMock).toHaveBeenCalledWith('list_entries', { projectId: 'project_1' })
-    expect(invokeMock).toHaveBeenCalledWith('list_characters', { projectId: 'project_1' })
-    expect(invokeMock).toHaveBeenCalledWith('list_events', { projectId: 'project_1' })
-    expect(invokeMock).toHaveBeenCalledWith('search_axioms', { projectId: 'project_1', query: '' })
-    expect(invokeMock).toHaveBeenCalledWith('list_relations', { projectId: 'project_1' })
+    expect(invokeMock).toHaveBeenCalledTimes(1)
+    expect(invokeMock).toHaveBeenCalledWith('library_project_snapshot', { projectId: 'project_1' })
   })
 
   it('updates and removes library records through commands', async () => {
@@ -129,6 +128,6 @@ describe('libraryStore', () => {
     expect(store.events).toHaveLength(0)
     expect(store.axioms).toHaveLength(0)
     expect(store.relations).toHaveLength(0)
-    expect(invokeMock).toHaveBeenCalledWith('delete_relation', { id: 'relation_1' })
+    expect(invokeMock).toHaveBeenCalledWith('library_delete_relation', { id: 'relation_1' })
   })
 })

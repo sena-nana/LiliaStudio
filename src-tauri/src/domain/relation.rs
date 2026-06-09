@@ -151,7 +151,9 @@ impl<'a> RelationRepository<'a> {
              WHERE project_id = ?1 AND deleted_at IS NULL
              ORDER BY updated_at DESC",
         )?;
-        let relations = statement.query_map(params![project_id], map_relation)?.collect();
+        let relations = statement
+            .query_map(params![project_id], map_relation)?
+            .collect();
         relations
     }
 }

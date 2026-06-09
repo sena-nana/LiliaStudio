@@ -1,4 +1,5 @@
-import { callCommand } from './client'
+import { commands } from './commands'
+import { executeCommand, listResult } from './client'
 import type {
   Axiom,
   AxiomDraft,
@@ -10,51 +11,44 @@ import type {
   EventDraft,
   EventParticipantDraft,
   EventRecord,
+  LibraryProjectSnapshot,
   Relation,
   RelationDraft,
 } from '@/types/library'
 
-export function listEntries(projectId: string): Promise<Entry[]> {
-  return callCommand<Entry[]>('list_entries', { projectId }).then((items) => items ?? [])
+export function loadProjectSnapshot(projectId: string): Promise<LibraryProjectSnapshot> {
+  return executeCommand(commands.library.projectSnapshot, { projectId })
 }
 
 export function createEntry(draft: EntryDraft): Promise<Entry> {
-  return callCommand<Entry>('create_entry', { draft })
+  return executeCommand(commands.library.createEntry, { draft })
 }
 
 export function updateEntry(id: string, draft: EntryDraft): Promise<Entry> {
-  return callCommand<Entry>('update_entry', { id, draft })
+  return executeCommand(commands.library.updateEntry, { id, draft })
 }
 
 export function deleteEntry(id: string): Promise<void> {
-  return callCommand<void>('delete_entry', { id })
-}
-
-export function listCharacters(projectId: string): Promise<Character[]> {
-  return callCommand<Character[]>('list_characters', { projectId }).then((items) => items ?? [])
+  return executeCommand(commands.library.deleteEntry, { id })
 }
 
 export function createCharacter(draft: CharacterDraft): Promise<Character> {
-  return callCommand<Character>('create_character', { draft })
+  return executeCommand(commands.library.createCharacter, { draft })
 }
 
 export function updateCharacter(id: string, draft: CharacterDraft): Promise<Character> {
-  return callCommand<Character>('update_character', { id, draft })
+  return executeCommand(commands.library.updateCharacter, { id, draft })
 }
 
 export function deleteCharacter(id: string): Promise<void> {
-  return callCommand<void>('delete_character', { id })
-}
-
-export function listEvents(projectId: string): Promise<EventRecord[]> {
-  return callCommand<EventRecord[]>('list_events', { projectId }).then((items) => items ?? [])
+  return executeCommand(commands.library.deleteCharacter, { id })
 }
 
 export function createEvent(
   draft: EventDraft,
   participants: EventParticipantDraft[] = [],
 ): Promise<EventRecord> {
-  return callCommand<EventRecord>('create_event', { draft, participants })
+  return executeCommand(commands.library.createEvent, { draft, participants })
 }
 
 export function updateEvent(
@@ -62,45 +56,37 @@ export function updateEvent(
   draft: EventDraft,
   participants: EventParticipantDraft[] = [],
 ): Promise<EventRecord> {
-  return callCommand<EventRecord>('update_event', { id, draft, participants })
+  return executeCommand(commands.library.updateEvent, { id, draft, participants })
 }
 
 export function deleteEvent(id: string): Promise<void> {
-  return callCommand<void>('delete_event', { id })
-}
-
-export function searchAxioms(projectId: string, query: string): Promise<Axiom[]> {
-  return callCommand<Axiom[]>('search_axioms', { projectId, query }).then((items) => items ?? [])
+  return executeCommand(commands.library.deleteEvent, { id })
 }
 
 export function createAxiom(draft: AxiomDraft): Promise<Axiom> {
-  return callCommand<Axiom>('create_axiom', { draft })
+  return executeCommand(commands.library.createAxiom, { draft })
 }
 
 export function updateAxiom(id: string, draft: AxiomDraft): Promise<Axiom> {
-  return callCommand<Axiom>('update_axiom', { id, draft })
+  return executeCommand(commands.library.updateAxiom, { id, draft })
 }
 
 export function deleteAxiom(id: string): Promise<void> {
-  return callCommand<void>('delete_axiom', { id })
+  return executeCommand(commands.library.deleteAxiom, { id })
 }
 
 export function listBacklinks(target: EntityRef): Promise<Relation[]> {
-  return callCommand<Relation[]>('list_backlinks', { target }).then((items) => items ?? [])
+  return executeCommand(commands.library.listBacklinks, { target }).then(listResult)
 }
 
 export function createRelation(draft: RelationDraft): Promise<Relation> {
-  return callCommand<Relation>('create_relation', { draft })
-}
-
-export function listRelations(projectId: string): Promise<Relation[]> {
-  return callCommand<Relation[]>('list_relations', { projectId }).then((items) => items ?? [])
+  return executeCommand(commands.library.createRelation, { draft })
 }
 
 export function updateRelation(id: string, draft: RelationDraft): Promise<Relation> {
-  return callCommand<Relation>('update_relation', { id, draft })
+  return executeCommand(commands.library.updateRelation, { id, draft })
 }
 
 export function deleteRelation(id: string): Promise<void> {
-  return callCommand<void>('delete_relation', { id })
+  return executeCommand(commands.library.deleteRelation, { id })
 }

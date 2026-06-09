@@ -22,8 +22,8 @@ describe('jobStore', () => {
 
     expect(store.jobs[0].id).toBe('job_1')
     expect(store.activeJob?.status).toBe('running')
-    expect(invokeMock).toHaveBeenCalledWith('list_ai_jobs')
-    expect(invokeMock).toHaveBeenCalledWith('current_ai_job')
+    expect(invokeMock).toHaveBeenCalledWith('job_list')
+    expect(invokeMock).toHaveBeenCalledWith('job_current')
   })
 
   it('cancels and retries jobs through commands', async () => {
@@ -37,8 +37,8 @@ describe('jobStore', () => {
 
     expect(cancelled.status).toBe('cancelled')
     expect(retry.retryOfJobId).toBe('job_1')
-    expect(invokeMock).toHaveBeenCalledWith('cancel_ai_job', { jobId: 'job_1' })
-    expect(invokeMock).toHaveBeenCalledWith('retry_ai_job', { jobId: 'job_1' })
+    expect(invokeMock).toHaveBeenCalledWith('job_cancel', { jobId: 'job_1' })
+    expect(invokeMock).toHaveBeenCalledWith('job_retry', { jobId: 'job_1' })
   })
 
   it('loads sanitized job logs', async () => {
@@ -55,6 +55,6 @@ describe('jobStore', () => {
     await store.loadLogs('job_1')
 
     expect(store.logsByJobId.job_1[0].message).not.toContain('sk-')
-    expect(invokeMock).toHaveBeenCalledWith('list_ai_job_logs', { jobId: 'job_1' })
+    expect(invokeMock).toHaveBeenCalledWith('job_logs', { jobId: 'job_1' })
   })
 })

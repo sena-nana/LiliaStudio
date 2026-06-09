@@ -1,4 +1,5 @@
-import { callCommand } from "./client";
+import { executeCommand, listResult } from "./client";
+import { commands } from "./commands";
 import type {
   AiProviderConfig,
   AiProviderSettingsDraft,
@@ -11,54 +12,48 @@ import type {
 } from "@/types/ai";
 
 export function defaultAiProviders(): Promise<AiProviderConfig[]> {
-  return callCommand<AiProviderConfig[]>("default_ai_providers").then(
-    (items) => items ?? [],
-  );
+  return executeCommand(commands.ai.defaultProviders).then(listResult);
 }
 
 export function loadAiProviderSettings(): Promise<AiProviderSettingsView[]> {
-  return callCommand<AiProviderSettingsView[]>(
-    "load_ai_provider_settings",
-  ).then((items) => items ?? []);
+  return executeCommand(commands.ai.loadProviderSettings).then(listResult);
 }
 
 export function saveAiProviderSettings(
   drafts: AiProviderSettingsDraft[],
 ): Promise<AiProviderSettingsView[]> {
-  return callCommand<AiProviderSettingsView[]>("save_ai_provider_settings", {
+  return executeCommand(commands.ai.saveProviderSettings, {
     drafts,
-  }).then((items) => items ?? []);
+  }).then(listResult);
 }
 
 export function testOpenAiProvider(): Promise<OpenAiProviderTestResult> {
-  return callCommand<OpenAiProviderTestResult>("test_openai_provider");
+  return executeCommand(commands.ai.testOpenAiProvider);
 }
 
 export function testCodexCliProvider(): Promise<CliProviderTestResult> {
-  return callCommand<CliProviderTestResult>("test_codex_cli_provider");
+  return executeCommand(commands.ai.testCodexCliProvider);
 }
 
 export function testClaudeCliProvider(): Promise<CliProviderTestResult> {
-  return callCommand<CliProviderTestResult>("test_claude_cli_provider");
+  return executeCommand(commands.ai.testClaudeCliProvider);
 }
 
 export function previewChunks(
   text: string,
   maxChars: number,
 ): Promise<TextChunk[]> {
-  return callCommand<TextChunk[]>("preview_chunks", { text, maxChars }).then(
-    (items) => items ?? [],
-  );
+  return executeCommand(commands.vector.previewChunks, { text, maxChars }).then(listResult);
 }
 
 export function indexChunks(
   projectId: string,
   maxChars: number,
 ): Promise<DocumentChunkRecord[]> {
-  return callCommand<DocumentChunkRecord[]>("index_chunks", {
+  return executeCommand(commands.rag.indexChunks, {
     projectId,
     maxChars,
-  }).then((items) => items ?? []);
+  }).then(listResult);
 }
 
 export function previewContextPack(
@@ -66,7 +61,7 @@ export function previewContextPack(
   query: string,
   queryVector: number[],
 ): Promise<ContextPack> {
-  return callCommand<ContextPack>("preview_context_pack", {
+  return executeCommand(commands.rag.previewContextPack, {
     projectId,
     query,
     queryVector,

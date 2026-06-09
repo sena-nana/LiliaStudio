@@ -13,12 +13,12 @@ use crate::{
 };
 
 #[tauri::command]
-pub fn list_prompt_templates(state: State<'_, AppState>) -> Result<Vec<PromptTemplate>, String> {
+pub fn prompt_list_templates(state: State<'_, AppState>) -> Result<Vec<PromptTemplate>, String> {
     state.with_database(list_prompt_template_records)
 }
 
 #[tauri::command]
-pub fn copy_prompt_template(
+pub fn prompt_copy_template(
     state: State<'_, AppState>,
     template_id: String,
 ) -> Result<PromptTemplate, String> {
@@ -26,7 +26,7 @@ pub fn copy_prompt_template(
 }
 
 #[tauri::command]
-pub fn save_prompt_template(
+pub fn prompt_save_template(
     state: State<'_, AppState>,
     draft: PromptTemplateDraft,
 ) -> Result<PromptTemplate, String> {
@@ -34,13 +34,13 @@ pub fn save_prompt_template(
 }
 
 #[tauri::command]
-pub fn reset_builtin_prompt_templates(
+pub fn prompt_reset_builtin_templates(
     state: State<'_, AppState>,
 ) -> Result<Vec<PromptTemplate>, String> {
     state.with_database(reset_builtin_prompt_template_records)
 }
 
 #[tauri::command]
-pub fn preview_prompt_template(request: PromptTemplatePreviewRequest) -> PromptTemplatePreview {
+pub fn prompt_preview_template(request: PromptTemplatePreviewRequest) -> PromptTemplatePreview {
     preview_prompt_template_record(request)
 }

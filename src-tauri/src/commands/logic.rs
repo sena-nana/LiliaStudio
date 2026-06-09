@@ -4,11 +4,11 @@ use crate::logic::{
 };
 
 #[tauri::command]
-pub fn audit_facts(facts: Vec<Fact>) -> Vec<LogicConflict> {
+pub fn logic_audit_facts(facts: Vec<Fact>) -> Vec<LogicConflict> {
     detect_conflicts(&facts)
 }
 
 #[tauri::command]
-pub fn repair_suggestions(conflict: LogicConflict) -> Vec<RepairSuggestion> {
+pub fn logic_repair_suggestions(conflict: LogicConflict) -> Vec<RepairSuggestion> {
     suggest_repairs(&conflict)
 }

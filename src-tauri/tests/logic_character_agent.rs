@@ -24,7 +24,9 @@ fn detects_conflicting_axiom_facts_and_suggests_repairs() {
     let minimal = minimal_conflict(&facts, detect_conflicts).unwrap();
     assert_eq!(minimal.len(), 2);
     let repairs = suggest_repairs(&conflicts[0]);
-    assert!(repairs.iter().any(|repair| repair.title.contains("添加例外")));
+    assert!(repairs
+        .iter()
+        .any(|repair| repair.title.contains("添加例外")));
 }
 
 #[test]

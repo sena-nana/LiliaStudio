@@ -16,7 +16,10 @@ pub fn encode_json<T: Serialize>(value: &T) -> rusqlite::Result<String> {
     serde_json::to_string(value).map_err(|error| Error::ToSqlConversionFailure(Box::new(error)))
 }
 
-pub fn decode_json<T: for<'de> Deserialize<'de>>(value: String, column_index: usize) -> rusqlite::Result<T> {
+pub fn decode_json<T: for<'de> Deserialize<'de>>(
+    value: String,
+    column_index: usize,
+) -> rusqlite::Result<T> {
     serde_json::from_str(&value)
         .map_err(|error| Error::FromSqlConversionFailure(column_index, Type::Text, Box::new(error)))
 }

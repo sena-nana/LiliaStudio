@@ -31,7 +31,7 @@ async function renderProjectView(path = '/projects/project_1') {
 
 function mockProjectWorkspace() {
   invokeMock.mockImplementation(async (command) => {
-    if (command === 'list_projects') {
+    if (command === 'project_list') {
       return [
         {
           id: 'project_1',
@@ -43,8 +43,10 @@ function mockProjectWorkspace() {
         },
       ]
     }
-    if (command === 'list_entries') {
-      return [
+    if (command === 'library_project_snapshot') {
+      return {
+        projectId: 'project_1',
+        entries: [
         {
           id: 'entry_1',
           projectId: 'project_1',
@@ -58,21 +60,14 @@ function mockProjectWorkspace() {
           updatedAt: '',
           deletedAt: null,
         },
-      ]
+        ],
+        characters: [{ id: 'character_1', projectId: 'project_1', name: '椎名', faction: '北境' }],
+        events: [{ id: 'event_1', projectId: 'project_1', title: '围城战', timeLabel: '冬季' }],
+        axioms: [{ id: 'axiom_1', projectId: 'project_1', subject: '月光金属', predicate: '定义', object: '稀有' }],
+        relations: [],
+      }
     }
-    if (command === 'list_characters') {
-      return [{ id: 'character_1', projectId: 'project_1', name: '椎名', faction: '北境' }]
-    }
-    if (command === 'list_events') {
-      return [{ id: 'event_1', projectId: 'project_1', title: '围城战', timeLabel: '冬季' }]
-    }
-    if (command === 'search_axioms') {
-      return [{ id: 'axiom_1', projectId: 'project_1', subject: '月光金属', predicate: '定义', object: '稀有' }]
-    }
-    if (command === 'list_relations') {
-      return []
-    }
-    if (command === 'update_entry') {
+    if (command === 'library_update_entry') {
       return {
         id: 'entry_1',
         projectId: 'project_1',
@@ -131,7 +126,7 @@ describe('ProjectView', () => {
     await fireEvent.click(screen.getByRole('button', { name: '保存' }))
 
     await waitFor(() => {
-      expect(invokeMock).toHaveBeenCalledWith('update_entry', {
+      expect(invokeMock).toHaveBeenCalledWith('library_update_entry', {
         id: 'entry_1',
         draft: expect.objectContaining({
           projectId: 'project_1',

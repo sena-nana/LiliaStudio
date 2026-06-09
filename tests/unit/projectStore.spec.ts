@@ -40,7 +40,7 @@ describe('projectStore', () => {
 
     await store.createProject({ name: '北境', description: '' })
 
-    expect(invokeMock).toHaveBeenLastCalledWith('create_project', {
+    expect(invokeMock).toHaveBeenLastCalledWith('project_create', {
       draft: { name: '北境', description: '' },
     })
     expect(store.projects.map((project) => project.name)).toEqual(['北境', '雨夜都市'])
@@ -76,11 +76,11 @@ describe('projectStore', () => {
     })
     await store.archiveProject('project_1')
 
-    expect(invokeMock).toHaveBeenCalledWith('update_project', {
+    expect(invokeMock).toHaveBeenCalledWith('project_update', {
       id: 'project_1',
       draft: { name: '新项目', description: '更新后的描述' },
     })
-    expect(invokeMock).toHaveBeenCalledWith('archive_project', { id: 'project_1' })
+    expect(invokeMock).toHaveBeenCalledWith('project_archive', { id: 'project_1' })
     expect(store.projects).toHaveLength(0)
     expect(store.activeProjectId).toBeNull()
   })

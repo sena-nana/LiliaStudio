@@ -1,7 +1,7 @@
 use crate::services::simulation::{simulate_scenario, SimulationReport};
 
 #[tauri::command]
-pub fn run_simulation(
+pub fn simulation_run(
     project_id: String,
     scenario: String,
     referenced_entities: Vec<String>,

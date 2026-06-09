@@ -23,7 +23,7 @@ pub struct CliProviderTestResult {
 }
 
 #[tauri::command]
-pub fn test_codex_cli_provider<R: tauri::Runtime>(
+pub fn ai_test_codex_cli_provider<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
 ) -> Result<CliProviderTestResult, String> {
     let config_dir = app
@@ -72,7 +72,7 @@ pub fn test_codex_cli_provider<R: tauri::Runtime>(
 }
 
 #[tauri::command]
-pub fn test_claude_cli_provider<R: tauri::Runtime>(
+pub fn ai_test_claude_cli_provider<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
 ) -> Result<CliProviderTestResult, String> {
     let config_dir = app
