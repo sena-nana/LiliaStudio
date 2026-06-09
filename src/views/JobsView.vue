@@ -3,7 +3,7 @@
     <header class="view-header">
       <div>
         <p class="eyebrow">任务</p>
-        <h1>AI 后台队列</h1>
+        <h1>人工智能后台队列</h1>
       </div>
       <button type="button" class="primary-button" :disabled="jobStore.loading" @click="refreshJobs">
         刷新
@@ -14,8 +14,8 @@
       <article v-for="job in jobStore.jobs" :key="job.id" class="job-card">
         <header class="job-card-header">
           <div>
-            <h2>{{ job.jobType }}</h2>
-            <p>{{ job.providerKind }} · {{ job.status }}</p>
+            <h2>{{ jobTypeLabel(job.jobType) }}</h2>
+            <p>{{ providerKindLabel(job.providerKind) }} · {{ jobStatusLabel(job.status) }}</p>
           </div>
           <div class="job-card-actions">
             <button type="button" @click="loadLogs(job.id)">日志</button>
@@ -27,7 +27,7 @@
         <p v-if="job.errorMessage" class="job-error">{{ job.errorMessage }}</p>
         <ul v-if="jobStore.logsByJobId[job.id]?.length" class="job-log-list">
           <li v-for="log in jobStore.logsByJobId[job.id]" :key="log.id">
-            <strong>{{ log.level }}</strong>
+            <strong>{{ logLevelLabel(log.level) }}</strong>
             <span>{{ log.message }}</span>
           </li>
         </ul>
@@ -38,6 +38,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { jobStatusLabel, jobTypeLabel, logLevelLabel, providerKindLabel } from '@/domain/displayLabels'
 import { useJobStore } from '@/stores/jobStore'
 
 const jobStore = useJobStore()

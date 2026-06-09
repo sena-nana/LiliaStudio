@@ -2,28 +2,28 @@
   <div class="card provider-form">
     <header class="settings-section-head">
       <div>
-        <h2>CLI Provider</h2>
-        <p class="muted">Configure Codex CLI and Claude CLI command templates.</p>
+        <h2>命令行提供方</h2>
+        <p class="muted">配置 Codex 命令行和 Claude 命令行的命令模板。</p>
       </div>
       <button type="button" class="primary" :disabled="aiStore.loading" @click="saveSettings">
-        Save
+        保存
       </button>
     </header>
 
     <section v-for="provider in cliForms" :key="provider.kind" class="settings-block">
       <header class="settings-row settings-row--top">
         <div class="settings-row__label">
-          <div>{{ providerLabel(provider.kind) }}</div>
-          <div class="settings-row__hint">{{ provider.enabled ? "Enabled" : "Disabled" }}</div>
+          <div>{{ providerKindLabel(provider.kind) }}</div>
+          <div class="settings-row__hint">{{ provider.enabled ? "已启用" : "已停用" }}</div>
         </div>
         <label class="toggle-row">
           <input v-model="provider.enabled" type="checkbox" />
-          Enabled
+          启用
         </label>
       </header>
 
       <label class="stacked-field">
-        <span>Command template</span>
+        <span>命令模板</span>
         <textarea v-model="provider.commandTemplate" rows="3" />
       </label>
 
@@ -35,7 +35,7 @@
           :disabled="aiStore.loading"
           @click="testCodexCli"
         >
-          Test
+          测试
         </button>
         <button
           v-if="provider.kind === 'claudeCli'"
@@ -44,7 +44,7 @@
           :disabled="aiStore.loading"
           @click="testClaudeCli"
         >
-          Test
+          测试
         </button>
         <span v-if="provider.kind === 'codexCli' && aiStore.codexCliProviderTest" :class="['test-result', aiStore.codexCliProviderTest.ok ? 'ok' : 'error']">
           {{ aiStore.codexCliProviderTest.message }}
@@ -61,8 +61,9 @@
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from "vue";
+import { providerKindLabel } from "@/domain/displayLabels";
 import { useAiStore } from "@/stores/aiStore";
-import type { AiProviderKind, AiProviderSettingsDraft } from "@/types/ai";
+import type { AiProviderSettingsDraft } from "@/types/ai";
 
 const aiStore = useAiStore();
 const providerForms = reactive<AiProviderSettingsDraft[]>([]);
@@ -102,7 +103,7 @@ async function saveSettings() {
   try {
     await aiStore.saveProviderSettings(normalizeDrafts());
     await loadSettings();
-    statusMessage.value = "Settings saved";
+    statusMessage.value = "设置已保存";
   } catch (error) {
     statusMessage.value = error instanceof Error ? error.message : String(error);
   } finally {
@@ -141,13 +142,6 @@ async function testClaudeCli() {
   }
 }
 
-function providerLabel(kind: AiProviderKind) {
-  return {
-    openAiCompatible: "OpenAI-compatible",
-    codexCli: "Codex CLI",
-    claudeCli: "Claude CLI",
-  }[kind];
-}
 </script>
 
 <style scoped>

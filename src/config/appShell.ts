@@ -68,45 +68,45 @@ export interface SidebarFooterStatus {
 }
 
 export const SIDEBAR_GLOBAL_ACTIONS: SidebarActionItem[] = [
-  { key: "new", label: "New project", icon: FilePlus2, to: "/projects" },
-  { key: "search", label: "Search", icon: Search, to: "/search" },
+  { key: "new", label: "新建项目", icon: FilePlus2, to: "/projects" },
+  { key: "search", label: "搜索", icon: Search, to: "/search" },
 ];
 
 export const SIDEBAR_NAV: SidebarNavItem[] = [
-  { to: "/", label: "Projects", icon: Home },
-  { to: "/projects", label: "Library", icon: Library },
-  { to: "/growth", label: "Characters", icon: UserRound },
-  { to: "/timeline", label: "Events", icon: Activity },
-  { to: "/audit", label: "Rules", icon: ClipboardList },
-  { to: "/graph", label: "Relations", icon: GitBranch },
-  { to: "/search", label: "Analysis", icon: Search },
+  { to: "/", label: "项目", icon: Home },
+  { to: "/projects", label: "资料库", icon: Library },
+  { to: "/growth", label: "角色", icon: UserRound },
+  { to: "/timeline", label: "事件", icon: Activity },
+  { to: "/audit", label: "规则", icon: ClipboardList },
+  { to: "/graph", label: "关系", icon: GitBranch },
+  { to: "/search", label: "分析", icon: Search },
 ];
 
 export const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
-    title: "Project tools",
-    tools: [{ key: "more", label: "More", icon: MoreHorizontal, disabled: true }],
+    title: "项目工具",
+    tools: [{ key: "more", label: "更多", icon: MoreHorizontal, disabled: true }],
     items: [
-      { to: "/indexing", label: "Indexing", icon: Activity },
-      { to: "/backup", label: "Backup", icon: Folder },
-      { to: "/simulation", label: "Simulation", icon: Wand2 },
-      { to: "/agent", label: "Agent", icon: Bot },
+      { to: "/indexing", label: "索引", icon: Activity },
+      { to: "/backup", label: "备份", icon: Folder },
+      { to: "/simulation", label: "模拟", icon: Wand2 },
+      { to: "/agent", label: "智能体", icon: Bot },
     ],
   },
 ];
 
 export const SIDEBAR_FOOTER_LINKS: SidebarFooterLink[] = [
-  { to: "/settings", label: "Settings", icon: Settings },
-  { to: "/help", label: "Help", icon: HelpCircle },
-  { to: "/diagnostics", label: "Diagnostics", icon: Activity },
-  { to: "/jobs", label: "Jobs", icon: ClipboardList },
-  { to: "/prompt-templates", label: "Prompt", title: "Prompt templates", icon: Sparkles },
+  { to: "/settings", label: "设置", icon: Settings },
+  { to: "/help", label: "帮助", icon: HelpCircle },
+  { to: "/diagnostics", label: "诊断", icon: Activity },
+  { to: "/jobs", label: "任务", icon: ClipboardList },
+  { to: "/prompt-templates", label: "提示词", title: "提示词模板", icon: Sparkles },
 ];
 
 export const SIDEBAR_FOOTER_STATUS: SidebarFooterStatus = {
   to: "/jobs",
-  label: "Local first",
-  title: "Local-first workspace. Open the AI job queue.",
+  label: "本地优先",
+  title: "本地优先工作区。打开人工智能后台队列。",
   tone: "ok",
   icon: Sparkles,
 };
@@ -121,10 +121,10 @@ export interface SettingsTab {
 }
 
 export const SETTINGS_TABS: SettingsTab[] = [
-  { key: "appearance", label: "Appearance", icon: Palette, to: { path: "/settings", query: { tab: "appearance" } } },
-  { key: "ai", label: "AI Settings", icon: Bot, to: { path: "/settings", query: { tab: "ai" } } },
-  { key: "cli", label: "CLI Provider", icon: Wand2, to: { path: "/settings", query: { tab: "cli" } } },
-  { key: "about", label: "About", icon: Info, to: { path: "/settings", query: { tab: "about" } } },
+  { key: "appearance", label: "外观", icon: Palette, to: { path: "/settings", query: { tab: "appearance" } } },
+  { key: "ai", label: "人工智能设置", icon: Bot, to: { path: "/settings", query: { tab: "ai" } } },
+  { key: "cli", label: "命令行提供方", icon: Wand2, to: { path: "/settings", query: { tab: "cli" } } },
+  { key: "about", label: "关于", icon: Info, to: { path: "/settings", query: { tab: "about" } } },
 ];
 
 export const DEFAULT_SETTINGS_TAB: SettingsTabKey = "appearance";

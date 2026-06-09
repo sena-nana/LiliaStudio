@@ -99,10 +99,10 @@ describe('aiStore', () => {
   it('stores OpenAI provider test results', async () => {
     invokeMock.mockResolvedValueOnce({
       ok: false,
-      message: '请先保存 OpenAI-compatible API Key',
+      message: '请先保存 OpenAI 兼容接口的接口密钥',
       error: {
         code: 'configMissing',
-        message: '请先保存 OpenAI-compatible API Key',
+        message: '请先保存 OpenAI 兼容接口的接口密钥',
         status: null,
       },
     })

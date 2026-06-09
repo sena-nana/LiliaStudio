@@ -12,7 +12,7 @@ defineProps<Props>();
 const tabs: Array<{ key: ViewKey; label: string; icon: unknown; disabled: boolean }> = [
   { key: "overview", label: "概览", icon: MessagesSquare, disabled: false },
   { key: "board", label: "看板", icon: LayoutDashboard, disabled: true },
-  { key: "todo", label: "Todo", icon: CheckSquare, disabled: true },
+  { key: "todo", label: "待办", icon: CheckSquare, disabled: true },
 ];
 </script>
 
