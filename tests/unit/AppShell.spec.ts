@@ -48,10 +48,10 @@ describe('AppShell sidebar', () => {
 
     expect(view.getByText('Ameya')).toBeInTheDocument()
     expect(view.container.querySelector('.secondary-panel')).toBeInTheDocument()
-    expect(view.getByRole('link', { name: 'Projects' })).toBeInTheDocument()
-    expect(view.getByRole('link', { name: 'Library' })).toBeInTheDocument()
-    expect(view.getByRole('link', { name: 'Settings' })).toBeInTheDocument()
-    expect(view.getByRole('link', { name: 'Local-first workspace. Open the AI job queue.' })).toHaveClass('sb-conn--ok')
+    expect(view.getByRole('link', { name: '项目' })).toBeInTheDocument()
+    expect(view.getByRole('link', { name: '资料库' })).toBeInTheDocument()
+    expect(view.getByRole('link', { name: '设置' })).toBeInTheDocument()
+    expect(view.getByRole('link', { name: '本地优先工作区。打开人工智能后台队列。' })).toHaveClass('sb-conn--ok')
   })
 
   it('toggles sidebar collapse state and persists it', async () => {
@@ -80,7 +80,7 @@ describe('AppShell sidebar', () => {
     expect(view.container.querySelector('.settings-sidebar__tabs')).toBeInTheDocument()
     expect(view.container.querySelector('.sb-tree')).not.toBeInTheDocument()
 
-    await fireEvent.click(view.getByRole('button', { name: /About/ }))
+    await fireEvent.click(view.getByRole('button', { name: /关于/ }))
     await waitFor(() => {
       expect(view.router.currentRoute.value.fullPath).toBe('/settings?tab=about')
     })

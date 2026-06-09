@@ -9,7 +9,7 @@
     </header>
 
     <article v-for="conflict in workflowStore.conflicts" :key="conflict.message" class="empty-state">
-      <h2>{{ conflict.conflictType }}</h2>
+      <h2>{{ conflictTypeLabel(conflict.conflictType) }}</h2>
       <p>{{ conflict.message }}</p>
     </article>
     <article v-for="repair in workflowStore.repairs" :key="repair.title" class="empty-state">
@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+import { conflictTypeLabel } from '@/domain/displayLabels'
 import { useWorkflowStore } from '@/stores/workflowStore'
 
 const workflowStore = useWorkflowStore()

@@ -19,6 +19,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { entryTypeLabel } from '@/domain/displayLabels'
 import { useLibraryStore } from '@/stores/libraryStore'
 import { useProjectStore } from '@/stores/projectStore'
 
@@ -30,10 +31,10 @@ const projectId = computed(() => {
   return typeof value === 'string' && value.length > 0 ? value : projectStore.activeProjectId
 })
 const nodes = computed(() => [
-  ...libraryStore.entries.slice(0, 20).map((entry) => ({ id: entry.id, title: entry.title, type: entry.entryType })),
-  ...libraryStore.characters.slice(0, 20).map((character) => ({ id: character.id, title: character.name, type: 'character' })),
-  ...libraryStore.events.slice(0, 20).map((event) => ({ id: event.id, title: event.title, type: 'event' })),
-  ...libraryStore.axioms.slice(0, 20).map((axiom) => ({ id: axiom.id, title: axiom.subject, type: 'axiom' })),
+  ...libraryStore.entries.slice(0, 20).map((entry) => ({ id: entry.id, title: entry.title, type: entryTypeLabel(entry.entryType) })),
+  ...libraryStore.characters.slice(0, 20).map((character) => ({ id: character.id, title: character.name, type: '角色' })),
+  ...libraryStore.events.slice(0, 20).map((event) => ({ id: event.id, title: event.title, type: '事件' })),
+  ...libraryStore.axioms.slice(0, 20).map((axiom) => ({ id: axiom.id, title: axiom.subject, type: '公理' })),
 ])
 
 onMounted(() => {

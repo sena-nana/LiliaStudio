@@ -1,7 +1,7 @@
 <template>
   <RouterLink class="job-status-link" to="/jobs">
     <span v-if="jobStore.activeJob">
-      运行中：{{ jobStore.activeJob.jobType }} · {{ jobStore.activeJob.providerKind }}
+      运行中：{{ jobTypeLabel(jobStore.activeJob.jobType) }} · {{ providerKindLabel(jobStore.activeJob.providerKind) }}
     </span>
     <span v-else>任务空闲</span>
   </RouterLink>
@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted } from 'vue'
+import { jobTypeLabel, providerKindLabel } from '@/domain/displayLabels'
 import { useJobStore } from '@/stores/jobStore'
 
 const jobStore = useJobStore()

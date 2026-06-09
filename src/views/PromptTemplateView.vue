@@ -3,7 +3,7 @@
     <header class="view-header">
       <div>
         <p class="eyebrow">模板</p>
-        <h1>Prompt 模板</h1>
+        <h1>提示词模板</h1>
       </div>
       <div class="template-editor-actions">
         <button type="button" class="secondary-button" @click="loadTemplates">
@@ -16,7 +16,7 @@
     </header>
 
     <section class="prompt-template-layout">
-      <aside class="prompt-template-list" aria-label="Prompt 模板列表">
+      <aside class="prompt-template-list" aria-label="提示词模板列表">
         <button
           v-for="template in promptStore.templates"
           :key="template.id"
@@ -82,7 +82,7 @@
         </label>
       </section>
 
-      <aside class="prompt-preview-panel" aria-label="Prompt 预览">
+      <aside class="prompt-preview-panel" aria-label="提示词预览">
         <section class="variable-list">
           <h2>变量</h2>
           <label

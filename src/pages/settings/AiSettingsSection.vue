@@ -2,41 +2,41 @@
   <div class="card provider-form">
     <header class="settings-section-head">
       <div>
-        <h2>AI Settings</h2>
-        <p class="muted">Configure OpenAI-compatible provider, models, and secrets.</p>
+        <h2>人工智能设置</h2>
+        <p class="muted">配置 OpenAI 兼容接口、模型和密钥。</p>
       </div>
       <button type="button" class="primary" :disabled="aiStore.loading" @click="saveSettings">
-        Save
+        保存
       </button>
     </header>
 
     <section v-for="provider in openAiForms" :key="provider.kind" class="settings-block">
       <header class="settings-row settings-row--top">
         <div class="settings-row__label">
-          <div>{{ providerLabel(provider.kind) }}</div>
-          <div class="settings-row__hint">{{ provider.enabled ? "Enabled" : "Disabled" }}</div>
+          <div>{{ providerKindLabel(provider.kind) }}</div>
+          <div class="settings-row__hint">{{ provider.enabled ? "已启用" : "已停用" }}</div>
         </div>
         <label class="toggle-row">
           <input v-model="provider.enabled" type="checkbox" />
-          Enabled
+          启用
         </label>
       </header>
 
       <div class="settings-grid">
         <label>
-          <span>Base URL</span>
+          <span>基础地址</span>
           <input v-model="provider.baseUrl" placeholder="https://api.example.com/v1" />
         </label>
         <label>
-          <span>Chat model</span>
+          <span>对话模型</span>
           <input v-model="provider.chatModel" placeholder="gpt-4.1" />
         </label>
         <label>
-          <span>Embedding model</span>
+          <span>嵌入模型</span>
           <input v-model="provider.embeddingModel" placeholder="text-embedding-3-small" />
         </label>
         <label>
-          <span>API Key</span>
+          <span>接口密钥</span>
           <input
             v-model="provider.apiKey"
             type="password"
@@ -46,13 +46,13 @@
         </label>
         <label class="toggle-row">
           <input v-model="provider.clearApiKey" type="checkbox" />
-          Clear saved key
+          清除已保存密钥
         </label>
       </div>
 
       <div class="settings-actions">
         <button type="button" class="primary" :disabled="aiStore.loading" @click="testOpenAi">
-          Test
+          测试
         </button>
         <span
           v-if="aiStore.openAiProviderTest"
@@ -69,6 +69,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from "vue";
+import { providerKindLabel } from "@/domain/displayLabels";
 import { useAiStore } from "@/stores/aiStore";
 import type { AiProviderKind, AiProviderSettingsDraft } from "@/types/ai";
 
@@ -110,7 +111,7 @@ async function saveSettings() {
   try {
     await aiStore.saveProviderSettings(normalizeDrafts());
     await loadSettings();
-    statusMessage.value = "Settings saved";
+    statusMessage.value = "设置已保存";
   } catch (error) {
     statusMessage.value = error instanceof Error ? error.message : String(error);
   } finally {
@@ -137,17 +138,9 @@ async function testOpenAi() {
   }
 }
 
-function providerLabel(kind: AiProviderKind) {
-  return {
-    openAiCompatible: "OpenAI-compatible",
-    codexCli: "Codex CLI",
-    claudeCli: "Claude CLI",
-  }[kind];
-}
-
 function apiKeyPlaceholder(kind: AiProviderKind) {
   const provider = aiStore.providerSettings.find((item) => item.kind === kind);
-  return provider?.apiKeyPreview ? `Saved: ${provider.apiKeyPreview}` : "Not saved";
+  return provider?.apiKeyPreview ? `已保存：${provider.apiKeyPreview}` : "未保存";
 }
 </script>
 

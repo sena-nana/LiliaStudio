@@ -12,7 +12,7 @@ const route = useRoute();
 const activeTab = computed(() => normalizeSettingsTab(route.query.tab));
 const activeTabSection = computed(() => SETTINGS_SECTIONS[activeTab.value]);
 const activeTabLabel = computed(
-  () => SETTINGS_TABS.find((tab) => tab.key === activeTab.value)?.label ?? "Settings",
+  () => SETTINGS_TABS.find((tab) => tab.key === activeTab.value)?.label ?? "设置",
 );
 </script>
 
@@ -21,7 +21,7 @@ const activeTabLabel = computed(
     <div class="page-header">
       <div>
         <h1>{{ activeTabLabel }}</h1>
-        <p>Manage Ameya appearance, AI providers, CLI providers, and app details.</p>
+        <p>管理 Ameya 的外观、人工智能提供方、命令行提供方和应用信息。</p>
       </div>
     </div>
 

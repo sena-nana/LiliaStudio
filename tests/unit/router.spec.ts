@@ -16,21 +16,21 @@ describe('router shell integration', () => {
 
     expect(await screen.findByText('Ameya')).toBeInTheDocument()
     expect(view.container.querySelector('.secondary-panel')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Projects' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '项目' })).toBeInTheDocument()
   })
 
   it('settings page uses settings sidebar and defaults to appearance', async () => {
     await renderAt('/settings')
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Appearance' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: '外观' })).toBeInTheDocument()
     expect(document.querySelector('.settings-sidebar__tabs')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Appearance/ })).toHaveClass('is-active')
+    expect(screen.getByRole('button', { name: /外观/ })).toHaveClass('is-active')
   })
 
   it('settings tab query can show about page', async () => {
     await renderAt('/settings?tab=about')
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'About' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: '关于' })).toBeInTheDocument()
     expect(await screen.findByText('Tauri 2 + Vue 3 + Pinia')).toBeInTheDocument()
   })
 

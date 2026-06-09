@@ -64,15 +64,15 @@ pub fn test_openai_provider<R: tauri::Runtime>(
     let provider = settings
         .into_iter()
         .find(|provider| provider.kind == AiProviderKind::OpenAiCompatible)
-        .ok_or_else(|| "未找到 OpenAI-compatible Provider 设置".to_string())?;
+        .ok_or_else(|| "未找到 OpenAI 兼容接口设置".to_string())?;
     let Some(base_url) = provider.base_url.filter(|value| !value.trim().is_empty()) else {
         return Ok(error_result(ProviderError::config_missing(
-            "请先填写 OpenAI-compatible Base URL",
+            "请先填写 OpenAI 兼容接口的基础地址",
         )));
     };
     let Some(model) = provider.chat_model.filter(|value| !value.trim().is_empty()) else {
         return Ok(error_result(ProviderError::config_missing(
-            "请先填写 OpenAI-compatible Chat model",
+            "请先填写 OpenAI 兼容接口的对话模型",
         )));
     };
     let api_key = WindowsCredentialStore
@@ -80,7 +80,7 @@ pub fn test_openai_provider<R: tauri::Runtime>(
         .filter(|value| !value.trim().is_empty());
     let Some(api_key) = api_key else {
         return Ok(error_result(ProviderError::config_missing(
-            "请先保存 OpenAI-compatible API Key",
+            "请先保存 OpenAI 兼容接口的接口密钥",
         )));
     };
 

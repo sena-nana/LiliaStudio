@@ -28,7 +28,7 @@
               @click="selectRecord('entry', entry.id)"
             >
               <strong>{{ entry.title }}</strong>
-              <span>{{ entry.entryType }} · {{ entry.status }}</span>
+              <span>{{ entryTypeLabel(entry.entryType) }} · {{ entryStatusLabel(entry.status) }}</span>
             </button>
           </li>
         </ul>
@@ -108,7 +108,7 @@
               @click="selectRecord('relation', relation.id)"
             >
               <strong>{{ relation.relationType }}</strong>
-              <span>{{ entityLabel(relation.source) }} -> {{ entityLabel(relation.target) }}</span>
+              <span>{{ entityLabel(relation.source) }} → {{ entityLabel(relation.target) }}</span>
             </button>
           </li>
         </ul>
@@ -183,7 +183,7 @@
           <label>时间范围<input v-model="axiomForm.scopeTime" /></label>
           <label>地点范围<input v-model="axiomForm.scopeLocation" /></label>
           <label>来源类型<input v-model="sourceEntityTypeText" /></label>
-          <label>来源 ID<input v-model="sourceEntityIdText" /></label>
+          <label>来源标识<input v-model="sourceEntityIdText" /></label>
           <label>标签<input v-model="axiomTagsText" placeholder="标签" /></label>
           <label class="wide">自然语言<textarea v-model="axiomForm.naturalLanguage" rows="5" /></label>
         </div>
@@ -223,6 +223,7 @@
 import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import EntryTemplatePanel from "@/components/entry/EntryTemplatePanel.vue";
+import { entryStatusLabel, entryTypeLabel, entityTypeLabel } from "@/domain/displayLabels";
 import { getTemplate } from "@/domain/entryTemplates";
 import { useLibraryStore } from "@/stores/libraryStore";
 import { useProjectStore } from "@/stores/projectStore";
@@ -368,7 +369,7 @@ async function createAxiom() {
   const axiom = await libraryStore.createAxiom({
     projectId: projectId.value,
     subject: "新主体",
-    predicate: "defines",
+    predicate: "定义",
     object: "新对象",
     scopeTime: "",
     scopeLocation: "",
@@ -389,7 +390,7 @@ async function createRelation() {
     projectId: projectId.value,
     source,
     target,
-    relationType: "relates_to",
+    relationType: "关联",
     description: "",
     confidence: 1,
     directed: true,
@@ -636,7 +637,7 @@ function parseEntityKey(key: string): EntityRef {
 function entityLabel(entity: EntityRef) {
   return (
     entityOptions.value.find((option) => option.key === makeEntityKey(entity.entityType, entity.entityId))
-      ?.label ?? `${entity.entityType}:${entity.entityId}`
+      ?.label ?? `${entityTypeLabel(entity.entityType)}：${entity.entityId}`
   );
 }
 </script>

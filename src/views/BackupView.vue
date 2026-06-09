@@ -5,10 +5,10 @@
         <p class="eyebrow">备份</p>
         <h1>项目导入导出</h1>
       </div>
-      <button type="button" class="primary-button" @click="exportArchive">导出 JSON</button>
+      <button type="button" class="primary-button" @click="exportArchive">导出数据</button>
     </header>
 
-    <textarea v-model="archiveText" class="archive-text" placeholder="JSON" />
+    <textarea v-model="archiveText" class="archive-text" placeholder="归档数据" />
     <button type="button" class="primary-button" @click="importArchive">导入为新项目</button>
   </section>
 </template>

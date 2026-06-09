@@ -15,7 +15,7 @@
     <div class="project-list">
       <article v-for="result in searchStore.results" :key="`${result.entityType}:${result.entityId}`" class="project-row">
         <strong>{{ result.title }}</strong>
-        <span>{{ result.entityType }} · {{ result.snippet || '无摘要' }}</span>
+        <span>{{ entityTypeLabel(result.entityType) }} · {{ result.snippet || '无摘要' }}</span>
       </article>
     </div>
   </section>
@@ -24,6 +24,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { entityTypeLabel } from '@/domain/displayLabels'
 import { useProjectStore } from '@/stores/projectStore'
 import { useSearchStore } from '@/stores/searchStore'
 

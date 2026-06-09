@@ -15,5 +15,5 @@
 </template>
 
 <script setup lang="ts">
-const helpItems = [{ title: '项目' }, { title: '词条' }, { title: '审计' }, { title: 'AI' }]
+const helpItems = [{ title: '项目' }, { title: '词条' }, { title: '审计' }, { title: '人工智能' }]
 </script>
