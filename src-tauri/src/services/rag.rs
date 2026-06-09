@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     domain::{
         entry::EntryRepository,
+        entry_rich_text::entry_searchable_text,
         shared::{encode_json, new_id, now},
     },
     vector::{chunking::chunk_text, search::cosine_similarity},
@@ -57,7 +58,7 @@ pub fn index_project_chunks(
     let mut records = Vec::new();
 
     for entry in entries {
-        let text = format!("{}\n{}\n{}", entry.title, entry.summary, entry.body);
+        let text = entry_searchable_text(&entry.title, &entry.summary, &entry.body, &entry.tags);
         for chunk in chunk_text(&text, max_chars) {
             let id = new_id("chunk");
             let timestamp = now();

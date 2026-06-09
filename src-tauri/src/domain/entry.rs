@@ -1,6 +1,7 @@
 use rusqlite::{params, Connection, OptionalExtension};
 use serde::{Deserialize, Serialize};
 
+use super::entry_rich_text::normalize_entry_rich_text;
 use super::shared::{decode_json, encode_json, new_id, now};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -44,6 +45,8 @@ impl<'a> EntryRepository<'a> {
         let id = new_id("entry");
         let timestamp = now();
         let tags = encode_json(&draft.tags)?;
+        let summary = normalize_entry_rich_text(&draft.summary);
+        let body = normalize_entry_rich_text(&draft.body);
         self.connection.execute(
             "INSERT INTO entries
              (id, project_id, entry_type, title, summary, body, tags_json, status, created_at, updated_at)
@@ -53,18 +56,21 @@ impl<'a> EntryRepository<'a> {
                 draft.project_id,
                 draft.entry_type,
                 draft.title,
-                draft.summary,
-                draft.body,
+                summary,
+                body,
                 tags,
                 draft.status,
                 timestamp
             ],
         )?;
-        self.get(&id).map(|entry| entry.expect("created entry should exist"))
+        self.get(&id)
+            .map(|entry| entry.expect("created entry should exist"))
     }
 
     pub fn update(&self, id: &str, draft: EntryDraft) -> rusqlite::Result<Entry> {
         let tags = encode_json(&draft.tags)?;
+        let summary = normalize_entry_rich_text(&draft.summary);
+        let body = normalize_entry_rich_text(&draft.body);
         self.connection.execute(
             "UPDATE entries
              SET entry_type = ?2, title = ?3, summary = ?4, body = ?5, tags_json = ?6,
@@ -74,14 +80,15 @@ impl<'a> EntryRepository<'a> {
                 id,
                 draft.entry_type,
                 draft.title,
-                draft.summary,
-                draft.body,
+                summary,
+                body,
                 tags,
                 draft.status,
                 now()
             ],
         )?;
-        self.get(id).map(|entry| entry.expect("updated entry should exist"))
+        self.get(id)
+            .map(|entry| entry.expect("updated entry should exist"))
     }
 
     pub fn soft_delete(&self, id: &str) -> rusqlite::Result<()> {
@@ -121,7 +128,9 @@ impl<'a> EntryRepository<'a> {
              WHERE project_id = ?1 AND deleted_at IS NULL
              ORDER BY updated_at DESC",
         )?;
-        let entries = statement.query_map(params![project_id], map_entry)?.collect();
+        let entries = statement
+            .query_map(params![project_id], map_entry)?
+            .collect();
         entries
     }
 }

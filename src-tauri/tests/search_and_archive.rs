@@ -94,11 +94,149 @@ fn project_search_finds_matches_across_core_entities() {
     )
     .unwrap();
 
-    let result_types: Vec<_> = results.iter().map(|result| result.entity_type.as_str()).collect();
+    let result_types: Vec<_> = results
+        .iter()
+        .map(|result| result.entity_type.as_str())
+        .collect();
     assert!(result_types.contains(&"entry"));
     assert!(result_types.contains(&"character"));
     assert!(result_types.contains(&"event"));
     assert!(result_types.contains(&"axiom"));
+}
+
+#[test]
+fn project_search_finds_text_inside_entry_rich_text_json() {
+    let connection = migrated_memory_database();
+    let project = ProjectRepository::new(&connection)
+        .create(ProjectDraft {
+            name: "富文本项目".into(),
+            description: String::new(),
+        })
+        .unwrap();
+    EntryRepository::new(&connection)
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "world_rule".into(),
+            title: "规则".into(),
+            summary: r#"{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"潮汐规则"}]}]}"#.into(),
+            body: r#"{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"月光阔剑只能在涨潮时启动"}]}]}"#.into(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+
+    let results = search_project(
+        &connection,
+        SearchFilter {
+            project_id: project.id,
+            query: "涨潮".into(),
+            entity_types: vec!["entry".into()],
+        },
+    )
+    .unwrap();
+
+    assert_eq!(results.len(), 1);
+    assert!(results[0].snippet.contains("涨潮"));
+    assert!(!results[0].snippet.contains("type"));
+}
+
+#[test]
+fn project_search_finds_text_inside_entry_code_blocks() {
+    let connection = migrated_memory_database();
+    let project = ProjectRepository::new(&connection)
+        .create(ProjectDraft {
+            name: "代码块搜索项目".into(),
+            description: String::new(),
+        })
+        .unwrap();
+    EntryRepository::new(&connection)
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "world_rule".into(),
+            title: "规则".into(),
+            summary: String::new(),
+            body: r#"{"type":"doc","content":[{"type":"codeBlock","content":[{"type":"text","text":"moon_gate opens at high tide"}]}]}"#.into(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+
+    let results = search_project(
+        &connection,
+        SearchFilter {
+            project_id: project.id,
+            query: "high tide".into(),
+            entity_types: vec!["entry".into()],
+        },
+    )
+    .unwrap();
+
+    assert_eq!(results.len(), 1);
+    assert!(results[0].snippet.contains("high tide"));
+    assert!(!results[0].snippet.contains("codeBlock"));
+}
+
+#[test]
+fn project_search_matches_entry_title_body_and_tags_case_insensitively() {
+    let connection = migrated_memory_database();
+    let project = ProjectRepository::new(&connection)
+        .create(ProjectDraft {
+            name: "大小写搜索项目".into(),
+            description: String::new(),
+        })
+        .unwrap();
+    let entries = EntryRepository::new(&connection);
+    let title_entry = entries
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "location".into(),
+            title: "Moon Gate".into(),
+            summary: String::new(),
+            body: String::new(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+    let body_entry = entries
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "rule".into(),
+            title: "规则".into(),
+            summary: String::new(),
+            body: "Opens during Moonrise".into(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+    let tag_entry = entries
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "item".into(),
+            title: "银钥匙".into(),
+            summary: String::new(),
+            body: String::new(),
+            tags: vec!["MoonKey".into()],
+            status: "draft".into(),
+        })
+        .unwrap();
+
+    let results = search_project(
+        &connection,
+        SearchFilter {
+            project_id: project.id,
+            query: "moon".into(),
+            entity_types: vec!["entry".into()],
+        },
+    )
+    .unwrap();
+
+    let result_ids = results
+        .iter()
+        .map(|result| result.entity_id.as_str())
+        .collect::<Vec<_>>();
+    assert!(result_ids.contains(&title_entry.id.as_str()));
+    assert!(result_ids.contains(&body_entry.id.as_str()));
+    assert!(result_ids.contains(&tag_entry.id.as_str()));
 }
 
 #[test]
@@ -125,11 +263,54 @@ fn export_and_import_project_creates_a_new_project_copy() {
         .unwrap();
 
     let archive = export_project(&connection, &project.id).unwrap();
+    assert_eq!(archive.version, 2);
     let imported = import_project(&connection, archive).unwrap();
 
     assert_ne!(imported.project.id, project.id);
     assert!(imported.project.name.contains("原始项目"));
-    assert_eq!(EntryRepository::new(&connection).list_active(&imported.project.id).unwrap().len(), 1);
+    assert_eq!(
+        EntryRepository::new(&connection)
+            .list_active(&imported.project.id)
+            .unwrap()
+            .len(),
+        1
+    );
+}
+
+#[test]
+fn import_project_upgrades_v1_plain_text_entries_to_rich_text_json() {
+    let connection = migrated_memory_database();
+    let project = ProjectRepository::new(&connection)
+        .create(ProjectDraft {
+            name: "原始项目".into(),
+            description: String::new(),
+        })
+        .unwrap();
+    EntryRepository::new(&connection)
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "location".into(),
+            title: "北方城墙".into(),
+            summary: "重要地点".into(),
+            body: "围城战发生地。".into(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+
+    let mut archive = export_project(&connection, &project.id).unwrap();
+    archive.version = 1;
+    archive.entries[0].summary = "  旧摘要\n".into();
+    archive.entries[0].body = "\n旧正文  ".into();
+    let imported = import_project(&connection, archive).unwrap();
+    let imported_entry = EntryRepository::new(&connection)
+        .list_active(&imported.project.id)
+        .unwrap()
+        .remove(0);
+
+    assert!(imported_entry.summary.contains(r#""type":"doc""#));
+    assert!(imported_entry.summary.contains(r#""text":"  旧摘要""#));
+    assert!(imported_entry.body.contains(r#""text":"旧正文  ""#));
 }
 
 #[test]

@@ -36,7 +36,9 @@ fn project_repository_creates_lists_updates_and_archives_projects() {
         .expect("project is updated");
     assert_eq!(renamed.name, "雨夜都市 Revised");
 
-    repository.archive(&project.id).expect("project is archived");
+    repository
+        .archive(&project.id)
+        .expect("project is archived");
     assert!(repository.list_active().unwrap().is_empty());
     assert_eq!(repository.list_all().unwrap().len(), 1);
 }
@@ -66,6 +68,8 @@ fn entry_repository_soft_deletes_and_restores_entries() {
         .unwrap();
 
     assert_eq!(entries.list_active(&project.id).unwrap().len(), 1);
+    assert!(entry.summary.contains(r#""type":"doc""#));
+    assert!(entry.body.contains(r#""type":"doc""#));
     entries.soft_delete(&entry.id).unwrap();
     assert!(entries.list_active(&project.id).unwrap().is_empty());
     entries.restore(&entry.id).unwrap();
@@ -279,7 +283,10 @@ fn event_repository_updates_events_and_participants() {
         .unwrap();
 
     assert_eq!(updated.title, "新事件");
-    assert_eq!(events.list_participants(&updated.id).unwrap()[0].entity_id, character.id);
+    assert_eq!(
+        events.list_participants(&updated.id).unwrap()[0].entity_id,
+        character.id
+    );
 }
 
 #[test]
@@ -329,7 +336,9 @@ fn relation_repository_lists_backlinks() {
         })
         .unwrap();
 
-    let backlinks = relations.list_backlinks(&EntityRef::entry(forge.id)).unwrap();
+    let backlinks = relations
+        .list_backlinks(&EntityRef::entry(forge.id))
+        .unwrap();
     assert_eq!(backlinks.len(), 1);
     assert_eq!(backlinks[0].relation_type, "derived_from");
 }
