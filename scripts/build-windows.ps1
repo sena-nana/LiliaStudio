@@ -1,1 +1,1 @@
-pnpm tauri build
+yarn tauri:build

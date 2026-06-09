@@ -1,36 +1,38 @@
-# ameya
+# Ameya
 
-一个自用世界观整理工具，名字含义为雨夜。
+Ameya is a Windows-first worldbuilding and character logic tool.
 
-## 开发
+## Development
 
-Windows 依赖：
+Windows dependencies:
 
 - Microsoft C++ Build Tools
 - WebView2 Runtime
 - Rust MSVC toolchain
-- Node.js LTS 或更新版本
-- pnpm
+- Node.js LTS or newer
+- Corepack + Yarn 4
 
-常用命令：
-
-```powershell
-pnpm install
-pnpm tauri dev
-pnpm check
-```
-
-## 阶段能力
-
-- 本地项目、词条、角色、事件、公理和关系资料库。
-- 搜索、图谱、时间线和 JSON 导入导出。
-- 可选 AI Provider、Prompt 模板、文本切片、向量检索和 RAG 上下文包。
-- 逻辑审计、角色成长、模拟、诊断和帮助页的基础工作流。
-
-## Windows 打包
+Common commands:
 
 ```powershell
-pnpm tauri build
+corepack enable
+corepack prepare yarn@4.14.1 --activate
+yarn install
+yarn tauri:dev
+yarn verify
 ```
 
-当前为未签名构建，Windows SmartScreen 可能提示未知发布者；正式分发前需要配置代码签名证书。
+## Current Capabilities
+
+- Local projects, entries, characters, events, axioms, and relation libraries.
+- Search, graph, timeline, and JSON import/export workflows.
+- Optional AI providers, prompt templates, text chunking, vector retrieval, and RAG context packs.
+- Logic audit, character growth, simulation, diagnostics, and help workflows.
+
+## Windows Packaging
+
+```powershell
+yarn tauri:build
+```
+
+Builds are unsigned for now, so Windows SmartScreen may warn about an unknown publisher.
