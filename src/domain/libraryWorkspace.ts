@@ -17,6 +17,8 @@ import type {
 
 export type LibraryRecordKind = "entry" | "character" | "event" | "axiom" | "relation";
 
+const LIBRARY_RECORD_KINDS = new Set<string>(["entry", "character", "event", "axiom", "relation"]);
+
 export const RELATION_TYPE_PRESETS = [
   "参与事件",
   "发生于",
@@ -79,6 +81,10 @@ export function parseEntityKey(key: string): EntityRef {
     entityType: key.slice(0, separator),
     entityId: key.slice(separator + 1),
   };
+}
+
+export function isLibraryRecordKind(kind: string): kind is LibraryRecordKind {
+  return LIBRARY_RECORD_KINDS.has(kind);
 }
 
 export function buildEntityOptions(collections: Pick<LibraryCollections, "entries" | "characters" | "events" | "axioms">): LibraryEntityOption[] {

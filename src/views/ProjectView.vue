@@ -259,7 +259,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from "vue";
+import { computed, defineAsyncComponent, nextTick, onMounted, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import * as libraryApi from "@/api/library";
 import EntryTemplatePanel from "@/components/entry/EntryTemplatePanel.vue";
@@ -278,6 +278,7 @@ import {
   entityLabel,
   entryToDraft,
   eventToDraft,
+  isLibraryRecordKind,
   makeEntityKey,
   newAxiomDraft,
   newCharacterDraft,
@@ -411,6 +412,7 @@ onMounted(async () => {
   }
   if (projectId.value) {
     await libraryStore.loadProject(projectId.value);
+    applyRouteSelection();
   }
   void loadRelationTypes();
 });
@@ -418,9 +420,16 @@ onMounted(async () => {
 watch(projectId, (id) => {
   clearSelection();
   if (id) {
-    void libraryStore.loadProject(id);
+    void libraryStore.loadProject(id).then(applyRouteSelection);
   }
 });
+
+watch(
+  () => [route.query.kind, route.query.id] as const,
+  () => {
+    void nextTick(applyRouteSelection);
+  },
+);
 
 watch(
   () => [selected.kind, selected.id, projectId.value, libraryStore.relations.length] as const,
@@ -501,6 +510,25 @@ function selectRecord(kind: LibraryRecordKind, id: string) {
   selected.kind = kind;
   selected.id = id;
   syncSelectedForm();
+}
+
+function applyRouteSelection() {
+  const kind = typeof route.query.kind === "string" ? route.query.kind : "";
+  const id = typeof route.query.id === "string" ? route.query.id : "";
+  if (!id || !isLibraryRecordKind(kind) || !recordExists(kind, id)) return;
+  if (selected.kind === kind && selected.id === id) return;
+  selectRecord(kind, id);
+}
+
+function recordExists(kind: LibraryRecordKind, id: string): boolean {
+  const records = {
+    entry: libraryStore.entries,
+    character: libraryStore.characters,
+    event: libraryStore.events,
+    axiom: libraryStore.axioms,
+    relation: libraryStore.relations,
+  };
+  return records[kind].some((record) => record.id === id);
 }
 
 function selectEntity(entityType: string, entityId: string) {

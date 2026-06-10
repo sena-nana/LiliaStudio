@@ -445,21 +445,138 @@
   font-family: var(--font-mono);
 }
 
-.graph-board {
+.graph-toolbar,
+.graph-layout,
+.graph-side,
+.graph-side section,
+.graph-edge-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 8px;
+  gap: 10px;
+}
+
+.graph-toolbar {
+  grid-template-columns: repeat(2, minmax(180px, 240px)) auto;
+  align-items: end;
+}
+
+.graph-toolbar label {
+  display: grid;
+  gap: 4px;
+}
+
+.graph-layout {
+  grid-template-columns: minmax(420px, 1fr) minmax(260px, 320px);
+  align-items: start;
+}
+
+.graph-board {
+  position: relative;
+  min-height: 520px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-elev);
+}
+
+.graph-edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.graph-edges line {
+  stroke: var(--border-strong);
+  stroke-width: 0.35;
+  vector-effect: non-scaling-stroke;
+}
+
+.graph-edges line.muted {
+  opacity: 0.18;
 }
 
 .graph-node {
+  position: absolute;
   display: grid;
   gap: 4px;
-  min-height: 72px;
-  align-content: center;
+  width: 132px;
+  min-height: 64px;
+  transform: translate(-50%, -50%);
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--bg-subtle);
-  padding: 10px;
+  color: var(--text);
+  padding: 9px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.graph-node:hover,
+.graph-node.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.graph-node.muted {
+  opacity: 0.36;
+}
+
+.graph-node strong,
+.graph-node span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.graph-side {
+  position: sticky;
+  top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-elev);
+  padding: 12px;
+}
+
+.graph-side h2,
+.graph-side p {
+  margin: 0;
+}
+
+.graph-side h2 {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.graph-edge-list {
+  max-height: 420px;
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.graph-edge-list button {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: var(--bg-subtle);
+  color: var(--text);
+  padding: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.graph-edge-list button:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-active);
+}
+
+.graph-edge-list span {
+  color: var(--text-muted);
 }
 
 .object-workspace {
@@ -734,8 +851,14 @@
   }
 
   .object-rail,
-  .object-inspector {
+  .object-inspector,
+  .graph-side {
     position: static;
+  }
+
+  .graph-layout,
+  .graph-toolbar {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .object-table-row {
