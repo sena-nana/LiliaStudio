@@ -106,6 +106,12 @@ export interface DocumentChunkRecord {
   updatedAt: string;
 }
 
+export interface EmbeddingIndexResult {
+  chunkCount: number;
+  embeddingCount: number;
+  model: string;
+}
+
 export interface ContextPack {
   projectId: string;
   query: string;

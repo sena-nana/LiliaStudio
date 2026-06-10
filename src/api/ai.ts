@@ -7,6 +7,7 @@ import type {
   CliProviderTestResult,
   ContextPack,
   DocumentChunkRecord,
+  EmbeddingIndexResult,
   OpenAiProviderTestResult,
   TextChunk,
 } from "@/types/ai";
@@ -54,6 +55,16 @@ export function indexChunks(
     projectId,
     maxChars,
   }).then(listResult);
+}
+
+export function indexEmbeddings(
+  projectId: string,
+  maxChars: number,
+): Promise<EmbeddingIndexResult> {
+  return executeCommand(commands.rag.indexEmbeddings, {
+    projectId,
+    maxChars,
+  });
 }
 
 export function previewContextPack(

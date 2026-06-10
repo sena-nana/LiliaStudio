@@ -462,6 +462,214 @@
   padding: 10px;
 }
 
+.object-workspace {
+  display: grid;
+  grid-template-columns: 156px minmax(420px, 1fr) minmax(260px, 320px);
+  gap: 10px;
+  align-items: start;
+}
+
+.object-rail,
+.object-list-panel,
+.object-inspector {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-elev);
+  padding: 10px;
+}
+
+.object-rail,
+.object-inspector {
+  position: sticky;
+  top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.object-rail header,
+.object-list-panel header,
+.object-inspector header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.object-rail h2,
+.object-list-panel h2,
+.object-list-panel p,
+.object-inspector h2,
+.object-inspector h3,
+.object-inspector p {
+  margin: 0;
+}
+
+.object-rail h2,
+.object-list-panel h2,
+.object-inspector h2 {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.object-list-panel p,
+.object-inspector p,
+.object-inspector span,
+.object-table-row span,
+.collection-row strong {
+  color: var(--text-muted);
+}
+
+.collection-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+  border-radius: 6px;
+  padding: 7px 8px;
+}
+
+.collection-row.active {
+  background: var(--bg-active);
+  color: var(--accent);
+}
+
+.object-main {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.object-list-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.object-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.object-table {
+  display: grid;
+  gap: 2px;
+}
+
+.object-table-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1.5fr) minmax(70px, 0.7fr) minmax(90px, 0.8fr) 72px minmax(120px, 1fr);
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.object-table-row:hover,
+.object-table-row.active {
+  border-color: var(--border-strong);
+  background: var(--bg-active);
+}
+
+.object-title {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.object-inspector section {
+  display: grid;
+  gap: 7px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.object-inspector header strong {
+  min-width: 34px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.inspector-list {
+  display: grid;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.inspector-list button,
+.suggestion-row {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: var(--bg-subtle);
+  padding: 8px;
+  text-align: left;
+}
+
+.suggestion-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  background: var(--warn-soft);
+  color: var(--warn);
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.status-chip.ok {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+
+.neighborhood-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  gap: 6px;
+}
+
+.map-node {
+  display: grid;
+  gap: 2px;
+  min-height: 58px;
+  align-content: center;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: var(--bg-subtle);
+  padding: 7px;
+  text-align: left;
+}
+
+.map-node.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
 .timeline {
   display: grid;
   gap: 10px;
@@ -521,6 +729,19 @@
 }
 
 @media (max-width: 1100px) {
+  .object-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .object-rail,
+  .object-inspector {
+    position: static;
+  }
+
+  .object-table-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .workspace-grid,
   .prompt-template-layout,
   .tool-grid,

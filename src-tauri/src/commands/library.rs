@@ -9,7 +9,10 @@ use crate::{
         event::{Event, EventDraft, EventParticipantDraft, EventRepository},
         relation::{EntityRef, Relation, RelationDraft, RelationRepository},
     },
-    services::library::{load_project_snapshot, LibraryProjectSnapshot},
+    services::{
+        library::{load_project_snapshot, LibraryProjectSnapshot},
+        relation_workspace::{relation_neighborhood, relation_type_presets, RelationNeighborhood},
+    },
 };
 
 #[tauri::command]
@@ -118,6 +121,21 @@ pub fn library_list_backlinks(
     target: EntityRef,
 ) -> Result<Vec<Relation>, String> {
     state.with_database(|connection| RelationRepository::new(connection).list_backlinks(&target))
+}
+
+#[tauri::command]
+pub fn library_relation_type_presets() -> Vec<String> {
+    relation_type_presets()
+}
+
+#[tauri::command]
+pub fn library_relation_neighborhood(
+    state: State<'_, AppState>,
+    project_id: String,
+    target: EntityRef,
+    depth: usize,
+) -> Result<RelationNeighborhood, String> {
+    state.with_database(|connection| relation_neighborhood(connection, &project_id, target, depth))
 }
 
 #[tauri::command]

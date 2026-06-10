@@ -30,6 +30,7 @@ import type {
   LibraryProjectSnapshot,
   Relation,
   RelationDraft,
+  RelationNeighborhood,
 } from "@/types/library";
 import type { Project, ProjectDraft } from "@/types/project";
 import type { SearchFilter, SearchResult } from "@/types/search";
@@ -110,6 +111,11 @@ export const commands = {
     updateAxiom: defineCommand<{ id: string; draft: AxiomDraft }, Axiom>("library_update_axiom"),
     deleteAxiom: defineCommand<{ id: string }, void>("library_delete_axiom"),
     listBacklinks: defineCommand<{ target: EntityRef }, Relation[]>("library_list_backlinks"),
+    relationTypePresets: defineCommand<undefined, string[]>("library_relation_type_presets"),
+    relationNeighborhood: defineCommand<
+      { projectId: string; target: EntityRef; depth: number },
+      RelationNeighborhood
+    >("library_relation_neighborhood"),
     createRelation: defineCommand<{ draft: RelationDraft }, Relation>("library_create_relation"),
     updateRelation: defineCommand<{ id: string; draft: RelationDraft }, Relation>("library_update_relation"),
     deleteRelation: defineCommand<{ id: string }, void>("library_delete_relation"),
@@ -136,6 +142,10 @@ export const commands = {
   },
   rag: {
     indexChunks: defineCommand<{ projectId: string; maxChars: number }, DocumentChunkRecord[]>("rag_index_chunks"),
+    indexEmbeddings: defineCommand<
+      { projectId: string; maxChars: number },
+      { chunkCount: number; embeddingCount: number; model: string }
+    >("rag_index_embeddings"),
     previewContextPack: defineCommand<
       { projectId: string; query: string; queryVector: number[] },
       ContextPack

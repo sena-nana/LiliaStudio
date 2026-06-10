@@ -14,6 +14,7 @@ import type {
   LibraryProjectSnapshot,
   Relation,
   RelationDraft,
+  RelationNeighborhood,
 } from '@/types/library'
 
 export function loadProjectSnapshot(projectId: string): Promise<LibraryProjectSnapshot> {
@@ -77,6 +78,18 @@ export function deleteAxiom(id: string): Promise<void> {
 
 export function listBacklinks(target: EntityRef): Promise<Relation[]> {
   return executeCommand(commands.library.listBacklinks, { target }).then(listResult)
+}
+
+export function relationTypePresets(): Promise<string[]> {
+  return executeCommand(commands.library.relationTypePresets).then(listResult)
+}
+
+export function relationNeighborhood(
+  projectId: string,
+  target: EntityRef,
+  depth = 1,
+): Promise<RelationNeighborhood> {
+  return executeCommand(commands.library.relationNeighborhood, { projectId, target, depth })
 }
 
 export function createRelation(draft: RelationDraft): Promise<Relation> {

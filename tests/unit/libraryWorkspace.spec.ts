@@ -7,8 +7,11 @@ import {
   makeEntityKey,
   parseEntityKey,
   parseList,
+  relationCountForEntity,
+  relationSuggestionToDraft,
+  selectionToEntityRef,
 } from '@/domain/libraryWorkspace'
-import type { Character, Entry } from '@/types/library'
+import type { Character, Entry, Relation, RelationSuggestion } from '@/types/library'
 
 describe('libraryWorkspace helpers', () => {
   it('parses comma separated lists with Chinese and ASCII commas', () => {
@@ -83,5 +86,53 @@ describe('libraryWorkspace helpers', () => {
     expect(characterDraft.aliases).toEqual(['队长'])
     expect(characterDraft.aliases).not.toBe(character.aliases)
     expect(characterDraft.tags).not.toBe(character.tags)
+  })
+
+  it('counts relations touching an entity and ignores relation selections as entity refs', () => {
+    const relations: Relation[] = [
+      {
+        id: 'relation_1',
+        projectId: 'project_1',
+        source: { entityType: 'character', entityId: 'character_1' },
+        target: { entityType: 'event', entityId: 'event_1' },
+        relationType: '参与事件',
+        description: '',
+        confidence: 1,
+        directed: true,
+        createdAt: '',
+        updatedAt: '',
+        deletedAt: null,
+      },
+    ]
+
+    expect(relationCountForEntity(relations, { entityType: 'character', entityId: 'character_1' })).toBe(1)
+    expect(selectionToEntityRef({ kind: 'character', id: 'character_1' })).toEqual({
+      entityType: 'character',
+      entityId: 'character_1',
+    })
+    expect(selectionToEntityRef({ kind: 'relation', id: 'relation_1' })).toBeNull()
+  })
+
+  it('converts a relation suggestion into a confirmable relation draft', () => {
+    const suggestion: RelationSuggestion = {
+      source: { entityType: 'character', entityId: 'character_1' },
+      target: { entityType: 'event', entityId: 'event_1' },
+      relationType: '参与事件',
+      description: '同一事件参与者',
+      confidence: 0.95,
+      directed: true,
+      reason: '同一事件参与者',
+      strength: '高',
+    }
+
+    expect(relationSuggestionToDraft('project_1', suggestion)).toEqual({
+      projectId: 'project_1',
+      source: { entityType: 'character', entityId: 'character_1' },
+      target: { entityType: 'event', entityId: 'event_1' },
+      relationType: '参与事件',
+      description: '同一事件参与者',
+      confidence: 0.95,
+      directed: true,
+    })
   })
 })
