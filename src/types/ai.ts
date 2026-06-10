@@ -112,6 +112,22 @@ export interface EmbeddingIndexResult {
   model: string;
 }
 
+export type EmbeddingIndexStatus =
+  | "idle"
+  | "loading"
+  | "ready"
+  | "degraded"
+  | "failed";
+
+export interface EmbeddingIndexState {
+  chunkCount: number;
+  embeddingCount: number;
+  model: string;
+  status: EmbeddingIndexStatus;
+  message: string;
+  lastProjectId: string | null;
+}
+
 export interface ContextPack {
   projectId: string;
   query: string;
