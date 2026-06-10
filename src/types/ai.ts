@@ -91,6 +91,7 @@ export interface TextChunk {
   ordinal: number;
   text: string;
   contentHash: string;
+  estimatedTokens: number;
 }
 
 export interface DocumentChunkRecord {
@@ -101,6 +102,8 @@ export interface DocumentChunkRecord {
   ordinal: number;
   text: string;
   contentHash: string;
+  estimatedTokens: number;
+  updatedAt: string;
 }
 
 export interface ContextPack {

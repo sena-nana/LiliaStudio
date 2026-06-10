@@ -11,7 +11,10 @@ use ameya_lib::{
         },
         settings::{mask_secret, AiProviderConfig},
     },
-    vector::{chunking::chunk_text, search::cosine_similarity},
+    vector::{
+        chunking::{chunk_text, estimate_tokens},
+        search::cosine_similarity,
+    },
 };
 use std::{io::Write, sync::Mutex, time::Duration};
 
@@ -254,6 +257,12 @@ fn chunks_text_by_stable_boundaries() {
     assert_eq!(chunks[1].ordinal, 1);
     assert!(chunks[1].text.starts_with("第二段"));
     assert_eq!(chunks[3].text, "第三段。");
+    assert_eq!(chunks[0].estimated_tokens, estimate_tokens("第一段。"));
+    assert!(chunks.iter().all(|chunk| chunk.estimated_tokens > 0));
+    assert_eq!(
+        chunks[0].content_hash,
+        chunk_text("第一段。", 12)[0].content_hash
+    );
 }
 
 #[test]
