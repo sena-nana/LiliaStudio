@@ -2,9 +2,10 @@
 
 ## 当前状态
 
-- 已完成到产品化 P7：Prompt 模板管理。
-- 下一步从 `plans/Tauri-Vue-Windows开发路线图.md` 的 T024 开始复核。
-- 若现有 M3-M4 的文本切片能力已满足 T024，记录对照结果后推进 T025 Embedding 生成与向量存储。
+- 已完成到 M4：T024 文本切片 DocumentChunk。
+- T024 复核结论：原实现已有 Entry chunk 基础能力，但未覆盖 Character、Event、Axiom，也未返回 token 估算和更新时间。
+- T024 验收结论：`rag_index_chunks` 现已覆盖 Entry、Character、Event、Axiom；chunk 记录 source type/id、文本、hash、token 估算、更新时间；内容未变化时不重复更新时间；流程不调用 embedding。
+- 下一步推进 T025 Embedding 生成与向量存储。
 
 ## 固定开发约束
 
@@ -20,14 +21,21 @@
 
 ## 开发 Todo
 
-1. T024 文本切片 DocumentChunk
-   - 复核现有切片实现是否覆盖 Entry、Character、Event、Axiom。
-   - 若已满足路线图验收，记录对照结果并推进 T025。
-   - 若未满足，补齐可复用 chunk 生成，不调用 embedding。
+1. T024 文本切片 DocumentChunk（已完成）
+   - 已补齐 Entry、Character、Event、Axiom 的可复用 chunk 生成。
+   - 已补齐 token 估算、更新时间返回、未变化内容不重复更新、软删除来源清理。
+   - 已验证不调用 embedding，索引测试中 `embeddings` 表保持为空。
 
 2. T025 Embedding 生成与向量存储
    - 复用 OpenAI-compatible Provider 和 DocumentChunk。
    - 生成并保存 embedding，不实现语义搜索排序 UI。
+
+## 最近验证
+
+- 2026-06-10 T024：
+  - `cargo test --manifest-path src-tauri/Cargo.toml`
+  - `yarn test:unit`
+  - `yarn typecheck`
 
 3. T026 语义检索
    - 基于本地向量存储实现相似度检索。

@@ -25,6 +25,11 @@ pub const MIGRATIONS: &[Migration] = &[
         name: "entry_rich_text",
         sql: include_str!("../../migrations/0003_entry_rich_text.sql"),
     },
+    Migration {
+        version: 4,
+        name: "document_chunk_metadata",
+        sql: include_str!("../../migrations/0004_document_chunk_metadata.sql"),
+    },
 ];
 
 pub fn run_migrations(connection: &mut Connection) -> rusqlite::Result<()> {
@@ -91,12 +96,12 @@ mod tests {
         run_migrations(&mut connection).expect("first migration run succeeds");
         run_migrations(&mut connection).expect("second migration run succeeds");
 
-        assert_eq!(current_schema_version(&connection).unwrap(), 3);
+        assert_eq!(current_schema_version(&connection).unwrap(), 4);
         let count: i64 = connection
             .query_row("SELECT COUNT(*) FROM schema_migrations", [], |row| {
                 row.get(0)
             })
             .unwrap();
-        assert_eq!(count, 3);
+        assert_eq!(count, 4);
     }
 }

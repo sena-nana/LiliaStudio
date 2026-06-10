@@ -14,7 +14,15 @@ fn runs_migrations_against_file_database() {
 
     migrations::run_migrations(&mut connection).expect("migrations run");
 
-    assert_eq!(migrations::current_schema_version(&connection).unwrap(), 3);
+    assert_eq!(migrations::current_schema_version(&connection).unwrap(), 4);
+    let mut columns = connection
+        .prepare("PRAGMA table_info(document_chunks)")
+        .expect("pragma prepares");
+    let has_estimated_tokens = columns
+        .query_map([], |row| row.get::<_, String>(1))
+        .unwrap()
+        .any(|name| name.unwrap() == "estimated_tokens");
+    assert!(has_estimated_tokens);
 }
 
 #[test]

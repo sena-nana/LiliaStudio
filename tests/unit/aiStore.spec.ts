@@ -14,7 +14,19 @@ describe('aiStore', () => {
   it('loads default providers and indexes chunks through commands', async () => {
     invokeMock
       .mockResolvedValueOnce([{ kind: 'codexCli', commandTemplate: 'codex exec "{prompt}"' }])
-      .mockResolvedValueOnce([{ id: 'chunk_1', text: '潮汐能规则' }])
+      .mockResolvedValueOnce([
+        {
+          id: 'chunk_1',
+          projectId: 'project_1',
+          sourceType: 'character',
+          sourceId: 'character_1',
+          ordinal: 0,
+          text: '潮汐能规则',
+          contentHash: 'hash_1',
+          estimatedTokens: 3,
+          updatedAt: '2026-06-10T00:00:00Z',
+        },
+      ])
 
     const store = useAiStore()
     await store.loadDefaults()
@@ -22,6 +34,9 @@ describe('aiStore', () => {
 
     expect(store.providers[0].kind).toBe('codexCli')
     expect(store.chunks[0].id).toBe('chunk_1')
+    expect(store.chunks[0].sourceType).toBe('character')
+    expect(store.chunks[0].estimatedTokens).toBe(3)
+    expect(store.chunks[0].updatedAt).toBe('2026-06-10T00:00:00Z')
     expect(invokeMock).toHaveBeenCalledWith('rag_index_chunks', { projectId: 'project_1', maxChars: 600 })
   })
 

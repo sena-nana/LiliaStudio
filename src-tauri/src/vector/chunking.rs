@@ -6,6 +6,7 @@ pub struct TextChunk {
     pub ordinal: usize,
     pub text: String,
     pub content_hash: String,
+    pub estimated_tokens: usize,
 }
 
 pub fn chunk_text(text: &str, max_chars: usize) -> Vec<TextChunk> {
@@ -46,6 +47,16 @@ fn make_chunk(ordinal: usize, text: &str) -> TextChunk {
         ordinal,
         text: text.to_string(),
         content_hash: format!("{:016x}", stable_hash(text)),
+        estimated_tokens: estimate_tokens(text),
+    }
+}
+
+pub fn estimate_tokens(text: &str) -> usize {
+    let character_count = text.chars().filter(|ch| !ch.is_whitespace()).count();
+    if character_count == 0 {
+        0
+    } else {
+        character_count.div_ceil(4)
     }
 }
 
