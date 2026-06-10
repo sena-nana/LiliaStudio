@@ -2,6 +2,7 @@ node_modules/
 .yarn/install-state.gz
 dist/
 dist-ssr/
+docs/.vitepress/dist/
 coverage/
 test-results/
 .vite/

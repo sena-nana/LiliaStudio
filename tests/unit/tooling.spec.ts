@@ -13,9 +13,13 @@ function scriptEnv(extra: Record<string, string>) {
   return { ...env, ...extra };
 }
 
-describe("Ameya template tooling", () => {
-  it("root package.json uses Yarn 4 and template verification scripts", () => {
-    const pkg = JSON.parse(readFileSync(resolve("package.json"), "utf-8"));
+function readWorkspaceFile(path: string) {
+  return readFileSync(resolve(path), "utf-8");
+}
+
+describe("Ameya tooling", () => {
+  it("root package.json uses Yarn 4 and project verification scripts", () => {
+    const pkg = JSON.parse(readWorkspaceFile("package.json"));
 
     expect(pkg.workspaces).toBeUndefined();
     expect(pkg.packageManager).toBe("yarn@4.14.1");
@@ -24,6 +28,9 @@ describe("Ameya template tooling", () => {
       dev: "vite",
       build: "vue-tsc --noEmit && vite build",
       test: "vitest run",
+      "docs:dev": "vitepress dev docs",
+      "docs:build": "vitepress build docs",
+      "docs:preview": "vitepress preview docs",
       tauri: "tauri",
       "tauri:dev": "node scripts/tauri-dev.mjs",
       "tauri:build": "tauri build",
@@ -31,8 +38,8 @@ describe("Ameya template tooling", () => {
     });
   });
 
-  it("includes template UI dependencies and keeps Ameya state dependencies", () => {
-    const pkg = JSON.parse(readFileSync(resolve("package.json"), "utf-8"));
+  it("includes shell UI dependencies and keeps Ameya state dependencies", () => {
+    const pkg = JSON.parse(readWorkspaceFile("package.json"));
     const deps = { ...pkg.dependencies, ...pkg.devDependencies };
 
     expect(deps.vue).toBeDefined();
@@ -42,10 +49,11 @@ describe("Ameya template tooling", () => {
     expect(deps["@tauri-apps/plugin-store"]).toBeDefined();
     expect(deps["@tauri-apps/plugin-opener"]).toBeDefined();
     expect(deps["lucide-vue-next"]).toBeDefined();
+    expect(deps.vitepress).toBeDefined();
   });
 
-  it("Rust side keeps Ameya services and adds template window-state plugins", () => {
-    const cargo = readFileSync(resolve("src-tauri/Cargo.toml"), "utf-8");
+  it("Rust side keeps Ameya services and window-state plugins", () => {
+    const cargo = readWorkspaceFile("src-tauri/Cargo.toml");
 
     expect(cargo).toContain('tauri-plugin-store = "2"');
     expect(cargo).toContain('tauri-plugin-opener = "2"');
@@ -97,11 +105,42 @@ describe("Ameya template tooling", () => {
       AMEYA_DEV_STRICT_PORT: "1",
     });
   });
+
+  it("GitHub workflows use LiliaStudio naming and project-local paths", () => {
+    const ci = readWorkspaceFile(".github/workflows/ci.yml");
+    const release = readWorkspaceFile(".github/workflows/release.yml");
+    const pages = readWorkspaceFile(".github/workflows/pages.yml");
+    const combined = [ci, release, pages].join("\n");
+
+    expect(ci).toContain("corepack yarn verify");
+    expect(ci).toContain("corepack yarn docs:build");
+    expect(ci).toContain("src-tauri/target");
+    expect(release).toContain("projectPath: .");
+    expect(release).toContain("releaseName: LiliaStudio");
+    expect(release.match(/name: Resolve ref/g)).toHaveLength(1);
+    expect(pages).toContain("docs/.vitepress/dist");
+    expect(pages).not.toContain("enablement: true");
+    expect(combined).not.toContain("apps/desktop");
+    expect(combined).not.toContain("LiliaCode");
+  });
+
+  it("GitHub Issue templates use LiliaStudio fields without template-only wording", () => {
+    const bug = readWorkspaceFile(".github/ISSUE_TEMPLATE/bug_report.yml");
+    const feature = readWorkspaceFile(".github/ISSUE_TEMPLATE/feature_request.yml");
+    const combined = `${bug}\n${feature}`;
+
+    expect(combined).toContain("LiliaStudio 版本 / commit");
+    expect(combined).toContain("构建 / 发布");
+    expect(combined).toContain("文档 / GitHub");
+    expect(combined).not.toContain("模板版本 / commit");
+    expect(combined).not.toContain("Tauri Template");
+    expect(combined).not.toContain("LiliaCode");
+  });
 });
 
-describe("template shell styles", () => {
+describe("shell styles", () => {
   it("keeps sidebar collapse, resizer, and reduced-motion rules", () => {
-    const shellCss = readFileSync(resolve("src/styles/shell.css"), "utf-8");
+    const shellCss = readWorkspaceFile("src/styles/shell.css");
 
     expect(shellCss).toContain("transition: grid-template-columns 0.24s var(--sidebar-easing)");
     expect(shellCss).toContain("left 0.24s var(--sidebar-easing)");
@@ -109,7 +148,7 @@ describe("template shell styles", () => {
   });
 
   it("keeps global transparent button baseline and explicit emphasis states", () => {
-    const styles = readFileSync(resolve("src/styles.css"), "utf-8");
+    const styles = readWorkspaceFile("src/styles.css");
 
     expect(styles).toMatch(/button \{\r?\n  background: transparent/);
     expect(styles).toContain("button.primary");
