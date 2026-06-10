@@ -5,6 +5,35 @@ import { useAiStore } from '@/stores/aiStore'
 
 const invokeMock = vi.mocked(invoke)
 
+function makeOpenAiProviderSettings(overrides: Record<string, unknown> = {}) {
+  return {
+    kind: 'openAiCompatible',
+    baseUrl: 'https://llm.example/v1',
+    apiKeyPreview: 'sk-********1234',
+    hasApiKey: true,
+    chatModel: 'story-chat',
+    embeddingModel: 'story-embed',
+    commandTemplate: null,
+    enabled: true,
+    ...overrides,
+  }
+}
+
+function makeChunk(overrides: Record<string, unknown> = {}) {
+  return {
+    id: 'chunk_1',
+    projectId: 'project_1',
+    sourceType: 'character',
+    sourceId: 'character_1',
+    ordinal: 0,
+    text: '潮汐能规则',
+    contentHash: 'hash_1',
+    estimatedTokens: 3,
+    updatedAt: '2026-06-10T00:00:00Z',
+    ...overrides,
+  }
+}
+
 describe('aiStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -40,32 +69,87 @@ describe('aiStore', () => {
     expect(invokeMock).toHaveBeenCalledWith('rag_index_chunks', { projectId: 'project_1', maxChars: 600 })
   })
 
-  it('loads and saves provider settings without exposing raw secrets', async () => {
+  it('rebuilds embeddings when provider settings are ready', async () => {
+    invokeMock
+      .mockResolvedValueOnce([makeOpenAiProviderSettings()])
+      .mockResolvedValueOnce({
+        chunkCount: 12,
+        embeddingCount: 12,
+        model: 'story-embed',
+      })
+
+    const store = useAiStore()
+    await store.rebuildEmbeddingIndex('project_1', 600)
+
+    expect(store.indexState).toMatchObject({
+      chunkCount: 12,
+      embeddingCount: 12,
+      model: 'story-embed',
+      status: 'ready',
+      message: '',
+      lastProjectId: 'project_1',
+    })
+    expect(invokeMock).toHaveBeenNthCalledWith(1, 'ai_load_provider_settings')
+    expect(invokeMock).toHaveBeenNthCalledWith(2, 'rag_index_embeddings', { projectId: 'project_1', maxChars: 600 })
+  })
+
+  it('falls back to chunk indexing when embedding provider is not configured', async () => {
     invokeMock
       .mockResolvedValueOnce([
-        {
-          kind: 'openAiCompatible',
-          baseUrl: 'https://llm.example/v1',
-          apiKeyPreview: 'sk-********1234',
-          hasApiKey: true,
-          chatModel: 'story-chat',
-          embeddingModel: 'story-embed',
-          commandTemplate: null,
-          enabled: true,
-        },
+        makeOpenAiProviderSettings({
+          apiKeyPreview: null,
+          hasApiKey: false,
+        }),
       ])
-      .mockResolvedValueOnce([
-        {
-          kind: 'openAiCompatible',
-          baseUrl: 'https://llm.example/v1',
-          apiKeyPreview: 'sk-********1234',
-          hasApiKey: true,
-          chatModel: 'story-chat',
-          embeddingModel: 'story-embed',
-          commandTemplate: null,
-          enabled: true,
-        },
-      ])
+      .mockResolvedValueOnce([makeChunk()])
+
+    const store = useAiStore()
+    await store.rebuildEmbeddingIndex('project_1', 600)
+
+    expect(store.indexState).toMatchObject({
+      chunkCount: 1,
+      embeddingCount: 0,
+      model: '',
+      status: 'degraded',
+      message: '请先在 AI 设置中启用并配置 OpenAI 兼容接口的嵌入模型和密钥。',
+      lastProjectId: 'project_1',
+    })
+    expect(invokeMock).toHaveBeenNthCalledWith(2, 'rag_index_chunks', { projectId: 'project_1', maxChars: 600 })
+    expect(invokeMock).not.toHaveBeenCalledWith('rag_index_embeddings', expect.anything())
+  })
+
+  it('stores failed embedding indexing without clearing previous counters', async () => {
+    invokeMock
+      .mockResolvedValueOnce([makeOpenAiProviderSettings()])
+      .mockResolvedValueOnce({
+        chunkCount: 8,
+        embeddingCount: 8,
+        model: 'story-embed',
+      })
+
+    const store = useAiStore()
+    await store.rebuildEmbeddingIndex('project_1', 600)
+
+    invokeMock.mockReset()
+    invokeMock
+      .mockRejectedValueOnce(new Error('provider returned HTTP 401'))
+
+    await store.rebuildEmbeddingIndex('project_1', 600)
+
+    expect(store.indexState).toMatchObject({
+      chunkCount: 8,
+      embeddingCount: 8,
+      model: 'story-embed',
+      status: 'failed',
+      message: 'provider returned HTTP 401',
+      lastProjectId: 'project_1',
+    })
+  })
+
+  it('loads and saves provider settings without exposing raw secrets', async () => {
+    invokeMock
+      .mockResolvedValueOnce([makeOpenAiProviderSettings()])
+      .mockResolvedValueOnce([makeOpenAiProviderSettings()])
 
     const store = useAiStore()
     await store.loadProviderSettings()
