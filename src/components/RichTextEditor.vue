@@ -30,7 +30,7 @@ import {
   Quote,
   Redo2,
   Undo2,
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 import { normalizeRichTextContent, parseRichTextContent } from './richTextContent'
 
 const props = defineProps<{

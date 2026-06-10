@@ -48,7 +48,7 @@ describe("Ameya tooling", () => {
     expect(deps["@tauri-apps/api"]).toBeDefined();
     expect(deps["@tauri-apps/plugin-store"]).toBeDefined();
     expect(deps["@tauri-apps/plugin-opener"]).toBeDefined();
-    expect(deps["lucide-vue-next"]).toBeDefined();
+    expect(deps["@lucide/vue"]).toBeDefined();
     expect(deps.vitepress).toBeDefined();
   });
 

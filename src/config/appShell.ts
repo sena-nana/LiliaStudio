@@ -1,4 +1,4 @@
-import { Bot, Info, Palette, Wand2 } from "lucide-vue-next";
+import { Bot, Info, Palette, Wand2 } from "@lucide/vue";
 import { defineAsyncComponent, type Component } from "vue";
 import {
   FEATURE_FOOTER_LINKS,

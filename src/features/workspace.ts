@@ -10,7 +10,7 @@ import {
   Search,
   UserRound,
   Wand2,
-} from "lucide-vue-next";
+} from "@lucide/vue";
 import type { FeatureModule } from "./types";
 
 export const workspaceFeature: FeatureModule = {

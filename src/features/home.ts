@@ -1,4 +1,4 @@
-import { Home } from "lucide-vue-next";
+import { Home } from "@lucide/vue";
 import type { FeatureModule } from "./types";
 
 export const homeFeature: FeatureModule = {

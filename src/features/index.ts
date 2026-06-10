@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-vue-next";
+import { Sparkles } from "@lucide/vue";
 import { homeFeature } from "./home";
 import { toolsFeature } from "./tools";
 import type {

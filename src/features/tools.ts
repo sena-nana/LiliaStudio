@@ -1,4 +1,4 @@
-import { Activity, ClipboardList, HelpCircle, Settings, Sparkles } from "lucide-vue-next";
+import { Activity, ClipboardList, HelpCircle, Settings, Sparkles } from "@lucide/vue";
 import type { FeatureModule } from "./types";
 
 export const toolsFeature: FeatureModule = {
