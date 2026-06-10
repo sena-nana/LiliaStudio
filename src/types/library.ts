@@ -139,6 +139,34 @@ export interface RelationDraft {
   directed: boolean
 }
 
+export interface EntitySummary {
+  entityType: string
+  entityId: string
+  title: string
+  subtitle: string
+  summary: string
+}
+
+export interface RelationSuggestion {
+  source: EntityRef
+  target: EntityRef
+  relationType: string
+  description: string
+  confidence: number
+  directed: boolean
+  reason: string
+  strength: string
+}
+
+export interface RelationNeighborhood {
+  center: EntitySummary
+  nodes: EntitySummary[]
+  edges: Relation[]
+  suggestions: RelationSuggestion[]
+  missing: string[]
+  relationCount: number
+}
+
 export interface LibraryProjectSnapshot {
   projectId: string
   entries: Entry[]

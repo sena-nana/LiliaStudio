@@ -12,9 +12,22 @@ import type {
   EventRecord,
   Relation,
   RelationDraft,
+  RelationSuggestion,
 } from "@/types/library";
 
 export type LibraryRecordKind = "entry" | "character" | "event" | "axiom" | "relation";
+
+export const RELATION_TYPE_PRESETS = [
+  "参与事件",
+  "发生于",
+  "属于阵营",
+  "导致",
+  "支撑规则",
+  "约束",
+  "来源于",
+  "冲突候选",
+  "语义相关",
+] as const;
 
 export interface LibrarySelection {
   kind: LibraryRecordKind | null;
@@ -94,6 +107,36 @@ export function entityLabel(entity: EntityRef, options: LibraryEntityOption[]): 
     options.find((option) => option.key === makeEntityKey(entity.entityType, entity.entityId))?.label ??
     `${entityTypeLabel(entity.entityType)}：${entity.entityId}`
   );
+}
+
+export function selectionToEntityRef(selection: LibrarySelection): EntityRef | null {
+  if (!selection.kind || !selection.id || selection.kind === "relation") {
+    return null;
+  }
+  return { entityType: selection.kind, entityId: selection.id };
+}
+
+export function relationTouchesEntity(relation: Relation, entity: EntityRef): boolean {
+  return (
+    (relation.source.entityType === entity.entityType && relation.source.entityId === entity.entityId) ||
+    (relation.target.entityType === entity.entityType && relation.target.entityId === entity.entityId)
+  );
+}
+
+export function relationCountForEntity(relations: Relation[], entity: EntityRef): number {
+  return relations.filter((relation) => relationTouchesEntity(relation, entity)).length;
+}
+
+export function relationSuggestionToDraft(projectId: string, suggestion: RelationSuggestion): RelationDraft {
+  return {
+    projectId,
+    source: { ...suggestion.source },
+    target: { ...suggestion.target },
+    relationType: suggestion.relationType,
+    description: suggestion.description,
+    confidence: suggestion.confidence,
+    directed: suggestion.directed,
+  };
 }
 
 export function emptyEntryDraft(projectId: string): EntryDraft {

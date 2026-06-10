@@ -4,5 +4,6 @@ pub mod jobs;
 pub mod library;
 pub mod prompts;
 pub mod rag;
+pub mod relation_workspace;
 pub mod search;
 pub mod simulation;

@@ -55,8 +55,8 @@ describe("Ameya tooling", () => {
   it("Rust side keeps Ameya services and window-state plugins", () => {
     const cargo = readWorkspaceFile("src-tauri/Cargo.toml");
 
-    expect(cargo).toContain('tauri-plugin-store = "2"');
-    expect(cargo).toContain('tauri-plugin-opener = "2"');
+    expect(cargo).toContain('tauri-plugin-store = "2.');
+    expect(cargo).toContain('tauri-plugin-opener = "2.');
     expect(cargo).toContain("rusqlite");
     expect(cargo).toContain("ureq");
   });
