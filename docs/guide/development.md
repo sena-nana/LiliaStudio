@@ -3,7 +3,7 @@
 ## 项目结构
 
 ```text
-Tauri-Template/
+ameya/
 ├── src/                 # Vue 3 前端
 │   ├── layouts/         # AppShell / SecondaryPanel / SettingsSidebar
 │   ├── components/      # TitleBar / ViewTabs / SidebarFooter 等
