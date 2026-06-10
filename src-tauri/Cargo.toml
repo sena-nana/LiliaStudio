@@ -14,25 +14,25 @@ name = "ameya"
 path = "src/main.rs"
 
 [build-dependencies]
-tauri-build = { version = "2.5.3", features = [] }
+tauri-build = { version = "2.6.2", features = [] }
 
 [dependencies]
-anyhow = "1.0"
-rusqlite = { version = "0.37", features = ["bundled", "chrono", "functions", "serde_json"] }
-ureq = { version = "3.1", features = ["json"] }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-tauri = { version = "2.9.5", default-features = false, features = ["tauri-runtime-wry", "webview2-com", "compression", "common-controls-v6", "dynamic-acl"] }
-tauri-plugin-opener = "2"
-tauri-plugin-store = "2"
-tauri-runtime-wry = { version = "2.11.1", default-features = false }
-thiserror = "2.0"
-time = { version = "0.3", features = ["formatting", "macros"] }
-uuid = { version = "1.23", features = ["v4", "serde"] }
+anyhow = "1.0.102"
+rusqlite = { version = "0.37.0", features = ["bundled", "chrono", "functions", "serde_json"] }
+ureq = { version = "3.3.0", features = ["json"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.150"
+tauri = { version = "2.11.2", default-features = false, features = ["tauri-runtime-wry", "webview2-com", "compression", "common-controls-v6", "dynamic-acl"] }
+tauri-plugin-opener = "2.5.4"
+tauri-plugin-store = "2.4.3"
+tauri-runtime-wry = { version = "2.11.2", default-features = false }
+thiserror = "2.0.18"
+time = { version = "0.3.47", features = ["formatting", "macros"] }
+uuid = { version = "1.23.3", features = ["v4", "serde"] }
 
 [target.'cfg(target_os = "windows")'.dependencies]
-keyring-core = "1.0"
-windows-native-keyring-store = "1.0"
+keyring-core = "1.0.0"
+windows-native-keyring-store = "1.1.0"
 
 [dev-dependencies]
-tempfile = "3.23"
+tempfile = "3.27.0"
