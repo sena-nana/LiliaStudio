@@ -155,17 +155,7 @@ fn search_entries(
 ) -> rusqlite::Result<()> {
     for entry in EntryRepository::new(connection).list_active(project_id)? {
         let body = entry_searchable_text("", &entry.summary, &entry.body, &entry.tags);
-        let title_matches = find_case_insensitive(&entry.title, query).is_some();
-        let body_matches = find_case_insensitive(&body, query).is_some();
-        if title_matches || body_matches {
-            results.push(SearchResult {
-                entity_type: "entry".to_string(),
-                entity_id: entry.id,
-                title: entry.title.clone(),
-                snippet: make_snippet(&body, query),
-                score: if title_matches { 2.0 } else { 1.0 },
-            });
-        }
+        push_search_result_if_matches(results, "entry", entry.id, entry.title, &body, query);
     }
     Ok(())
 }
@@ -180,35 +170,44 @@ fn search_table(
     project_id: &str,
     query: &str,
 ) -> rusqlite::Result<()> {
-    let like_query = format!("%{query}%");
     let sql = format!(
         "SELECT id, {title_column}, {body_expr}
          FROM {table}
          WHERE project_id = ?1
-           AND deleted_at IS NULL
-           AND ({title_column} LIKE ?2 OR {body_expr} LIKE ?2)"
+           AND deleted_at IS NULL"
     );
     let mut statement = connection.prepare(&sql)?;
-    let rows = statement.query_map(params![project_id, like_query], |row| {
+    let rows = statement.query_map(params![project_id], |row| {
         let title: String = row.get(1)?;
         let body: String = row.get(2)?;
-        let score = if find_case_insensitive(&title, query).is_some() {
-            2.0
-        } else {
-            1.0
-        };
-        Ok(SearchResult {
-            entity_type: entity_type.to_string(),
-            entity_id: row.get(0)?,
-            title,
-            snippet: make_snippet(&body, query),
-            score,
-        })
+        Ok((row.get::<_, String>(0)?, title, body))
     })?;
     for row in rows {
-        results.push(row?);
+        let (entity_id, title, body) = row?;
+        push_search_result_if_matches(results, entity_type, entity_id, title, &body, query);
     }
     Ok(())
+}
+
+fn push_search_result_if_matches(
+    results: &mut Vec<SearchResult>,
+    entity_type: &str,
+    entity_id: String,
+    title: String,
+    body: &str,
+    query: &str,
+) {
+    let title_matches = find_case_insensitive(&title, query).is_some();
+    let body_matches = find_case_insensitive(body, query).is_some();
+    if title_matches || body_matches {
+        results.push(SearchResult {
+            entity_type: entity_type.to_string(),
+            entity_id,
+            title,
+            snippet: make_snippet(body, query),
+            score: if title_matches { 2.0 } else { 1.0 },
+        });
+    }
 }
 
 fn make_snippet(text: &str, query: &str) -> String {
@@ -277,9 +276,7 @@ fn find_case_insensitive(text: &str, query: &str) -> Option<MatchRange> {
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        find_case_insensitive, make_snippet, semantic_search_results, MatchRange,
-    };
+    use super::{find_case_insensitive, make_snippet, semantic_search_results, MatchRange};
     use crate::{
         domain::{
             entry::{EntryDraft, EntryRepository},
