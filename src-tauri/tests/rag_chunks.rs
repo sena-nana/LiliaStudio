@@ -6,7 +6,10 @@ use ameya_lib::{
         event::{EventDraft, EventRepository},
         project::{ProjectDraft, ProjectRepository},
     },
-    services::rag::index_project_chunks,
+    services::rag::{
+        chunks_requiring_embedding, embedding_index_status, index_project_chunks,
+        load_vector_candidates_for_model, upsert_embedding,
+    },
     test_support::migrated_memory_database,
 };
 use rusqlite::params;
@@ -107,6 +110,92 @@ fn removes_chunks_for_deleted_sources() {
     let chunks = index_project_chunks(&connection, &seeded.project_id, 600).expect("reindex");
 
     assert!(chunks.iter().all(|chunk| chunk.source_type != "character"));
+}
+
+#[test]
+fn reports_empty_project_index_status() {
+    let connection = migrated_memory_database();
+    let project = ProjectRepository::new(&connection)
+        .create(ProjectDraft {
+            name: "空项目".into(),
+            description: String::new(),
+        })
+        .unwrap();
+
+    let status = embedding_index_status(&connection, &project.id, Some("story-embed")).unwrap();
+
+    assert_eq!(status.chunk_count, 0);
+    assert_eq!(status.embedding_count, 0);
+    assert_eq!(status.status, "degraded");
+    assert_eq!(status.message, "当前项目还没有生成切片索引。");
+}
+
+#[test]
+fn reports_missing_and_ready_embedding_index_status() {
+    let connection = migrated_memory_database();
+    let project_id = seed_project_documents(&connection).project_id;
+    let chunks = index_project_chunks(&connection, &project_id, 600).expect("index chunks");
+
+    let missing = embedding_index_status(&connection, &project_id, Some("story-embed")).unwrap();
+    assert_eq!(missing.chunk_count, chunks.len());
+    assert_eq!(missing.embedding_count, 0);
+    assert_eq!(missing.missing_embedding_count, chunks.len());
+    assert_eq!(missing.status, "degraded");
+    assert_eq!(missing.message, "当前项目还没有可用的 embedding 索引。");
+
+    for chunk in &chunks {
+        upsert_embedding(&connection, &chunk.id, "story-embed", vec![1.0, 0.0]).unwrap();
+    }
+    let ready = embedding_index_status(&connection, &project_id, Some("story-embed")).unwrap();
+
+    assert_eq!(ready.chunk_count, chunks.len());
+    assert_eq!(ready.embedding_count, chunks.len());
+    assert_eq!(ready.missing_embedding_count, 0);
+    assert_eq!(ready.stale_embedding_count, 0);
+    assert_eq!(ready.status, "ready");
+    assert!(
+        chunks_requiring_embedding(&connection, &project_id, "story-embed")
+            .unwrap()
+            .is_empty()
+    );
+}
+
+#[test]
+fn reports_stale_embeddings_and_filters_pending_chunks_by_model() {
+    let connection = migrated_memory_database();
+    let project_id = seed_project_documents(&connection).project_id;
+    let chunks = index_project_chunks(&connection, &project_id, 600).expect("index chunks");
+    for chunk in &chunks {
+        upsert_embedding(&connection, &chunk.id, "old-embed", vec![1.0, 0.0]).unwrap();
+    }
+
+    let wrong_model =
+        embedding_index_status(&connection, &project_id, Some("story-embed")).unwrap();
+    assert_eq!(wrong_model.missing_embedding_count, chunks.len());
+    assert!(
+        load_vector_candidates_for_model(&connection, &project_id, "story-embed")
+            .unwrap()
+            .is_empty()
+    );
+
+    for chunk in &chunks {
+        upsert_embedding(&connection, &chunk.id, "story-embed", vec![1.0, 0.0]).unwrap();
+    }
+    connection
+        .execute(
+            "UPDATE document_chunks SET updated_at = '9999-01-01T00:00:00Z' WHERE id = ?1",
+            params![chunks[0].id],
+        )
+        .unwrap();
+
+    let stale = embedding_index_status(&connection, &project_id, Some("story-embed")).unwrap();
+    let pending = chunks_requiring_embedding(&connection, &project_id, "story-embed").unwrap();
+
+    assert_eq!(stale.embedding_count, chunks.len() - 1);
+    assert_eq!(stale.stale_embedding_count, 1);
+    assert_eq!(stale.status, "degraded");
+    assert_eq!(pending.len(), 1);
+    assert_eq!(pending[0].id, chunks[0].id);
 }
 
 struct SeededDocuments {

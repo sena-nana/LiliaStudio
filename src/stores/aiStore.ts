@@ -3,6 +3,7 @@ import {
   defaultAiProviders,
   indexEmbeddings,
   indexChunks,
+  indexStatus,
   loadAiProviderSettings,
   previewChunks,
   saveAiProviderSettings,
@@ -23,6 +24,7 @@ import type {
   EmbeddingIndexState,
   OpenAiProviderTestResult,
   PromptTemplate,
+  RagIndexStatus,
   TextChunk,
 } from '@/types/ai'
 
@@ -46,6 +48,8 @@ function createIndexState(): EmbeddingIndexState {
   return {
     chunkCount: 0,
     embeddingCount: 0,
+    missingEmbeddingCount: 0,
+    staleEmbeddingCount: 0,
     model: '',
     status: 'idle',
     message: '',
@@ -61,6 +65,25 @@ function isProviderReadyForEmbeddings(provider: AiProviderSettingsView | undefin
       provider.baseUrl?.trim() &&
       provider.embeddingModel?.trim(),
   )
+}
+
+function createIndexStateFromStatus(projectId: string, status: RagIndexStatus): EmbeddingIndexState {
+  return {
+    chunkCount: status.chunkCount,
+    embeddingCount: status.embeddingCount,
+    missingEmbeddingCount: status.missingEmbeddingCount,
+    staleEmbeddingCount: status.staleEmbeddingCount,
+    model: status.model,
+    status: status.status,
+    message: status.message,
+    lastProjectId: projectId,
+  }
+}
+
+function createProjectIndexState(previousState: EmbeddingIndexState, projectId: string): EmbeddingIndexState {
+  return previousState.lastProjectId === projectId
+    ? { ...previousState }
+    : { ...createIndexState(), lastProjectId: projectId }
 }
 
 export const useAiStore = defineStore('ai', {
@@ -120,15 +143,26 @@ export const useAiStore = defineStore('ai', {
         this.loading = false
       }
     },
+    async loadIndexStatus(projectId: string) {
+      const currentState = createProjectIndexState(this.indexState, projectId)
+      try {
+        const status = await indexStatus(projectId)
+        this.indexState = createIndexStateFromStatus(projectId, status)
+      } catch (error) {
+        this.indexState = {
+          ...currentState,
+          status: 'failed',
+          message: error instanceof Error ? error.message : String(error),
+          lastProjectId: projectId,
+        }
+      }
+      return this.indexState
+    },
     async rebuildEmbeddingIndex(projectId: string, maxChars = 600) {
       if (this.providerSettings.length === 0) {
         await this.loadProviderSettings()
       }
-      const previousState = this.indexState
-      const currentState =
-        previousState.lastProjectId === projectId
-          ? { ...previousState }
-          : { ...createIndexState(), lastProjectId: projectId }
+      const currentState = createProjectIndexState(this.indexState, projectId)
       this.indexState = {
         ...currentState,
         status: 'loading',
@@ -140,25 +174,12 @@ export const useAiStore = defineStore('ai', {
         const provider = this.providerSettings.find((item) => item.kind === 'openAiCompatible')
         if (!isProviderReadyForEmbeddings(provider)) {
           this.chunks = await indexChunks(projectId, maxChars)
-          this.indexState = {
-            chunkCount: this.chunks.length,
-            embeddingCount: 0,
-            model: '',
-            status: 'degraded',
-            message: EMBEDDING_CONFIG_MESSAGE,
-            lastProjectId: projectId,
-          }
+          await this.loadIndexStatus(projectId)
+          this.indexState.message = this.indexState.message || EMBEDDING_CONFIG_MESSAGE
           return this.indexState
         }
-        const result = await indexEmbeddings(projectId, maxChars)
-        this.indexState = {
-          chunkCount: result.chunkCount,
-          embeddingCount: result.embeddingCount,
-          model: result.model,
-          status: 'ready',
-          message: '',
-          lastProjectId: projectId,
-        }
+        await indexEmbeddings(projectId, maxChars)
+        await this.loadIndexStatus(projectId)
         return this.indexState
       } catch (error) {
         this.indexState = {

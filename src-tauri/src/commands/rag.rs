@@ -7,8 +7,9 @@ use crate::{
     },
     db::app_state::AppState,
     services::rag::{
-        index_project_chunks, load_vector_candidates, rank_vector_candidates, upsert_embedding,
-        ContextItem, ContextPack, DocumentChunkRecord,
+        chunks_requiring_embedding, embedding_index_status, index_project_chunks,
+        load_vector_candidates, rank_vector_candidates, upsert_embedding, ContextItem, ContextPack,
+        DocumentChunkRecord, RagIndexStatus,
     },
     windows::credential::WindowsCredentialStore,
 };
@@ -31,22 +32,105 @@ pub fn rag_index_chunks(
 }
 
 #[tauri::command]
+pub fn rag_index_status<R: tauri::Runtime>(
+    app: tauri::AppHandle<R>,
+    state: State<'_, AppState>,
+    project_id: String,
+) -> Result<RagIndexStatus, String> {
+    let model = embedding_model_from_settings(&app)?;
+    state.with_database(|connection| {
+        embedding_index_status(connection, &project_id, model.as_deref())
+    })
+}
+
+#[tauri::command]
 pub fn rag_index_embeddings<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
     state: State<'_, AppState>,
     project_id: String,
     max_chars: usize,
 ) -> Result<EmbeddingIndexResult, String> {
-    let chunks = state
-        .with_database(|connection| index_project_chunks(connection, &project_id, max_chars))?;
+    state.with_database(|connection| index_project_chunks(connection, &project_id, max_chars))?;
+    let provider = embedding_provider_from_settings(&app)?;
+    let chunks = state.with_database(|connection| {
+        chunks_requiring_embedding(connection, &project_id, &provider.model)
+    })?;
     if chunks.is_empty() {
+        let status = state.with_database(|connection| {
+            embedding_index_status(connection, &project_id, Some(&provider.model))
+        })?;
         return Ok(EmbeddingIndexResult {
-            chunk_count: 0,
-            embedding_count: 0,
-            model: String::new(),
+            chunk_count: status.chunk_count,
+            embedding_count: status.embedding_count,
+            model: status.model,
         });
     }
 
+    let client =
+        OpenAiCompatibleClient::new(provider.base_url, provider.api_key, UreqOpenAiTransport);
+    let result = client
+        .embeddings(
+            &provider.model,
+            chunks.iter().map(|chunk| chunk.text.clone()).collect(),
+        )
+        .map_err(provider_error_message)?;
+    if result.vectors.len() != chunks.len() {
+        return Err("嵌入模型返回的向量数量与切片数量不一致".into());
+    }
+    state.with_database(|connection| {
+        for (chunk, vector) in chunks.iter().zip(result.vectors.into_iter()) {
+            upsert_embedding(connection, &chunk.id, &provider.model, vector)?;
+        }
+        Ok(())
+    })?;
+    let status = state.with_database(|connection| {
+        embedding_index_status(connection, &project_id, Some(&provider.model))
+    })?;
+
+    Ok(EmbeddingIndexResult {
+        chunk_count: status.chunk_count,
+        embedding_count: status.embedding_count,
+        model: status.model,
+    })
+}
+
+struct EmbeddingProviderConfig {
+    base_url: String,
+    model: String,
+    api_key: String,
+}
+
+fn embedding_model_from_settings<R: tauri::Runtime>(
+    app: &tauri::AppHandle<R>,
+) -> Result<Option<String>, String> {
+    let config_dir = app
+        .path()
+        .app_config_dir()
+        .map_err(|error| format!("无法定位应用配置目录：{error}"))?;
+    let settings = load_provider_settings(&config_dir, &WindowsCredentialStore)?;
+    Ok(settings
+        .into_iter()
+        .find(|provider| provider.kind == AiProviderKind::OpenAiCompatible && provider.enabled)
+        .filter(|provider| {
+            provider
+                .base_url
+                .as_deref()
+                .is_some_and(|value| !value.trim().is_empty())
+        })
+        .filter(|_| {
+            WindowsCredentialStore
+                .read_secret(&api_key_secret_name(&AiProviderKind::OpenAiCompatible))
+                .ok()
+                .flatten()
+                .is_some_and(|value| !value.trim().is_empty())
+        })
+        .and_then(|provider| provider.embedding_model)
+        .filter(|value| !value.trim().is_empty()))
+}
+
+fn embedding_provider_from_settings<R: tauri::Runtime>(
+    app: &tauri::AppHandle<R>,
+) -> Result<EmbeddingProviderConfig, String> {
     let config_dir = app
         .path()
         .app_config_dir()
@@ -69,28 +153,10 @@ pub fn rag_index_embeddings<R: tauri::Runtime>(
         .filter(|value| !value.trim().is_empty())
         .ok_or_else(|| "请先保存 OpenAI 兼容接口的接口密钥".to_string())?;
 
-    let client = OpenAiCompatibleClient::new(base_url, api_key, UreqOpenAiTransport);
-    let result = client
-        .embeddings(
-            &model,
-            chunks.iter().map(|chunk| chunk.text.clone()).collect(),
-        )
-        .map_err(provider_error_message)?;
-    if result.vectors.len() != chunks.len() {
-        return Err("嵌入模型返回的向量数量与切片数量不一致".into());
-    }
-    let embedding_count = result.vectors.len();
-    state.with_database(|connection| {
-        for (chunk, vector) in chunks.iter().zip(result.vectors.into_iter()) {
-            upsert_embedding(connection, &chunk.id, &model, vector)?;
-        }
-        Ok(())
-    })?;
-
-    Ok(EmbeddingIndexResult {
-        chunk_count: chunks.len(),
-        embedding_count,
+    Ok(EmbeddingProviderConfig {
+        base_url,
         model,
+        api_key,
     })
 }
 

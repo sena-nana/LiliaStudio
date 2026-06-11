@@ -134,6 +134,16 @@ export interface EmbeddingIndexResult {
   model: string;
 }
 
+export interface RagIndexStatus {
+  chunkCount: number;
+  embeddingCount: number;
+  missingEmbeddingCount: number;
+  staleEmbeddingCount: number;
+  model: string;
+  status: Exclude<EmbeddingIndexStatus, 'idle' | 'loading' | 'failed'>;
+  message: string;
+}
+
 export type EmbeddingIndexStatus =
   | "idle"
   | "loading"
@@ -144,6 +154,8 @@ export type EmbeddingIndexStatus =
 export interface EmbeddingIndexState {
   chunkCount: number;
   embeddingCount: number;
+  missingEmbeddingCount: number;
+  staleEmbeddingCount: number;
   model: string;
   status: EmbeddingIndexStatus;
   message: string;

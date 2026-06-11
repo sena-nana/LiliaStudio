@@ -7,7 +7,7 @@ use crate::{
     },
     db::app_state::AppState,
     services::{
-        rag::{load_vector_candidates, rank_vector_candidates},
+        rag::{embedding_index_status, load_vector_candidates_for_model, rank_vector_candidates},
         search::{
             search_project, semantic_search_results, SearchFilter, SearchResult,
             SemanticSearchRequest, SemanticSearchResponse, SemanticSearchStatus,
@@ -69,6 +69,18 @@ pub fn search_semantic<R: tauri::Runtime>(
         return Ok(degraded("请先保存 OpenAI 兼容接口的接口密钥"));
     };
 
+    let index_status = state.with_database(|connection| {
+        embedding_index_status(connection, &request.project_id, Some(&model))
+    })?;
+    if index_status.status != "ready" {
+        return Ok(SemanticSearchResponse {
+            status: SemanticSearchStatus::Degraded,
+            message: index_status.message,
+            model,
+            items: Vec::new(),
+        });
+    }
+
     let client = OpenAiCompatibleClient::new(base_url, api_key, UreqOpenAiTransport);
     let query_vector = match client.embeddings(&model, vec![request.query.clone()]) {
         Ok(result) => result.vectors.into_iter().next().unwrap_or_default(),
@@ -82,8 +94,9 @@ pub fn search_semantic<R: tauri::Runtime>(
         }
     };
 
-    let candidates =
-        state.with_database(|connection| load_vector_candidates(connection, &request.project_id))?;
+    let candidates = state.with_database(|connection| {
+        load_vector_candidates_for_model(connection, &request.project_id, &model)
+    })?;
     if candidates.is_empty() {
         return Ok(SemanticSearchResponse {
             status: SemanticSearchStatus::Degraded,
@@ -93,8 +106,8 @@ pub fn search_semantic<R: tauri::Runtime>(
         });
     }
     let matches = rank_vector_candidates(candidates, query_vector, request.limit);
-    let items =
-        state.with_database(|connection| semantic_search_results(connection, matches, request.limit))?;
+    let items = state
+        .with_database(|connection| semantic_search_results(connection, matches, request.limit))?;
 
     Ok(SemanticSearchResponse {
         status: SemanticSearchStatus::Ready,

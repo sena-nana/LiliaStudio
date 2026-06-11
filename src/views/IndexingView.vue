@@ -31,6 +31,14 @@
           <p>{{ activeIndexState.embeddingCount }}</p>
         </article>
         <article class="empty-state compact">
+          <h2>缺失</h2>
+          <p>{{ activeIndexState.missingEmbeddingCount }}</p>
+        </article>
+        <article class="empty-state compact">
+          <h2>过期</h2>
+          <p>{{ activeIndexState.staleEmbeddingCount }}</p>
+        </article>
+        <article class="empty-state compact">
           <h2>模型</h2>
           <p>{{ activeIndexState.model || "未生成" }}</p>
         </article>
@@ -40,7 +48,7 @@
         正在重建索引
       </p>
       <p v-else-if="activeIndexState.status === 'ready'" class="status-note">
-        最近一次索引已完成
+        当前 embedding 索引可用
       </p>
       <p v-else-if="activeIndexState.status === 'degraded'" class="status-note">
         {{ activeIndexState.message }}
@@ -56,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAiStore } from '@/stores/aiStore'
 import { useProjectStore } from '@/stores/projectStore'
@@ -69,6 +77,8 @@ const projectStore = useProjectStore()
 const idleIndexState: EmbeddingIndexState = {
   chunkCount: 0,
   embeddingCount: 0,
+  missingEmbeddingCount: 0,
+  staleEmbeddingCount: 0,
   model: '',
   status: 'idle',
   message: '',
@@ -89,12 +99,21 @@ async function runIndex() {
   if (!projectId.value) return
   await aiStore.rebuildEmbeddingIndex(projectId.value, 600)
 }
+
+watch(
+  projectId,
+  (nextProjectId) => {
+    if (!nextProjectId) return
+    void aiStore.loadIndexStatus(nextProjectId).catch(() => undefined)
+  },
+  { immediate: true },
+)
 </script>
 
 <style scoped>
 .indexing-metrics {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
 }
 
