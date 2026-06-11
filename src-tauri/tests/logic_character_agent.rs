@@ -1,13 +1,20 @@
 use ameya_lib::{
+    domain::{
+        character::{CharacterDraft, CharacterRepository},
+        character_trait_delta::{CharacterTraitDeltaRecordDraft, CharacterTraitDeltaRepository},
+        event::{EventDraft, EventRepository},
+        project::{ProjectDraft, ProjectRepository},
+    },
     logic::{
         conflict::{detect_conflicts, Fact},
         quickxplain::minimal_conflict,
         repair::suggest_repairs,
     },
     services::{
-        character_growth::{apply_trait_delta, CharacterTraitState, TraitDelta},
+        character_growth::{apply_trait_delta, list_growth_workspace, CharacterTraitState, TraitDelta},
         simulation::simulate_scenario,
     },
+    test_support::migrated_memory_database,
 };
 
 #[test]
@@ -44,6 +51,76 @@ fn applies_character_trait_deltas_with_source_trace() {
 
     assert_eq!(state.values.get("responsibility").copied(), Some(0.35));
     assert_eq!(state.sources[0].source_event_id, "event_1");
+}
+
+#[test]
+fn builds_character_trait_state_from_saved_records() {
+    let connection = migrated_memory_database();
+    let project = ProjectRepository::new(&connection)
+        .create(ProjectDraft {
+            name: "project".into(),
+            description: String::new(),
+        })
+        .unwrap();
+    let character = CharacterRepository::new(&connection)
+        .create(CharacterDraft {
+            project_id: project.id.clone(),
+            name: "椎名".into(),
+            aliases: vec![],
+            summary: String::new(),
+            appearance: String::new(),
+            goals: String::new(),
+            motivations: String::new(),
+            fears: String::new(),
+            faction: String::new(),
+            tags: vec![],
+        })
+        .unwrap();
+    let event = EventRepository::new(&connection)
+        .create(
+            EventDraft {
+                project_id: project.id.clone(),
+                title: "围城战".into(),
+                description: String::new(),
+                time_label: String::new(),
+                sort_key: 1,
+                start_label: String::new(),
+                end_label: String::new(),
+                location: String::new(),
+                importance: 5,
+                outcome: String::new(),
+                tags: vec![],
+            },
+            vec![],
+        )
+        .unwrap();
+    let records = CharacterTraitDeltaRepository::new(&connection);
+    records
+        .create(CharacterTraitDeltaRecordDraft {
+            project_id: project.id.clone(),
+            character_id: character.id.clone(),
+            source_event_id: event.id.clone(),
+            trait_name: "responsibility".into(),
+            delta: 0.7,
+            reason: "保护平民".into(),
+        })
+        .unwrap();
+    records
+        .create(CharacterTraitDeltaRecordDraft {
+            project_id: project.id.clone(),
+            character_id: character.id.clone(),
+            source_event_id: event.id,
+            trait_name: "responsibility".into(),
+            delta: 0.6,
+            reason: "承担后果".into(),
+        })
+        .unwrap();
+
+    let workspace = list_growth_workspace(&connection, &project.id).unwrap();
+    let state = workspace.states.get(&character.id).unwrap();
+
+    assert_eq!(state.values.get("responsibility").copied(), Some(1.0));
+    assert_eq!(state.sources.len(), 2);
 }
 
 #[test]

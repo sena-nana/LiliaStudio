@@ -2,6 +2,7 @@ use ameya_lib::{
     domain::{
         axiom::{AxiomDraft, AxiomRepository},
         character::{CharacterDraft, CharacterRepository},
+        character_trait_delta::{CharacterTraitDeltaRecordDraft, CharacterTraitDeltaRepository},
         entry::{EntryDraft, EntryRepository},
         event::{EventDraft, EventParticipantDraft, EventRepository},
         project::{ProjectDraft, ProjectRepository},
@@ -211,6 +212,68 @@ fn event_repository_stores_participants() {
     let participants = events.list_participants(&event.id).unwrap();
     assert_eq!(participants.len(), 1);
     assert_eq!(participants[0].entity_id, character.id);
+}
+
+#[test]
+fn character_trait_delta_repository_creates_and_lists_records() {
+    let connection = migrated_memory_database();
+    let projects = ProjectRepository::new(&connection);
+    let characters = CharacterRepository::new(&connection);
+    let events = EventRepository::new(&connection);
+    let records = CharacterTraitDeltaRepository::new(&connection);
+    let project = projects
+        .create(ProjectDraft {
+            name: "project".into(),
+            description: String::new(),
+        })
+        .unwrap();
+    let character = characters
+        .create(CharacterDraft {
+            project_id: project.id.clone(),
+            name: "椎名".into(),
+            aliases: vec![],
+            summary: String::new(),
+            appearance: String::new(),
+            goals: String::new(),
+            motivations: String::new(),
+            fears: String::new(),
+            faction: String::new(),
+            tags: vec![],
+        })
+        .unwrap();
+    let event = events
+        .create(
+            EventDraft {
+                project_id: project.id.clone(),
+                title: "围城战".into(),
+                description: String::new(),
+                time_label: "第三纪".into(),
+                sort_key: 1,
+                start_label: String::new(),
+                end_label: String::new(),
+                location: String::new(),
+                importance: 5,
+                outcome: String::new(),
+                tags: vec![],
+            },
+            vec![],
+        )
+        .unwrap();
+
+    let created = records
+        .create(CharacterTraitDeltaRecordDraft {
+            project_id: project.id.clone(),
+            character_id: character.id.clone(),
+            source_event_id: event.id.clone(),
+            trait_name: "responsibility".into(),
+            delta: 0.35,
+            reason: "保护平民".into(),
+        })
+        .unwrap();
+
+    assert_eq!(created.character_id, character.id);
+    assert_eq!(records.list_project(&project.id).unwrap().len(), 1);
+    assert_eq!(records.list_character(&project.id, &character.id).unwrap().len(), 1);
 }
 
 #[test]

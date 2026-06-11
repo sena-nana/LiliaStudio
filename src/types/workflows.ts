@@ -31,6 +31,34 @@ export interface CharacterTraitState {
   sources: TraitDelta[]
 }
 
+export interface CharacterTraitDeltaRecord {
+  id: string
+  projectId: string
+  characterId: string
+  sourceEventId: string
+  traitName: string
+  delta: number
+  reason: string
+  createdAt: string
+  updatedAt: string
+  deletedAt: string | null
+}
+
+export interface CharacterTraitDeltaRecordDraft {
+  projectId: string
+  characterId: string
+  sourceEventId: string
+  traitName: string
+  delta: number
+  reason: string
+}
+
+export interface CharacterGrowthWorkspaceSnapshot {
+  projectId: string
+  records: CharacterTraitDeltaRecord[]
+  states: Record<string, CharacterTraitState>
+}
+
 export interface SimulationReport {
   projectId: string
   scenario: string
