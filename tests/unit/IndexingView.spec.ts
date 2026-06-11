@@ -26,6 +26,8 @@ function makeIndexState(overrides: Partial<EmbeddingIndexState> = {}): Embedding
   return {
     chunkCount: 0,
     embeddingCount: 0,
+    missingEmbeddingCount: 0,
+    staleEmbeddingCount: 0,
     model: '',
     status: 'idle',
     message: '',
@@ -43,13 +45,16 @@ describe('IndexingView', () => {
   })
 
   it('renders index metrics and degraded status for the active project', async () => {
-    await renderIndexingView(pinia)
     const aiStore = useAiStore()
+    vi.spyOn(aiStore, 'loadIndexStatus').mockResolvedValue(makeIndexState({ lastProjectId: 'project_1' }))
+    await renderIndexingView(pinia)
     const projectStore = useProjectStore()
     projectStore.activeProjectId = 'project_1'
     aiStore.indexState = makeIndexState({
       chunkCount: 14,
       embeddingCount: 0,
+      missingEmbeddingCount: 14,
+      staleEmbeddingCount: 0,
       model: '',
       status: 'degraded',
       message: '请先在 AI 设置中启用并配置 OpenAI 兼容接口的嵌入模型和密钥。',
@@ -57,15 +62,18 @@ describe('IndexingView', () => {
     })
     await nextTick()
 
-    expect(await screen.findByText('14')).toBeInTheDocument()
-    expect(screen.getByText('0')).toBeInTheDocument()
+    expect((await screen.findAllByText('14')).length).toBeGreaterThan(0)
+    expect(screen.getAllByText('0').length).toBeGreaterThan(0)
     expect(screen.getByText('未生成')).toBeInTheDocument()
+    expect(screen.getByText('缺失')).toBeInTheDocument()
+    expect(screen.getByText('过期')).toBeInTheDocument()
     expect(screen.getByText('请先在 AI 设置中启用并配置 OpenAI 兼容接口的嵌入模型和密钥。')).toBeInTheDocument()
   })
 
   it('renders failed status and triggers rebuild on click', async () => {
-    await renderIndexingView(pinia)
     const aiStore = useAiStore()
+    vi.spyOn(aiStore, 'loadIndexStatus').mockResolvedValue(makeIndexState({ lastProjectId: 'project_1' }))
+    await renderIndexingView(pinia)
     const rebuildSpy = vi.spyOn(aiStore, 'rebuildEmbeddingIndex').mockResolvedValue(
       makeIndexState({
         chunkCount: 6,

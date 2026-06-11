@@ -30,6 +30,18 @@ pub struct DocumentChunkRecord {
     pub updated_at: String,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct RagIndexStatus {
+    pub chunk_count: usize,
+    pub embedding_count: usize,
+    pub missing_embedding_count: usize,
+    pub stale_embedding_count: usize,
+    pub model: String,
+    pub status: String,
+    pub message: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct VectorMatch {
@@ -333,6 +345,102 @@ pub fn upsert_embedding(
     Ok(())
 }
 
+pub fn embedding_index_status(
+    connection: &Connection,
+    project_id: &str,
+    model: Option<&str>,
+) -> rusqlite::Result<RagIndexStatus> {
+    let chunk_count = count_project_chunks(connection, project_id)?;
+    let Some(model) = model.map(str::trim).filter(|value| !value.is_empty()) else {
+        return Ok(RagIndexStatus {
+            chunk_count,
+            embedding_count: 0,
+            missing_embedding_count: chunk_count,
+            stale_embedding_count: 0,
+            model: String::new(),
+            status: "degraded".into(),
+            message: "请先启用 OpenAI 兼容接口并填写嵌入模型。".into(),
+        });
+    };
+
+    let mut statement = connection.prepare(
+        "SELECT c.updated_at, e.id, e.updated_at, e.dimensions
+         FROM document_chunks c
+         LEFT JOIN embeddings e ON e.chunk_id = c.id AND e.model = ?2
+         WHERE c.project_id = ?1",
+    )?;
+    let rows = statement.query_map(params![project_id, model], |row| {
+        Ok((
+            row.get::<_, String>(0)?,
+            row.get::<_, Option<String>>(1)?,
+            row.get::<_, Option<String>>(2)?,
+            row.get::<_, Option<i64>>(3)?,
+        ))
+    })?;
+
+    let mut embedding_count = 0;
+    let mut missing_embedding_count = 0;
+    let mut stale_embedding_count = 0;
+    for row in rows {
+        let (chunk_updated_at, embedding_id, embedding_updated_at, dimensions) = row?;
+        if embedding_id.is_none() {
+            missing_embedding_count += 1;
+            continue;
+        }
+        if dimensions.unwrap_or_default() <= 0
+            || embedding_updated_at
+                .as_deref()
+                .is_some_and(|updated_at| updated_at < chunk_updated_at.as_str())
+        {
+            stale_embedding_count += 1;
+        } else {
+            embedding_count += 1;
+        }
+    }
+
+    let (status, message) = if chunk_count == 0 {
+        ("degraded", "当前项目还没有生成切片索引。")
+    } else if embedding_count == chunk_count {
+        ("ready", "")
+    } else if missing_embedding_count == chunk_count {
+        ("degraded", "当前项目还没有可用的 embedding 索引。")
+    } else {
+        ("degraded", "当前 embedding 索引不完整或已过期。")
+    };
+
+    Ok(RagIndexStatus {
+        chunk_count,
+        embedding_count,
+        missing_embedding_count,
+        stale_embedding_count,
+        model: model.to_string(),
+        status: status.into(),
+        message: message.into(),
+    })
+}
+
+pub fn chunks_requiring_embedding(
+    connection: &Connection,
+    project_id: &str,
+    model: &str,
+) -> rusqlite::Result<Vec<DocumentChunkRecord>> {
+    let mut statement = connection.prepare(
+        "SELECT c.id, c.project_id, c.source_type, c.source_id, c.ordinal, c.text,
+                c.content_hash, c.estimated_tokens, c.updated_at
+         FROM document_chunks c
+         LEFT JOIN embeddings e ON e.chunk_id = c.id AND e.model = ?2
+         WHERE c.project_id = ?1
+           AND (e.id IS NULL OR e.dimensions <= 0 OR e.updated_at < c.updated_at)
+         ORDER BY c.source_type, c.source_id, c.ordinal",
+    )?;
+    let rows = statement.query_map(params![project_id, model], map_chunk)?;
+    let mut records = Vec::new();
+    for row in rows {
+        records.push(row?);
+    }
+    Ok(records)
+}
+
 pub fn vector_search(
     connection: &Connection,
     project_id: &str,
@@ -347,35 +455,15 @@ pub fn load_vector_candidates(
     connection: &Connection,
     project_id: &str,
 ) -> rusqlite::Result<Vec<VectorCandidate>> {
-    let mut statement = connection.prepare(
-        "SELECT c.id, c.source_type, c.source_id, c.text, e.vector_json
-         FROM document_chunks c
-         JOIN embeddings e ON e.chunk_id = c.id
-         WHERE c.project_id = ?1",
-    )?;
-    let rows = statement.query_map(params![project_id], |row| {
-        let vector_json: String = row.get(4)?;
-        let vector: Vec<f32> = serde_json::from_str(&vector_json).map_err(|error| {
-            rusqlite::Error::FromSqlConversionFailure(
-                4,
-                rusqlite::types::Type::Text,
-                Box::new(error),
-            )
-        })?;
-        Ok(VectorCandidate {
-            chunk_id: row.get(0)?,
-            source_type: row.get(1)?,
-            source_id: row.get(2)?,
-            text: row.get(3)?,
-            vector,
-        })
-    })?;
+    load_vector_candidates_with_filter(connection, project_id, None)
+}
 
-    let mut candidates = Vec::new();
-    for row in rows {
-        candidates.push(row?);
-    }
-    Ok(candidates)
+pub fn load_vector_candidates_for_model(
+    connection: &Connection,
+    project_id: &str,
+    model: &str,
+) -> rusqlite::Result<Vec<VectorCandidate>> {
+    load_vector_candidates_with_filter(connection, project_id, Some(model))
 }
 
 pub fn rank_vector_candidates(
@@ -431,5 +519,59 @@ fn map_chunk(row: &rusqlite::Row<'_>) -> rusqlite::Result<DocumentChunkRecord> {
         content_hash: row.get(6)?,
         estimated_tokens: row.get::<_, i64>(7)? as usize,
         updated_at: row.get(8)?,
+    })
+}
+
+fn count_project_chunks(connection: &Connection, project_id: &str) -> rusqlite::Result<usize> {
+    connection
+        .query_row(
+            "SELECT COUNT(*) FROM document_chunks WHERE project_id = ?1",
+            params![project_id],
+            |row| row.get::<_, i64>(0),
+        )
+        .map(|count| count as usize)
+}
+
+fn load_vector_candidates_with_filter(
+    connection: &Connection,
+    project_id: &str,
+    model: Option<&str>,
+) -> rusqlite::Result<Vec<VectorCandidate>> {
+    let sql = if model.is_some() {
+        "SELECT c.id, c.source_type, c.source_id, c.text, e.vector_json
+         FROM document_chunks c
+         JOIN embeddings e ON e.chunk_id = c.id AND e.model = ?2
+         WHERE c.project_id = ?1"
+    } else {
+        "SELECT c.id, c.source_type, c.source_id, c.text, e.vector_json
+         FROM document_chunks c
+         JOIN embeddings e ON e.chunk_id = c.id
+         WHERE c.project_id = ?1"
+    };
+    let mut statement = connection.prepare(sql)?;
+    let rows = if let Some(model) = model {
+        statement.query_map(params![project_id, model], map_vector_candidate)?
+    } else {
+        statement.query_map(params![project_id], map_vector_candidate)?
+    };
+
+    let mut candidates = Vec::new();
+    for row in rows {
+        candidates.push(row?);
+    }
+    Ok(candidates)
+}
+
+fn map_vector_candidate(row: &rusqlite::Row<'_>) -> rusqlite::Result<VectorCandidate> {
+    let vector_json: String = row.get(4)?;
+    let vector: Vec<f32> = serde_json::from_str(&vector_json).map_err(|error| {
+        rusqlite::Error::FromSqlConversionFailure(4, rusqlite::types::Type::Text, Box::new(error))
+    })?;
+    Ok(VectorCandidate {
+        chunk_id: row.get(0)?,
+        source_type: row.get(1)?,
+        source_id: row.get(2)?,
+        text: row.get(3)?,
+        vector,
     })
 }

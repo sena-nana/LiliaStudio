@@ -12,6 +12,7 @@ import type {
   EmbeddingIndexResult,
   OpenAiProviderTestResult,
   TextChunk,
+  RagIndexStatus,
 } from "@/types/ai";
 
 export function askAgent(request: AgentAskRequest): Promise<AgentAskResponse> {
@@ -61,6 +62,12 @@ export function indexChunks(
     projectId,
     maxChars,
   }).then(listResult);
+}
+
+export function indexStatus(projectId: string): Promise<RagIndexStatus> {
+  return executeCommand(commands.rag.indexStatus, {
+    projectId,
+  });
 }
 
 export function indexEmbeddings(

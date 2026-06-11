@@ -34,6 +34,19 @@ function makeChunk(overrides: Record<string, unknown> = {}) {
   }
 }
 
+function makeIndexStatus(overrides: Record<string, unknown> = {}) {
+  return {
+    chunkCount: 0,
+    embeddingCount: 0,
+    missingEmbeddingCount: 0,
+    staleEmbeddingCount: 0,
+    model: '',
+    status: 'degraded',
+    message: '',
+    ...overrides,
+  }
+}
+
 describe('aiStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -77,6 +90,14 @@ describe('aiStore', () => {
         embeddingCount: 12,
         model: 'story-embed',
       })
+      .mockResolvedValueOnce(
+        makeIndexStatus({
+          chunkCount: 12,
+          embeddingCount: 12,
+          model: 'story-embed',
+          status: 'ready',
+        }),
+      )
 
     const store = useAiStore()
     await store.rebuildEmbeddingIndex('project_1', 600)
@@ -84,6 +105,8 @@ describe('aiStore', () => {
     expect(store.indexState).toMatchObject({
       chunkCount: 12,
       embeddingCount: 12,
+      missingEmbeddingCount: 0,
+      staleEmbeddingCount: 0,
       model: 'story-embed',
       status: 'ready',
       message: '',
@@ -91,6 +114,7 @@ describe('aiStore', () => {
     })
     expect(invokeMock).toHaveBeenNthCalledWith(1, 'ai_load_provider_settings')
     expect(invokeMock).toHaveBeenNthCalledWith(2, 'rag_index_embeddings', { projectId: 'project_1', maxChars: 600 })
+    expect(invokeMock).toHaveBeenNthCalledWith(3, 'rag_index_status', { projectId: 'project_1' })
   })
 
   it('falls back to chunk indexing when embedding provider is not configured', async () => {
@@ -102,6 +126,16 @@ describe('aiStore', () => {
         }),
       ])
       .mockResolvedValueOnce([makeChunk()])
+      .mockResolvedValueOnce(
+        makeIndexStatus({
+          chunkCount: 1,
+          embeddingCount: 0,
+          missingEmbeddingCount: 1,
+          model: '',
+          status: 'degraded',
+          message: '请先启用 OpenAI 兼容接口并填写嵌入模型。',
+        }),
+      )
 
     const store = useAiStore()
     await store.rebuildEmbeddingIndex('project_1', 600)
@@ -109,12 +143,15 @@ describe('aiStore', () => {
     expect(store.indexState).toMatchObject({
       chunkCount: 1,
       embeddingCount: 0,
+      missingEmbeddingCount: 1,
+      staleEmbeddingCount: 0,
       model: '',
       status: 'degraded',
-      message: '请先在 AI 设置中启用并配置 OpenAI 兼容接口的嵌入模型和密钥。',
+      message: '请先启用 OpenAI 兼容接口并填写嵌入模型。',
       lastProjectId: 'project_1',
     })
     expect(invokeMock).toHaveBeenNthCalledWith(2, 'rag_index_chunks', { projectId: 'project_1', maxChars: 600 })
+    expect(invokeMock).toHaveBeenNthCalledWith(3, 'rag_index_status', { projectId: 'project_1' })
     expect(invokeMock).not.toHaveBeenCalledWith('rag_index_embeddings', expect.anything())
   })
 
@@ -126,6 +163,14 @@ describe('aiStore', () => {
         embeddingCount: 8,
         model: 'story-embed',
       })
+      .mockResolvedValueOnce(
+        makeIndexStatus({
+          chunkCount: 8,
+          embeddingCount: 8,
+          model: 'story-embed',
+          status: 'ready',
+        }),
+      )
 
     const store = useAiStore()
     await store.rebuildEmbeddingIndex('project_1', 600)
@@ -144,6 +189,35 @@ describe('aiStore', () => {
       message: 'provider returned HTTP 401',
       lastProjectId: 'project_1',
     })
+  })
+
+  it('loads embedding index status directly', async () => {
+    invokeMock.mockResolvedValueOnce(
+      makeIndexStatus({
+        chunkCount: 6,
+        embeddingCount: 4,
+        missingEmbeddingCount: 1,
+        staleEmbeddingCount: 1,
+        model: 'story-embed',
+        status: 'degraded',
+        message: '当前 embedding 索引不完整或已过期。',
+      }),
+    )
+
+    const store = useAiStore()
+    await store.loadIndexStatus('project_1')
+
+    expect(store.indexState).toMatchObject({
+      chunkCount: 6,
+      embeddingCount: 4,
+      missingEmbeddingCount: 1,
+      staleEmbeddingCount: 1,
+      model: 'story-embed',
+      status: 'degraded',
+      message: '当前 embedding 索引不完整或已过期。',
+      lastProjectId: 'project_1',
+    })
+    expect(invokeMock).toHaveBeenCalledWith('rag_index_status', { projectId: 'project_1' })
   })
 
   it('loads and saves provider settings without exposing raw secrets', async () => {

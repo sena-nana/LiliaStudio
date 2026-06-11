@@ -70,6 +70,7 @@ pub fn register_handlers(
         prompts::prompt_save_template,
         rag::rag_index_chunks,
         rag::rag_index_embeddings,
+        rag::rag_index_status,
         rag::rag_preview_context_pack,
         search::search_entities,
         search::search_semantic,

@@ -15,6 +15,7 @@ import type {
   PromptTemplateDraft,
   PromptTemplatePreview,
   PromptTemplateVariableValue,
+  RagIndexStatus,
   TextChunk,
 } from "@/types/ai";
 import type { ImportedProject, ProjectArchive } from "@/types/archive";
@@ -153,6 +154,7 @@ export const commands = {
   },
   rag: {
     indexChunks: defineCommand<{ projectId: string; maxChars: number }, DocumentChunkRecord[]>("rag_index_chunks"),
+    indexStatus: defineCommand<{ projectId: string }, RagIndexStatus>("rag_index_status"),
     indexEmbeddings: defineCommand<
       { projectId: string; maxChars: number },
       { chunkCount: number; embeddingCount: number; model: string }
