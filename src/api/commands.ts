@@ -33,7 +33,12 @@ import type {
   RelationNeighborhood,
 } from "@/types/library";
 import type { Project, ProjectDraft } from "@/types/project";
-import type { SearchFilter, SearchResult } from "@/types/search";
+import type {
+  SearchFilter,
+  SearchResult,
+  SemanticSearchRequest,
+  SemanticSearchResponse,
+} from "@/types/search";
 import type {
   CharacterTraitState,
   CharacterGrowthWorkspaceSnapshot,
@@ -156,6 +161,9 @@ export const commands = {
   },
   search: {
     entities: defineCommand<{ filter: SearchFilter }, SearchResult[]>("search_entities"),
+    semantic: defineCommand<{ request: SemanticSearchRequest }, SemanticSearchResponse>(
+      "search_semantic",
+    ),
   },
   simulation: {
     run: defineCommand<
