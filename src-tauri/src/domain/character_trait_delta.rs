@@ -76,7 +76,10 @@ impl<'a> CharacterTraitDeltaRepository<'a> {
             .optional()
     }
 
-    pub fn list_project(&self, project_id: &str) -> rusqlite::Result<Vec<CharacterTraitDeltaRecord>> {
+    pub fn list_project(
+        &self,
+        project_id: &str,
+    ) -> rusqlite::Result<Vec<CharacterTraitDeltaRecord>> {
         let mut statement = self.connection.prepare(
             "SELECT id, project_id, character_id, source_event_id, trait_name, delta, reason,
                     created_at, updated_at, deleted_at
@@ -90,6 +93,16 @@ impl<'a> CharacterTraitDeltaRepository<'a> {
         records
     }
 
+    pub fn soft_delete(&self, id: &str) -> rusqlite::Result<()> {
+        let timestamp = now();
+        self.connection.execute(
+            "UPDATE character_trait_deltas
+             SET deleted_at = ?2, updated_at = ?2
+             WHERE id = ?1",
+            params![id, timestamp],
+        )?;
+        Ok(())
+    }
 }
 
 fn map_character_trait_delta_record(
