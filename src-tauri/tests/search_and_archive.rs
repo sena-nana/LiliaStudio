@@ -241,6 +241,82 @@ fn project_search_matches_entry_title_body_and_tags_case_insensitively() {
 }
 
 #[test]
+fn project_search_matches_core_entity_fields_case_insensitively() {
+    let connection = migrated_memory_database();
+    let project = ProjectRepository::new(&connection)
+        .create(ProjectDraft {
+            name: "实体大小写搜索项目".into(),
+            description: String::new(),
+        })
+        .unwrap();
+    let character = CharacterRepository::new(&connection)
+        .create(CharacterDraft {
+            project_id: project.id.clone(),
+            name: "Istanbul Watcher".into(),
+            aliases: vec![],
+            summary: "Guards the ARCANUM gate".into(),
+            appearance: String::new(),
+            goals: String::new(),
+            motivations: String::new(),
+            fears: String::new(),
+            faction: String::new(),
+            tags: vec![],
+        })
+        .unwrap();
+    let event = EventRepository::new(&connection)
+        .create(
+            EventDraft {
+                project_id: project.id.clone(),
+                title: "Arc Finale".into(),
+                description: "The city hears ARCANUM bells".into(),
+                time_label: String::new(),
+                sort_key: 1,
+                start_label: String::new(),
+                end_label: String::new(),
+                location: String::new(),
+                importance: 3,
+                outcome: String::new(),
+                tags: vec![],
+            },
+            vec![],
+        )
+        .unwrap();
+    let axiom = AxiomRepository::new(&connection)
+        .create(AxiomDraft {
+            project_id: project.id.clone(),
+            subject: "Arcanum Law".into(),
+            predicate: "contains".into(),
+            object: "ARCANUM sigil".into(),
+            scope_time: String::new(),
+            scope_location: String::new(),
+            certainty: 1.0,
+            source_entity_type: None,
+            source_entity_id: None,
+            natural_language: String::new(),
+            tags: vec![],
+        })
+        .unwrap();
+
+    let results = search_project(
+        &connection,
+        SearchFilter {
+            project_id: project.id,
+            query: "arcanum".into(),
+            entity_types: vec![],
+        },
+    )
+    .unwrap();
+
+    let result_ids = results
+        .iter()
+        .map(|result| result.entity_id.as_str())
+        .collect::<Vec<_>>();
+    assert!(result_ids.contains(&character.id.as_str()));
+    assert!(result_ids.contains(&event.id.as_str()));
+    assert!(result_ids.contains(&axiom.id.as_str()));
+}
+
+#[test]
 fn semantic_search_returns_entity_level_results_sorted_by_similarity() {
     let connection = migrated_memory_database();
     let project = ProjectRepository::new(&connection)
@@ -283,8 +359,7 @@ fn semantic_search_returns_entity_level_results_sorted_by_similarity() {
 
     let candidates =
         ameya_lib::services::rag::load_vector_candidates(&connection, &project.id).unwrap();
-    let matches =
-        ameya_lib::services::rag::rank_vector_candidates(candidates, vec![1.0, 0.0], 8);
+    let matches = ameya_lib::services::rag::rank_vector_candidates(candidates, vec![1.0, 0.0], 8);
     let results = semantic_search_results(&connection, matches, 8).unwrap();
 
     assert_eq!(results[0].entity_id, first.id);
