@@ -1,6 +1,9 @@
 import { executeCommand, listResult } from './client'
 import { commands } from './commands'
 import type {
+  CharacterGrowthWorkspaceSnapshot,
+  CharacterTraitDeltaRecord,
+  CharacterTraitDeltaRecordDraft,
   CharacterTraitState,
   DiagnosticsSummary,
   Fact,
@@ -23,6 +26,18 @@ export function previewTraitDelta(
   delta: TraitDelta,
 ): Promise<CharacterTraitState> {
   return executeCommand(commands.characterGrowth.previewTraitDelta, { state, delta })
+}
+
+export function loadCharacterGrowthWorkspace(
+  projectId: string,
+): Promise<CharacterGrowthWorkspaceSnapshot> {
+  return executeCommand(commands.characterGrowth.workspace, { projectId })
+}
+
+export function createCharacterTraitDeltaRecord(
+  draft: CharacterTraitDeltaRecordDraft,
+): Promise<CharacterTraitDeltaRecord> {
+  return executeCommand(commands.characterGrowth.createRecord, { draft })
 }
 
 export function runSimulation(

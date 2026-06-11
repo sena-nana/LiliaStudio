@@ -36,6 +36,9 @@ import type { Project, ProjectDraft } from "@/types/project";
 import type { SearchFilter, SearchResult } from "@/types/search";
 import type {
   CharacterTraitState,
+  CharacterGrowthWorkspaceSnapshot,
+  CharacterTraitDeltaRecord,
+  CharacterTraitDeltaRecordDraft,
   DiagnosticsSummary,
   Fact,
   LogicConflict,
@@ -168,5 +171,11 @@ export const commands = {
       { state: CharacterTraitState; delta: TraitDelta },
       CharacterTraitState
     >("character_growth_preview_trait_delta"),
+    workspace: defineCommand<{ projectId: string }, CharacterGrowthWorkspaceSnapshot>(
+      "character_growth_workspace",
+    ),
+    createRecord: defineCommand<{ draft: CharacterTraitDeltaRecordDraft }, CharacterTraitDeltaRecord>(
+      "character_growth_create_record",
+    ),
   },
 } as const;

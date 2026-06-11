@@ -1,5 +1,6 @@
 pub mod axiom;
 pub mod character;
+pub mod character_trait_delta;
 pub mod entry;
 pub mod entry_rich_text;
 pub mod event;

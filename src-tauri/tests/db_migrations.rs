@@ -14,7 +14,7 @@ fn runs_migrations_against_file_database() {
 
     migrations::run_migrations(&mut connection).expect("migrations run");
 
-    assert_eq!(migrations::current_schema_version(&connection).unwrap(), 4);
+    assert_eq!(migrations::current_schema_version(&connection).unwrap(), 5);
     let mut columns = connection
         .prepare("PRAGMA table_info(document_chunks)")
         .expect("pragma prepares");
@@ -23,6 +23,15 @@ fn runs_migrations_against_file_database() {
         .unwrap()
         .any(|name| name.unwrap() == "estimated_tokens");
     assert!(has_estimated_tokens);
+
+    let trait_delta_table_exists: bool = connection
+        .query_row(
+            "SELECT EXISTS(SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'character_trait_deltas')",
+            [],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert!(trait_delta_table_exists);
 }
 
 #[test]
