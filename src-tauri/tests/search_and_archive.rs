@@ -9,7 +9,8 @@ use ameya_lib::{
     },
     services::{
         import_export::{export_project, import_project},
-        search::{search_project, SearchFilter},
+        rag::{index_project_chunks, upsert_embedding},
+        search::{search_project, semantic_search_results, SearchFilter},
     },
     test_support::migrated_memory_database,
 };
@@ -237,6 +238,58 @@ fn project_search_matches_entry_title_body_and_tags_case_insensitively() {
     assert!(result_ids.contains(&title_entry.id.as_str()));
     assert!(result_ids.contains(&body_entry.id.as_str()));
     assert!(result_ids.contains(&tag_entry.id.as_str()));
+}
+
+#[test]
+fn semantic_search_returns_entity_level_results_sorted_by_similarity() {
+    let connection = migrated_memory_database();
+    let project = ProjectRepository::new(&connection)
+        .create(ProjectDraft {
+            name: "语义项目".into(),
+            description: String::new(),
+        })
+        .unwrap();
+    let first = EntryRepository::new(&connection)
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "item".into(),
+            title: "月光阔剑".into(),
+            summary: "潮汐能武器".into(),
+            body: "由精灵锻造技艺制造。".into(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+    let second = EntryRepository::new(&connection)
+        .create(EntryDraft {
+            project_id: project.id.clone(),
+            entry_type: "location".into(),
+            title: "潮汐城".into(),
+            summary: "环潮海港".into(),
+            body: "月门会在此开启。".into(),
+            tags: vec![],
+            status: "draft".into(),
+        })
+        .unwrap();
+
+    let chunks = index_project_chunks(&connection, &project.id, 64).unwrap();
+    for chunk in &chunks {
+        if chunk.source_id == first.id {
+            upsert_embedding(&connection, &chunk.id, "story-embed", vec![1.0, 0.0]).unwrap();
+        } else if chunk.source_id == second.id {
+            upsert_embedding(&connection, &chunk.id, "story-embed", vec![0.0, 1.0]).unwrap();
+        }
+    }
+
+    let candidates =
+        ameya_lib::services::rag::load_vector_candidates(&connection, &project.id).unwrap();
+    let matches =
+        ameya_lib::services::rag::rank_vector_candidates(candidates, vec![1.0, 0.0], 8);
+    let results = semantic_search_results(&connection, matches, 8).unwrap();
+
+    assert_eq!(results[0].entity_id, first.id);
+    assert_eq!(results[0].title, "月光阔剑");
+    assert_eq!(results[1].entity_id, second.id);
 }
 
 #[test]

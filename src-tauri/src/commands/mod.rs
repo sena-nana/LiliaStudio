@@ -71,6 +71,7 @@ pub fn register_handlers(
         rag::rag_index_embeddings,
         rag::rag_preview_context_pack,
         search::search_entities,
+        search::search_semantic,
         simulation::simulation_run,
         vector::vector_preview_chunks
     ])

@@ -1,7 +1,15 @@
+use std::collections::HashSet;
+
 use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
 
-use crate::domain::{entry::EntryRepository, entry_rich_text::entry_searchable_text};
+use crate::{
+    domain::{
+        axiom::AxiomRepository, character::CharacterRepository, entry::EntryRepository,
+        entry_rich_text::entry_searchable_text, event::EventRepository,
+    },
+    services::rag::VectorMatch,
+};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -19,6 +27,30 @@ pub struct SearchResult {
     pub title: String,
     pub snippet: String,
     pub score: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub enum SemanticSearchStatus {
+    Ready,
+    Degraded,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct SemanticSearchRequest {
+    pub project_id: String,
+    pub query: String,
+    pub limit: usize,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct SemanticSearchResponse {
+    pub status: SemanticSearchStatus,
+    pub message: String,
+    pub model: String,
+    pub items: Vec<SearchResult>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -84,6 +116,34 @@ pub fn search_project(
     }
 
     results.sort_by(|left, right| right.score.total_cmp(&left.score));
+    Ok(results)
+}
+
+pub fn semantic_search_results(
+    connection: &Connection,
+    mut matches: Vec<VectorMatch>,
+    limit: usize,
+) -> rusqlite::Result<Vec<SearchResult>> {
+    matches.sort_by(|left, right| right.score.total_cmp(&left.score));
+    let mut seen = HashSet::new();
+    let mut results = Vec::new();
+
+    for item in matches {
+        if !seen.insert((item.source_type.clone(), item.source_id.clone())) {
+            continue;
+        }
+        results.push(SearchResult {
+            title: load_entity_title(connection, &item.source_type, &item.source_id)?
+                .unwrap_or_else(|| item.source_id.clone()),
+            entity_type: item.source_type,
+            entity_id: item.source_id,
+            snippet: make_snippet(&item.text, ""),
+            score: item.score as f64,
+        });
+        if results.len() >= limit {
+            break;
+        }
+    }
     Ok(results)
 }
 
@@ -165,6 +225,28 @@ fn make_snippet(text: &str, query: &str) -> String {
     }
 }
 
+fn load_entity_title(
+    connection: &Connection,
+    entity_type: &str,
+    entity_id: &str,
+) -> rusqlite::Result<Option<String>> {
+    match entity_type {
+        "entry" => Ok(EntryRepository::new(connection)
+            .get(entity_id)?
+            .map(|entry| entry.title)),
+        "character" => Ok(CharacterRepository::new(connection)
+            .get(entity_id)?
+            .map(|character| character.name)),
+        "event" => Ok(EventRepository::new(connection)
+            .get(entity_id)?
+            .map(|event| event.title)),
+        "axiom" => Ok(AxiomRepository::new(connection)
+            .get(entity_id)?
+            .map(|axiom| axiom.subject)),
+        _ => Ok(None),
+    }
+}
+
 fn find_case_insensitive(text: &str, query: &str) -> Option<MatchRange> {
     if text.is_empty() || query.is_empty() {
         return None;
@@ -195,7 +277,17 @@ fn find_case_insensitive(text: &str, query: &str) -> Option<MatchRange> {
 
 #[cfg(test)]
 mod tests {
-    use super::{find_case_insensitive, make_snippet, MatchRange};
+    use super::{
+        find_case_insensitive, make_snippet, semantic_search_results, MatchRange,
+    };
+    use crate::{
+        domain::{
+            entry::{EntryDraft, EntryRepository},
+            project::{ProjectDraft, ProjectRepository},
+        },
+        services::rag::{index_project_chunks, VectorMatch},
+        test_support::migrated_memory_database,
+    };
 
     #[test]
     fn snippet_handles_utf8_boundaries() {
@@ -217,5 +309,57 @@ mod tests {
             find_case_insensitive("A secret Moon Gate", "moon"),
             Some(MatchRange { start: 9, end: 13 })
         );
+    }
+
+    #[test]
+    fn semantic_search_deduplicates_entity_matches_by_highest_score() {
+        let connection = migrated_memory_database();
+        let project = ProjectRepository::new(&connection)
+            .create(ProjectDraft {
+                name: "语义搜索项目".into(),
+                description: String::new(),
+            })
+            .unwrap();
+        let entry = EntryRepository::new(&connection)
+            .create(EntryDraft {
+                project_id: project.id.clone(),
+                entry_type: "item".into(),
+                title: "月光阔剑".into(),
+                summary: "潮汐能武器".into(),
+                body: "由精灵锻造技艺制造。".into(),
+                tags: vec![],
+                status: "draft".into(),
+            })
+            .unwrap();
+        let chunks = index_project_chunks(&connection, &project.id, 16).unwrap();
+
+        let results = semantic_search_results(
+            &connection,
+            vec![
+                VectorMatch {
+                    chunk_id: chunks[0].id.clone(),
+                    source_type: "entry".into(),
+                    source_id: entry.id.clone(),
+                    text: chunks[0].text.clone(),
+                    score: 0.61,
+                },
+                VectorMatch {
+                    chunk_id: chunks[0].id.clone(),
+                    source_type: "entry".into(),
+                    source_id: entry.id.clone(),
+                    text: "更强命中".into(),
+                    score: 0.91,
+                },
+            ],
+            8,
+        )
+        .unwrap();
+
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].entity_type, "entry");
+        assert_eq!(results[0].entity_id, entry.id);
+        assert_eq!(results[0].title, "月光阔剑");
+        assert_eq!(results[0].snippet, "更强命中");
+        assert!((results[0].score - 0.91).abs() < 0.000_1);
     }
 }
