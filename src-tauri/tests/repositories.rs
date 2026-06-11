@@ -273,6 +273,8 @@ fn character_trait_delta_repository_creates_and_lists_records() {
 
     assert_eq!(created.character_id, character.id);
     assert_eq!(records.list_project(&project.id).unwrap().len(), 1);
+    records.soft_delete(&created.id).unwrap();
+    assert!(records.list_project(&project.id).unwrap().is_empty());
 }
 
 #[test]
