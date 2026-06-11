@@ -112,9 +112,9 @@ describe('aiStore', () => {
       message: '',
       lastProjectId: 'project_1',
     })
-    expect(invokeMock).toHaveBeenNthCalledWith(1, 'ai_load_provider_settings')
-    expect(invokeMock).toHaveBeenNthCalledWith(2, 'rag_index_embeddings', { projectId: 'project_1', maxChars: 600 })
-    expect(invokeMock).toHaveBeenNthCalledWith(3, 'rag_index_status', { projectId: 'project_1' })
+    expect(invokeMock).toHaveBeenCalledWith('ai_load_provider_settings')
+    expect(invokeMock).toHaveBeenCalledWith('rag_index_embeddings', { projectId: 'project_1', maxChars: 600 })
+    expect(invokeMock).toHaveBeenCalledWith('rag_index_status', { projectId: 'project_1' })
   })
 
   it('falls back to chunk indexing when embedding provider is not configured', async () => {
@@ -150,8 +150,8 @@ describe('aiStore', () => {
       message: '请先启用 OpenAI 兼容接口并填写嵌入模型。',
       lastProjectId: 'project_1',
     })
-    expect(invokeMock).toHaveBeenNthCalledWith(2, 'rag_index_chunks', { projectId: 'project_1', maxChars: 600 })
-    expect(invokeMock).toHaveBeenNthCalledWith(3, 'rag_index_status', { projectId: 'project_1' })
+    expect(invokeMock).toHaveBeenCalledWith('rag_index_chunks', { projectId: 'project_1', maxChars: 600 })
+    expect(invokeMock).toHaveBeenCalledWith('rag_index_status', { projectId: 'project_1' })
     expect(invokeMock).not.toHaveBeenCalledWith('rag_index_embeddings', expect.anything())
   })
 

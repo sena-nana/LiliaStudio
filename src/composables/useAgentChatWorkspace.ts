@@ -1,20 +1,16 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { askAgent } from "@/api/ai";
-import { entityTypeLabel } from "@/domain/displayLabels";
+import {
+  agentReportTitle,
+  buildAgentReportBody,
+  formatReferenceScore,
+  toAgentReference,
+} from "@/domain/agentChat";
 import { useJobStore } from "@/stores/jobStore";
 import { useLibraryStore } from "@/stores/libraryStore";
 import { useProjectStore } from "@/stores/projectStore";
 import { useSearchStore } from "@/stores/searchStore";
 import type { AgentAskReference, AgentAskResponse } from "@/types/ai";
-
-interface SearchReferenceInput {
-  entityType: string;
-  entityId: string;
-  title: string;
-  snippet: string;
-  source: string;
-  score: number;
-}
 
 export function useAgentChatWorkspace() {
   const projectStore = useProjectStore();
@@ -94,9 +90,9 @@ export function useAgentChatWorkspace() {
       await libraryStore.createEntry({
         projectId: selectedProjectId.value,
         entryType: "report",
-        title: reportTitle(),
+        title: agentReportTitle(question.value),
         summary: question.value.trim(),
-        body: buildReportBody(response),
+        body: buildAgentReportBody(question.value, response),
         tags: ["agent", "report"],
         status: "active",
       });
@@ -129,45 +125,13 @@ export function useAgentChatWorkspace() {
     }
   }
 
-  function toAgentReference(result: SearchReferenceInput): AgentAskReference {
-    return {
-      entityType: result.entityType,
-      entityId: result.entityId,
-      title: result.title,
-      snippet: result.snippet,
-      source: result.source,
-      score: result.score,
-    };
-  }
-
-  function reportTitle(): string {
-    const text = question.value.trim();
-    return text.length > 28 ? `Agent 问答：${text.slice(0, 28)}...` : `Agent 问答：${text}`;
-  }
-
-  function buildReportBody(response: AgentAskResponse): string {
-    const sourceLines = response.references.length
-      ? response.references
-          .map(
-            (reference, index) =>
-              `${index + 1}. ${entityTypeLabel(reference.entityType)} ${reference.title} (${reference.entityType}:${reference.entityId}) - ${reference.snippet || "无摘要"}`,
-          )
-          .join("\n")
-      : "无引用来源";
-    return `# 问题\n${question.value.trim()}\n\n# 回答\n${response.answer}\n\n# 引用来源\n${sourceLines}`;
-  }
-
-  function formatScore(score: number): string {
-    return score.toFixed(2);
-  }
-
   return {
     answer,
     asking,
     canSave,
     canSubmit,
     errorMessage,
-    formatScore,
+    formatScore: formatReferenceScore,
     lastResponse,
     projectStore,
     question,

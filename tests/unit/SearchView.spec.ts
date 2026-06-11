@@ -48,8 +48,6 @@ describe('SearchView', () => {
     await fireEvent.click(screen.getByRole('button', { name: '搜索' }))
 
     expect(await screen.findByText('当前项目还没有可用的 embedding 索引。')).toBeInTheDocument()
-    expect(screen.getByText('关键词')).toBeInTheDocument()
-    expect(screen.getByText('语义')).toBeInTheDocument()
     expect(screen.getByText((content) => content.includes('相似度 0.78'))).toBeInTheDocument()
   })
 

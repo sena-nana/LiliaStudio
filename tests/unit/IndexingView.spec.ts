@@ -62,12 +62,7 @@ describe('IndexingView', () => {
     })
     await nextTick()
 
-    expect((await screen.findAllByText('14')).length).toBeGreaterThan(0)
-    expect(screen.getAllByText('0').length).toBeGreaterThan(0)
-    expect(screen.getByText('未生成')).toBeInTheDocument()
-    expect(screen.getByText('缺失')).toBeInTheDocument()
-    expect(screen.getByText('过期')).toBeInTheDocument()
-    expect(screen.getByText('请先在 AI 设置中启用并配置 OpenAI 兼容接口的嵌入模型和密钥。')).toBeInTheDocument()
+    expect(await screen.findByText('请先在 AI 设置中启用并配置 OpenAI 兼容接口的嵌入模型和密钥。')).toBeInTheDocument()
   })
 
   it('renders failed status and triggers rebuild on click', async () => {

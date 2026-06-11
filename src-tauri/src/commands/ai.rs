@@ -5,9 +5,13 @@ use crate::{
         openai_compatible::{
             ChatMessage, OpenAiCompatibleClient, ProviderError, UreqOpenAiTransport,
         },
+        provider_resolver::{
+            load_openai_settings, resolve_openai_chat_provider, OPENAI_AGENT_MESSAGES,
+            OPENAI_TEST_MESSAGES,
+        },
         settings::{
-            api_key_secret_name, load_provider_settings, save_provider_settings, AiProviderConfig,
-            AiProviderKind, AiProviderSettingsDraft, AiProviderSettingsView, SecretStore,
+            load_provider_settings, save_provider_settings, AiProviderConfig, AiProviderKind,
+            AiProviderSettingsDraft, AiProviderSettingsView,
         },
     },
     windows::credential::WindowsCredentialStore,
@@ -51,13 +55,6 @@ pub struct AgentAskResponse {
     pub model: String,
 }
 
-#[derive(Debug)]
-struct OpenAiAgentProvider {
-    base_url: String,
-    model: String,
-    api_key: String,
-}
-
 #[tauri::command]
 pub fn ai_default_providers() -> Vec<AiProviderConfig> {
     vec![
@@ -93,37 +90,16 @@ pub fn ai_save_provider_settings<R: tauri::Runtime>(
 pub fn ai_test_openai_provider<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
 ) -> Result<OpenAiProviderTestResult, String> {
-    let config_dir = app
-        .path()
-        .app_config_dir()
-        .map_err(|error| format!("无法定位应用配置目录：{error}"))?;
-    let settings = load_provider_settings(&config_dir, &WindowsCredentialStore)?;
-    let provider = settings
-        .into_iter()
-        .find(|provider| provider.kind == AiProviderKind::OpenAiCompatible)
-        .ok_or_else(|| "未找到 OpenAI 兼容接口设置".to_string())?;
-    let Some(base_url) = provider.base_url.filter(|value| !value.trim().is_empty()) else {
-        return Ok(error_result(ProviderError::config_missing(
-            "请先填写 OpenAI 兼容接口的基础地址",
-        )));
-    };
-    let Some(model) = provider.chat_model.filter(|value| !value.trim().is_empty()) else {
-        return Ok(error_result(ProviderError::config_missing(
-            "请先填写 OpenAI 兼容接口的对话模型",
-        )));
-    };
-    let api_key = WindowsCredentialStore
-        .read_secret(&api_key_secret_name(&AiProviderKind::OpenAiCompatible))?
-        .filter(|value| !value.trim().is_empty());
-    let Some(api_key) = api_key else {
-        return Ok(error_result(ProviderError::config_missing(
-            "请先保存 OpenAI 兼容接口的接口密钥",
-        )));
+    let (settings, api_key) = load_openai_settings(&app)?;
+    let provider = match resolve_openai_chat_provider(settings, api_key, OPENAI_TEST_MESSAGES) {
+        Ok(provider) => provider,
+        Err(message) => return Ok(error_result(ProviderError::config_missing(message))),
     };
 
-    let client = OpenAiCompatibleClient::new(base_url, api_key, UreqOpenAiTransport);
+    let client =
+        OpenAiCompatibleClient::new(provider.base_url, provider.api_key, UreqOpenAiTransport);
     match client.chat(
-        &model,
+        &provider.model,
         vec![ChatMessage {
             role: "user".into(),
             content: "Return the word ok.".into(),
@@ -153,15 +129,8 @@ pub fn ai_agent_ask<R: tauri::Runtime>(
         return Err("请输入问题".into());
     }
 
-    let config_dir = app
-        .path()
-        .app_config_dir()
-        .map_err(|error| format!("无法定位应用配置目录：{error}"))?;
-    let settings = load_provider_settings(&config_dir, &WindowsCredentialStore)?;
-    let api_key = WindowsCredentialStore
-        .read_secret(&api_key_secret_name(&AiProviderKind::OpenAiCompatible))?
-        .filter(|value| !value.trim().is_empty());
-    let provider = resolve_openai_agent_provider(settings, api_key)?;
+    let (settings, api_key) = load_openai_settings(&app)?;
+    let provider = resolve_openai_chat_provider(settings, api_key, OPENAI_AGENT_MESSAGES)?;
 
     let references = request.references;
     let messages = build_agent_messages(&request.project_id, question, &references);
@@ -185,33 +154,6 @@ fn error_result(error: ProviderError) -> OpenAiProviderTestResult {
         message: error.message.clone(),
         error: Some(error),
     }
-}
-
-fn resolve_openai_agent_provider(
-    settings: Vec<AiProviderSettingsView>,
-    api_key: Option<String>,
-) -> Result<OpenAiAgentProvider, String> {
-    let provider = settings
-        .into_iter()
-        .find(|provider| provider.kind == AiProviderKind::OpenAiCompatible && provider.enabled)
-        .ok_or_else(|| "请先在 AI 设置中启用 OpenAI 兼容接口".to_string())?;
-    let base_url = provider
-        .base_url
-        .filter(|value| !value.trim().is_empty())
-        .ok_or_else(|| "请先填写 OpenAI 兼容接口的基础地址".to_string())?;
-    let model = provider
-        .chat_model
-        .filter(|value| !value.trim().is_empty())
-        .ok_or_else(|| "请先填写 OpenAI 兼容接口的对话模型".to_string())?;
-    let api_key = api_key
-        .filter(|value| !value.trim().is_empty())
-        .ok_or_else(|| "请先保存 OpenAI 兼容接口的接口密钥".to_string())?;
-
-    Ok(OpenAiAgentProvider {
-        base_url,
-        model,
-        api_key,
-    })
 }
 
 fn build_agent_messages(
@@ -260,9 +202,7 @@ fn build_agent_user_prompt(
 
 #[cfg(test)]
 mod tests {
-    use crate::ai::settings::{AiProviderKind, AiProviderSettingsView};
-
-    use super::{build_agent_user_prompt, resolve_openai_agent_provider, AgentAskReference};
+    use super::{build_agent_user_prompt, AgentAskReference};
 
     fn reference(overrides: impl FnOnce(&mut AgentAskReference)) -> AgentAskReference {
         let mut reference = AgentAskReference {
@@ -275,19 +215,6 @@ mod tests {
         };
         overrides(&mut reference);
         reference
-    }
-
-    fn openai_settings(enabled: bool) -> AiProviderSettingsView {
-        AiProviderSettingsView {
-            kind: AiProviderKind::OpenAiCompatible,
-            base_url: Some("https://llm.example/v1".into()),
-            api_key_preview: None,
-            has_api_key: false,
-            chat_model: Some("story-chat".into()),
-            embedding_model: None,
-            command_template: None,
-            enabled,
-        }
     }
 
     #[test]
@@ -322,22 +249,5 @@ mod tests {
 
         assert!(prompt.contains("无可用引用"));
         assert!(prompt.contains("上下文不足"));
-    }
-
-    #[test]
-    fn ai_agent_provider_config_requires_enabled_openai_provider() {
-        let error =
-            resolve_openai_agent_provider(vec![openai_settings(false)], Some("sk-test".into()))
-                .expect_err("disabled provider should fail");
-
-        assert_eq!(error, "请先在 AI 设置中启用 OpenAI 兼容接口");
-    }
-
-    #[test]
-    fn ai_agent_provider_config_requires_api_key() {
-        let error = resolve_openai_agent_provider(vec![openai_settings(true)], None)
-            .expect_err("missing api key should fail");
-
-        assert_eq!(error, "请先保存 OpenAI 兼容接口的接口密钥");
     }
 }
