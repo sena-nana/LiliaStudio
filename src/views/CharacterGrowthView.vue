@@ -136,7 +136,7 @@
 
             <div v-if="previewState" class="view-stack">
               <div class="growth-preview-summary">
-                <strong>{{ selectedEvent?.title || "未选择事件" }}</strong>
+                <strong>{{ eventTitle(draft.sourceEventId) }}</strong>
                 <span>{{ draft.traitName || "未填写 trait" }} {{ parsedDelta === null ? "" : formatSigned(parsedDelta) }}</span>
               </div>
               <div v-if="previewEntries.length > 0" class="growth-trait-grid" aria-label="预览 trait 状态">
@@ -255,9 +255,6 @@ const sortedCharacters = computed(() =>
 const sortedEvents = computed(() => [...libraryStore.events].sort((left, right) => left.sortKey - right.sortKey));
 const selectedCharacter = computed(
   () => sortedCharacters.value.find((character) => character.id === selectedCharacterId.value) ?? null,
-);
-const selectedEvent = computed(
-  () => sortedEvents.value.find((event) => event.id === draft.sourceEventId) ?? null,
 );
 const selectedState = computed<CharacterTraitState>(() => {
   if (!selectedCharacterId.value) return emptyState;
