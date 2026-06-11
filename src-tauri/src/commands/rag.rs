@@ -1,9 +1,12 @@
-use tauri::{Manager, State};
+use tauri::State;
 
 use crate::{
     ai::{
         openai_compatible::{OpenAiCompatibleClient, ProviderError, UreqOpenAiTransport},
-        settings::{api_key_secret_name, load_provider_settings, AiProviderKind, SecretStore},
+        provider_resolver::{
+            load_openai_settings, resolve_openai_embedding_provider,
+            resolve_optional_openai_embedding_model, OPENAI_RAG_MESSAGES,
+        },
     },
     db::app_state::AppState,
     services::rag::{
@@ -11,7 +14,6 @@ use crate::{
         load_vector_candidates, rank_vector_candidates, upsert_embedding, ContextItem, ContextPack,
         DocumentChunkRecord, RagIndexStatus,
     },
-    windows::credential::WindowsCredentialStore,
 };
 
 #[derive(Debug, serde::Serialize)]
@@ -37,7 +39,8 @@ pub fn rag_index_status<R: tauri::Runtime>(
     state: State<'_, AppState>,
     project_id: String,
 ) -> Result<RagIndexStatus, String> {
-    let model = embedding_model_from_settings(&app)?;
+    let (settings, api_key) = load_openai_settings(&app)?;
+    let model = resolve_optional_openai_embedding_model(settings, api_key);
     state.with_database(|connection| {
         embedding_index_status(connection, &project_id, model.as_deref())
     })
@@ -51,7 +54,8 @@ pub fn rag_index_embeddings<R: tauri::Runtime>(
     max_chars: usize,
 ) -> Result<EmbeddingIndexResult, String> {
     state.with_database(|connection| index_project_chunks(connection, &project_id, max_chars))?;
-    let provider = embedding_provider_from_settings(&app)?;
+    let (settings, api_key) = load_openai_settings(&app)?;
+    let provider = resolve_openai_embedding_provider(settings, api_key, OPENAI_RAG_MESSAGES)?;
     let chunks = state.with_database(|connection| {
         chunks_requiring_embedding(connection, &project_id, &provider.model)
     })?;
@@ -91,72 +95,6 @@ pub fn rag_index_embeddings<R: tauri::Runtime>(
         chunk_count: status.chunk_count,
         embedding_count: status.embedding_count,
         model: status.model,
-    })
-}
-
-struct EmbeddingProviderConfig {
-    base_url: String,
-    model: String,
-    api_key: String,
-}
-
-fn embedding_model_from_settings<R: tauri::Runtime>(
-    app: &tauri::AppHandle<R>,
-) -> Result<Option<String>, String> {
-    let config_dir = app
-        .path()
-        .app_config_dir()
-        .map_err(|error| format!("无法定位应用配置目录：{error}"))?;
-    let settings = load_provider_settings(&config_dir, &WindowsCredentialStore)?;
-    Ok(settings
-        .into_iter()
-        .find(|provider| provider.kind == AiProviderKind::OpenAiCompatible && provider.enabled)
-        .filter(|provider| {
-            provider
-                .base_url
-                .as_deref()
-                .is_some_and(|value| !value.trim().is_empty())
-        })
-        .filter(|_| {
-            WindowsCredentialStore
-                .read_secret(&api_key_secret_name(&AiProviderKind::OpenAiCompatible))
-                .ok()
-                .flatten()
-                .is_some_and(|value| !value.trim().is_empty())
-        })
-        .and_then(|provider| provider.embedding_model)
-        .filter(|value| !value.trim().is_empty()))
-}
-
-fn embedding_provider_from_settings<R: tauri::Runtime>(
-    app: &tauri::AppHandle<R>,
-) -> Result<EmbeddingProviderConfig, String> {
-    let config_dir = app
-        .path()
-        .app_config_dir()
-        .map_err(|error| format!("无法定位应用配置目录：{error}"))?;
-    let settings = load_provider_settings(&config_dir, &WindowsCredentialStore)?;
-    let provider = settings
-        .into_iter()
-        .find(|provider| provider.kind == AiProviderKind::OpenAiCompatible && provider.enabled)
-        .ok_or_else(|| "请先启用 OpenAI 兼容接口用于向量索引".to_string())?;
-    let base_url = provider
-        .base_url
-        .filter(|value| !value.trim().is_empty())
-        .ok_or_else(|| "请先填写 OpenAI 兼容接口的基础地址".to_string())?;
-    let model = provider
-        .embedding_model
-        .filter(|value| !value.trim().is_empty())
-        .ok_or_else(|| "请先填写 OpenAI 兼容接口的嵌入模型".to_string())?;
-    let api_key = WindowsCredentialStore
-        .read_secret(&api_key_secret_name(&AiProviderKind::OpenAiCompatible))?
-        .filter(|value| !value.trim().is_empty())
-        .ok_or_else(|| "请先保存 OpenAI 兼容接口的接口密钥".to_string())?;
-
-    Ok(EmbeddingProviderConfig {
-        base_url,
-        model,
-        api_key,
     })
 }
 

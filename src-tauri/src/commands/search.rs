@@ -1,9 +1,11 @@
-use tauri::{Manager, State};
+use tauri::State;
 
 use crate::{
     ai::{
         openai_compatible::{OpenAiCompatibleClient, UreqOpenAiTransport},
-        settings::{api_key_secret_name, load_provider_settings, AiProviderKind, SecretStore},
+        provider_resolver::{
+            load_openai_settings, resolve_openai_embedding_provider, OPENAI_SEARCH_MESSAGES,
+        },
     },
     db::app_state::AppState,
     services::{
@@ -13,7 +15,6 @@ use crate::{
             SemanticSearchRequest, SemanticSearchResponse, SemanticSearchStatus,
         },
     },
-    windows::credential::WindowsCredentialStore,
 };
 
 #[tauri::command]
@@ -39,69 +40,47 @@ pub fn search_semantic<R: tauri::Runtime>(
         });
     }
 
-    let config_dir = app
-        .path()
-        .app_config_dir()
-        .map_err(|error| format!("无法定位应用配置目录：{error}"))?;
-    let settings = load_provider_settings(&config_dir, &WindowsCredentialStore)?;
-    let provider = settings
-        .into_iter()
-        .find(|provider| provider.kind == AiProviderKind::OpenAiCompatible);
-    let Some(provider) = provider else {
-        return Ok(degraded("未找到 OpenAI 兼容接口设置"));
-    };
-    if !provider.enabled {
-        return Ok(degraded("请先启用 OpenAI 兼容接口用于语义搜索"));
-    }
-    let Some(base_url) = provider.base_url.filter(|value| !value.trim().is_empty()) else {
-        return Ok(degraded("请先填写 OpenAI 兼容接口的基础地址"));
-    };
-    let Some(model) = provider
-        .embedding_model
-        .filter(|value| !value.trim().is_empty())
-    else {
-        return Ok(degraded("请先填写 OpenAI 兼容接口的嵌入模型"));
-    };
-    let api_key = WindowsCredentialStore
-        .read_secret(&api_key_secret_name(&AiProviderKind::OpenAiCompatible))?
-        .filter(|value| !value.trim().is_empty());
-    let Some(api_key) = api_key else {
-        return Ok(degraded("请先保存 OpenAI 兼容接口的接口密钥"));
-    };
+    let (settings, api_key) = load_openai_settings(&app)?;
+    let provider =
+        match resolve_openai_embedding_provider(settings, api_key, OPENAI_SEARCH_MESSAGES) {
+            Ok(provider) => provider,
+            Err(message) => return Ok(degraded(message)),
+        };
 
     let index_status = state.with_database(|connection| {
-        embedding_index_status(connection, &request.project_id, Some(&model))
+        embedding_index_status(connection, &request.project_id, Some(&provider.model))
     })?;
     if index_status.status != "ready" {
         return Ok(SemanticSearchResponse {
             status: SemanticSearchStatus::Degraded,
             message: index_status.message,
-            model,
+            model: provider.model,
             items: Vec::new(),
         });
     }
 
-    let client = OpenAiCompatibleClient::new(base_url, api_key, UreqOpenAiTransport);
-    let query_vector = match client.embeddings(&model, vec![request.query.clone()]) {
+    let client =
+        OpenAiCompatibleClient::new(provider.base_url, provider.api_key, UreqOpenAiTransport);
+    let query_vector = match client.embeddings(&provider.model, vec![request.query.clone()]) {
         Ok(result) => result.vectors.into_iter().next().unwrap_or_default(),
         Err(error) => {
             return Ok(SemanticSearchResponse {
                 status: SemanticSearchStatus::Degraded,
                 message: error.message,
-                model,
+                model: provider.model,
                 items: Vec::new(),
             });
         }
     };
 
     let candidates = state.with_database(|connection| {
-        load_vector_candidates_for_model(connection, &request.project_id, &model)
+        load_vector_candidates_for_model(connection, &request.project_id, &provider.model)
     })?;
     if candidates.is_empty() {
         return Ok(SemanticSearchResponse {
             status: SemanticSearchStatus::Degraded,
             message: "当前项目还没有可用的 embedding 索引。".into(),
-            model,
+            model: provider.model,
             items: Vec::new(),
         });
     }
@@ -112,7 +91,7 @@ pub fn search_semantic<R: tauri::Runtime>(
     Ok(SemanticSearchResponse {
         status: SemanticSearchStatus::Ready,
         message: String::new(),
-        model,
+        model: provider.model,
         items,
     })
 }

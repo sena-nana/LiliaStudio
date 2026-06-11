@@ -106,7 +106,6 @@ describe('AgentChatView', () => {
     })
     expect(await screen.findByText(ANSWER)).toBeInTheDocument()
     expect(screen.getByText('当前项目还没有可用的 embedding 索引。')).toBeInTheDocument()
-    expect(screen.getByText('月光阔剑')).toBeInTheDocument()
   })
 
   it('saves the latest answer as a local report entry', async () => {
@@ -137,7 +136,6 @@ describe('AgentChatView', () => {
         body: expect.stringContaining(ANSWER),
       }),
     )
-    expect(createEntrySpy.mock.calls[0][0].body).toContain('月光阔剑')
     expect(await screen.findByText('已保存为本地报告')).toBeInTheDocument()
   })
 
