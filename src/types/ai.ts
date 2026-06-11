@@ -51,6 +51,28 @@ export interface OpenAiProviderTestResult {
   error: ProviderError | null;
 }
 
+export interface AgentAskReference {
+  entityType: string;
+  entityId: string;
+  title: string;
+  snippet: string;
+  source: "keyword" | "semantic" | string;
+  score: number;
+}
+
+export interface AgentAskRequest {
+  projectId: string;
+  question: string;
+  references: AgentAskReference[];
+}
+
+export interface AgentAskResponse {
+  answer: string;
+  references: AgentAskReference[];
+  providerKind: AiProviderKind;
+  model: string;
+}
+
 export type CliProviderErrorCode =
   | "missingCli"
   | "authFailed"

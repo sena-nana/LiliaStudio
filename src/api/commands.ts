@@ -2,6 +2,8 @@ import type {
   AiJob,
   AiJobDraft,
   AiJobLog,
+  AgentAskRequest,
+  AgentAskResponse,
   AiProviderConfig,
   AiProviderSettingsDraft,
   AiProviderSettingsView,
@@ -71,6 +73,7 @@ function defineCommand<Args, Result>(name: string): CommandDefinition<Args, Resu
 
 export const commands = {
   ai: {
+    agentAsk: defineCommand<{ request: AgentAskRequest }, AgentAskResponse>("ai_agent_ask"),
     defaultProviders: defineCommand<undefined, AiProviderConfig[]>("ai_default_providers"),
     loadProviderSettings: defineCommand<undefined, AiProviderSettingsView[]>("ai_load_provider_settings"),
     saveProviderSettings: defineCommand<{ drafts: AiProviderSettingsDraft[] }, AiProviderSettingsView[]>(

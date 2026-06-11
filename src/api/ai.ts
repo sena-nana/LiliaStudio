@@ -1,6 +1,8 @@
 import { executeCommand, listResult } from "./client";
 import { commands } from "./commands";
 import type {
+  AgentAskRequest,
+  AgentAskResponse,
   AiProviderConfig,
   AiProviderSettingsDraft,
   AiProviderSettingsView,
@@ -11,6 +13,10 @@ import type {
   OpenAiProviderTestResult,
   TextChunk,
 } from "@/types/ai";
+
+export function askAgent(request: AgentAskRequest): Promise<AgentAskResponse> {
+  return executeCommand(commands.ai.agentAsk, { request });
+}
 
 export function defaultAiProviders(): Promise<AiProviderConfig[]> {
   return executeCommand(commands.ai.defaultProviders).then(listResult);
