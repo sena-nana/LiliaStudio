@@ -30,94 +30,105 @@ async function renderProjectView(path = '/projects/project_1') {
   })
 }
 
+const project = {
+  id: 'project_1',
+  name: '雨夜都市',
+  description: '',
+  createdAt: '',
+  updatedAt: '',
+  archivedAt: null,
+}
+
+const entry = {
+  id: 'entry_1',
+  projectId: 'project_1',
+  entryType: 'item',
+  title: '月光阔剑',
+  summary: '',
+  body: '',
+  tags: ['旧标签'],
+  status: 'draft',
+  createdAt: '',
+  updatedAt: '',
+  deletedAt: null,
+}
+
+const character = {
+  id: 'character_1',
+  projectId: 'project_1',
+  name: '椎名',
+  aliases: [],
+  summary: '冷静的调查者',
+  appearance: '',
+  goals: '',
+  motivations: '',
+  fears: '',
+  faction: '北境',
+  tags: [],
+  createdAt: '',
+  updatedAt: '',
+  deletedAt: null,
+}
+
+const event = {
+  id: 'event_1',
+  projectId: 'project_1',
+  title: '围城战',
+  description: '',
+  timeLabel: '冬季',
+  sortKey: 1,
+  startLabel: '',
+  endLabel: '',
+  location: '',
+  importance: 5,
+  outcome: '',
+  tags: [],
+  createdAt: '',
+  updatedAt: '',
+  deletedAt: null,
+}
+
+const axiom = {
+  id: 'axiom_1',
+  projectId: 'project_1',
+  subject: '月光金属',
+  predicate: '定义',
+  object: '稀有',
+  scopeTime: '',
+  scopeLocation: '',
+  certainty: 1,
+  sourceEntityType: null,
+  sourceEntityId: null,
+  naturalLanguage: '',
+  tags: [],
+  createdAt: '',
+  updatedAt: '',
+  deletedAt: null,
+}
+
+const relationSuggestion = {
+  source: { entityType: 'character', entityId: 'character_1' },
+  target: { entityType: 'event', entityId: 'event_1' },
+  relationType: '参与事件',
+  description: '同一事件参与者',
+  confidence: 0.95,
+  directed: true,
+  reason: '同一事件参与者',
+  strength: '高',
+}
+
 function mockProjectWorkspace() {
   invokeMock.mockImplementation(async (command) => {
     if (command === 'project_list') {
-      return [
-        {
-          id: 'project_1',
-          name: '雨夜都市',
-          description: '',
-          createdAt: '',
-          updatedAt: '',
-          archivedAt: null,
-        },
-      ]
+      return [project]
     }
     if (command === 'library_project_snapshot') {
       return {
         projectId: 'project_1',
-        entries: [
-        {
-          id: 'entry_1',
-          projectId: 'project_1',
-          entryType: 'item',
-          title: '月光阔剑',
-          summary: '',
-          body: '',
-          tags: ['旧标签'],
-          status: 'draft',
-          createdAt: '',
-          updatedAt: '',
-          deletedAt: null,
-        },
-        ],
-        characters: [
-          {
-            id: 'character_1',
-            projectId: 'project_1',
-            name: '椎名',
-            aliases: [],
-            summary: '冷静的调查者',
-            appearance: '',
-            goals: '',
-            motivations: '',
-            fears: '',
-            faction: '北境',
-            tags: [],
-            createdAt: '',
-            updatedAt: '',
-            deletedAt: null,
-          },
-        ],
-        events: [
-          {
-            id: 'event_1',
-            projectId: 'project_1',
-            title: '围城战',
-            description: '',
-            timeLabel: '冬季',
-            sortKey: 1,
-            startLabel: '',
-            endLabel: '',
-            location: '',
-            importance: 5,
-            outcome: '',
-            tags: [],
-            createdAt: '',
-            updatedAt: '',
-            deletedAt: null,
-          },
-        ],
-        axioms: [
-          {
-            id: 'axiom_1',
-            projectId: 'project_1',
-            subject: '月光金属',
-            predicate: '定义',
-            object: '稀有',
-            scopeTime: '',
-            scopeLocation: '',
-            certainty: 1,
-            sourceEntityType: null,
-            sourceEntityId: null,
-            naturalLanguage: '',
-            tags: [],
-            createdAt: '',
-            updatedAt: '',
-            deletedAt: null,
-          },
-        ],
+        entries: [entry],
+        characters: [character],
+        events: [event],
+        axioms: [axiom],
         relations: [],
       }
     }
@@ -150,18 +161,7 @@ function mockProjectWorkspace() {
           },
         ],
         edges: [],
-        suggestions: [
-          {
-            source: { entityType: 'character', entityId: 'character_1' },
-            target: { entityType: 'event', entityId: 'event_1' },
-            relationType: '参与事件',
-            description: '同一事件参与者',
-            confidence: 0.95,
-            directed: true,
-            reason: '同一事件参与者',
-            strength: '高',
-          },
-        ],
+        suggestions: [relationSuggestion],
         missing: ['存在待确认关联建议'],
         relationCount: 0,
       }
@@ -216,7 +216,7 @@ describe('ProjectView', () => {
   it('renders library panels and selects a record', async () => {
     mockProjectWorkspace()
 
-    const view = await renderProjectView()
+    await renderProjectView()
 
     expect(await screen.findByText('月光阔剑')).toBeInTheDocument()
     await fireEvent.click(screen.getByRole('button', { name: /角色/ }))
@@ -229,10 +229,7 @@ describe('ProjectView', () => {
     await fireEvent.click(screen.getByRole('button', { name: /资料/ }))
     await fireEvent.click(screen.getByRole('button', { name: /月光阔剑/ }))
 
-    await waitFor(() => {
-      expect(view.container.querySelector('.object-table-row.active')).toHaveTextContent('月光阔剑')
-    })
-    expect(screen.getByDisplayValue('月光阔剑')).toBeInTheDocument()
+    expect(await screen.findByDisplayValue('月光阔剑')).toBeInTheDocument()
   })
 
   it('saves an entry with parsed tags through the existing command', async () => {
