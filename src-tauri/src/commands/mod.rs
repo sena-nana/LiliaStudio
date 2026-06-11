@@ -19,6 +19,7 @@ pub fn register_handlers(
 ) -> tauri::Builder<crate::WindowsRuntime> {
     builder.invoke_handler(tauri::generate_handler![
         ai::ai_default_providers,
+        ai::ai_agent_ask,
         ai::ai_load_provider_settings,
         ai::ai_save_provider_settings,
         ai::ai_test_openai_provider,

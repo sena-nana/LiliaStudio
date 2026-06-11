@@ -13,6 +13,7 @@ const entryTypeLabels: Record<string, string> = {
   item: "物品",
   location: "地点",
   faction: "阵营",
+  report: "报告",
 };
 
 const entryStatusLabels: Record<string, string> = {
@@ -33,6 +34,7 @@ const jobTypeLabels: Record<string, string> = {
   logicAudit: "逻辑审计",
   indexProject: "项目索引",
   promptRun: "提示词运行",
+  agentChat: "Agent 问答",
 };
 
 const logLevelLabels: Record<string, string> = {
