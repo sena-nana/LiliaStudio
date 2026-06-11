@@ -54,7 +54,6 @@ export interface CharacterTraitDeltaRecordDraft {
 }
 
 export interface CharacterGrowthWorkspaceSnapshot {
-  projectId: string
   records: CharacterTraitDeltaRecord[]
   states: Record<string, CharacterTraitState>
 }

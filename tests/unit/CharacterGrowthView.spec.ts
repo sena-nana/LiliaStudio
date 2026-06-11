@@ -100,7 +100,6 @@ function mockGrowthWorkspace(options: { characters?: unknown[]; events?: unknown
     }
     if (command === 'character_growth_workspace') {
       return {
-        projectId: 'project_1',
         records: saved
           ? [
               ...records,

@@ -90,23 +90,6 @@ impl<'a> CharacterTraitDeltaRepository<'a> {
         records
     }
 
-    pub fn list_character(
-        &self,
-        project_id: &str,
-        character_id: &str,
-    ) -> rusqlite::Result<Vec<CharacterTraitDeltaRecord>> {
-        let mut statement = self.connection.prepare(
-            "SELECT id, project_id, character_id, source_event_id, trait_name, delta, reason,
-                    created_at, updated_at, deleted_at
-             FROM character_trait_deltas
-             WHERE project_id = ?1 AND character_id = ?2 AND deleted_at IS NULL
-             ORDER BY created_at ASC, id ASC",
-        )?;
-        let records = statement
-            .query_map(params![project_id, character_id], map_character_trait_delta_record)?
-            .collect();
-        records
-    }
 }
 
 fn map_character_trait_delta_record(

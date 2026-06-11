@@ -25,7 +25,6 @@ pub struct TraitDelta {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct CharacterGrowthWorkspaceSnapshot {
-    pub project_id: String,
     pub records: Vec<CharacterTraitDeltaRecord>,
     pub states: BTreeMap<String, CharacterTraitState>,
 }
@@ -50,7 +49,6 @@ pub fn list_growth_workspace(
     let records = CharacterTraitDeltaRepository::new(connection).list_project(project_id)?;
 
     Ok(CharacterGrowthWorkspaceSnapshot {
-        project_id: project_id.to_string(),
         states: build_trait_states_by_character(&records),
         records,
     })
