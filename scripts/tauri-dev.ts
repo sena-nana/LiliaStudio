@@ -5,35 +5,35 @@ import { fileURLToPath } from "node:url";
 const DEFAULT_PORT = 1420;
 const LOCALHOST_CHECK_HOSTS = ["127.0.0.1", "::1"];
 
-function parsePort(value) {
+function parsePort(value: string | undefined): number {
   if (!value) return DEFAULT_PORT;
   const port = Number.parseInt(value, 10);
   if (Number.isInteger(port) && port > 0 && port < 65536) return port;
   return DEFAULT_PORT;
 }
 
-function canListen(host, port) {
-  return new Promise((resolve) => {
+function canListen(host: string, port: number): Promise<boolean> {
+  return new Promise((resolveListen) => {
     const server = net.createServer();
 
-    server.once("error", (error) => {
-      resolve(error.code === "EAFNOSUPPORT" || error.code === "EADDRNOTAVAIL");
+    server.once("error", (error: NodeJS.ErrnoException) => {
+      resolveListen(error.code === "EAFNOSUPPORT" || error.code === "EADDRNOTAVAIL");
     });
     server.once("listening", () => {
-      server.close(() => resolve(true));
+      server.close(() => resolveListen(true));
     });
     server.listen({ host, port });
   });
 }
 
-async function isPortAvailable(port) {
+async function isPortAvailable(port: number): Promise<boolean> {
   for (const host of LOCALHOST_CHECK_HOSTS) {
     if (!(await canListen(host, port))) return false;
   }
   return true;
 }
 
-async function findAvailablePort(startPort) {
+async function findAvailablePort(startPort: number): Promise<number> {
   for (let port = startPort; port < 65536; port += 1) {
     if (await isPortAvailable(port)) return port;
   }
@@ -41,7 +41,7 @@ async function findAvailablePort(startPort) {
   throw new Error(`No available localhost port found from ${startPort}.`);
 }
 
-function yarnSpawn() {
+function yarnSpawn(): { command: string; argsPrefix: string[] } {
   if (process.platform !== "win32") {
     return {
       command: "yarn",
