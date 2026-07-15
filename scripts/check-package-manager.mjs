@@ -6,13 +6,14 @@ const packageJson = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8"),
 );
 const requiredPackageManager = packageJson.packageManager;
+const requiredYarnVersion = /^yarn@([^+]+)/.exec(requiredPackageManager ?? "")?.[1];
 const userAgent = process.env.npm_config_user_agent ?? "";
 
 const yarnMatch = userAgent.match(/\byarn\/([^\s]+)/);
 const yarnVersion = yarnMatch?.[1];
 const yarnMajor = Number.parseInt(yarnVersion?.split(".")[0] ?? "", 10);
 
-if (yarnMajor >= 4) {
+if (yarnMajor >= 4 && yarnVersion === requiredYarnVersion) {
   process.exit(0);
 }
 
@@ -34,8 +35,8 @@ function formatMessage(reason) {
     `Expected package manager: ${requiredPackageManager}`,
     "",
     "Fix:",
-    "  corepack enable",
-    `  corepack prepare ${requiredPackageManager} --activate`,
+    "  npm install --global corepack@0.35.0",
+    "  corepack enable yarn",
     "  yarn install",
     "",
     "If the `yarn` command still resolves to Yarn 1, run the commands through Corepack:",

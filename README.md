@@ -9,14 +9,14 @@ Windows dependencies:
 - Microsoft C++ Build Tools
 - WebView2 Runtime
 - Rust MSVC toolchain
-- Node.js LTS or newer
-- Corepack + Yarn 4
+- Node.js 26.5.0
+- Corepack 0.35.0 + Yarn 4.17.1
 
 Common commands:
 
 ```powershell
-corepack enable
-corepack prepare yarn@4.14.1 --activate
+npm install --global corepack@0.35.0
+corepack enable yarn
 yarn install
 yarn tauri:dev
 yarn verify

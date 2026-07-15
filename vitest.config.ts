@@ -11,6 +11,7 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    execArgv: ['--no-experimental-webstorage'],
     globals: true,
     include: ['tests/unit/**/*.ts'],
     setupFiles: ['tests/setup.ts'],
