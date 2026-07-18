@@ -18,28 +18,27 @@ ameya/
 
 ## 本地运行
 
-本仓库固定使用 Node.js 26.5.0、Corepack 0.35.0 和 Yarn 4.17.1。Node.js 26 不再内置 Corepack,首次使用需显式安装。建议从仓库根目录运行贡献命令。
+本仓库固定使用 Node.js 26.5.0、Corepack 0.35.0 和 pnpm 4.17.1。Node.js 26 不再内置 Corepack,首次使用需显式安装。建议从仓库根目录运行贡献命令。
 
 ```bash
 npm install --global corepack@0.35.0
-corepack enable yarn
-yarn install
-yarn dev
-yarn tauri:dev
+corepack enable pnpm pnpm install
+pnpm dev
+pnpm tauri:dev
 ```
 
-`yarn tauri:dev` 会自动寻找可用本地端口,再把对应 `devUrl` 传给 Tauri。
+`pnpm tauri:dev` 会自动寻找可用本地端口,再把对应 `devUrl` 传给 Tauri。
 
 ## 验证
 
 ```bash
-yarn test
-yarn build
+pnpm test
+pnpm build
 cargo check --manifest-path src-tauri/Cargo.toml
-yarn verify
+pnpm verify
 ```
 
-按影响范围运行最小必要验证。涉及构建配置、壳层布局、路由或 Tauri 端改动时,优先运行 `yarn verify`。
+按影响范围运行最小必要验证。涉及构建配置、壳层布局、路由或 Tauri 端改动时,优先运行 `pnpm verify`。
 
 ## 图标
 

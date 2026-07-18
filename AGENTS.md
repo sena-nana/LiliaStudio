@@ -26,6 +26,6 @@
 
 ## 验证
 
-- 功能实现后根据任务风险和影响范围选择验证;可选验证包括定向测试、`yarn test`、`yarn build`、`cargo check --manifest-path src-tauri/Cargo.toml` 或 `yarn verify`。
+- 功能实现后根据任务风险和影响范围选择验证;可选验证包括定向测试、`pnpm test`、`pnpm build`、`cargo check --manifest-path src-tauri/Cargo.toml` 或 `pnpm verify`。
 - 文档、注释、配置说明等低风险改动可不跑测试;涉及持久化、权限、构建配置或用户关键路径时,优先运行最小必要验证。
 - 若未运行测试、构建或验证,在最终说明里写清楚原因;若验证无法运行,写清楚阻塞原因和剩余风险。

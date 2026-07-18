@@ -34,8 +34,8 @@
 
 - 2026-06-10 T024：
   - `cargo test --manifest-path src-tauri/Cargo.toml`
-  - `yarn test:unit`
-  - `yarn typecheck`
+  - `pnpm test:unit`
+  - `pnpm typecheck`
 
 3. T026 语义检索
    - 基于本地向量存储实现相似度检索。
@@ -53,15 +53,15 @@
 
 - 文档、注释、配置说明等低风险改动可不跑测试，但最终说明需写清楚原因。
 - 前端类型或 store/API 变更优先运行：
-  - `yarn typecheck`
-  - `yarn test:unit`
+  - `pnpm typecheck`
+  - `pnpm test:unit`
 - Rust 逻辑、迁移、Provider 或持久化变更优先运行：
   - `cargo test --manifest-path src-tauri/Cargo.toml`
   - `cargo check --manifest-path src-tauri/Cargo.toml`
 - 涉及路由、壳层布局、构建配置或用户关键路径时优先运行：
-  - `yarn build`
-  - `yarn test:e2e`
-  - `yarn verify`
+  - `pnpm build`
+  - `pnpm test:e2e`
+  - `pnpm verify`
 
 ## 维护规则
 
