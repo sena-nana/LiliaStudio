@@ -10,16 +10,15 @@ Windows dependencies:
 - WebView2 Runtime
 - Rust MSVC toolchain
 - Node.js 26.5.0
-- Corepack 0.35.0 + Yarn 4.17.1
+- Corepack 0.35.0 + pnpm 4.17.1
 
 Common commands:
 
 ```powershell
 npm install --global corepack@0.35.0
-corepack enable yarn
-yarn install
-yarn tauri:dev
-yarn verify
+corepack enable pnpm pnpm install
+pnpm tauri:dev
+pnpm verify
 ```
 
 ## Current Capabilities
@@ -32,7 +31,7 @@ yarn verify
 ## Windows Packaging
 
 ```powershell
-yarn tauri:build
+pnpm tauri:build
 ```
 
 Builds are unsigned for now, so Windows SmartScreen may warn about an unknown publisher.

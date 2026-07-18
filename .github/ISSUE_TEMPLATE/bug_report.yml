@@ -57,7 +57,7 @@ body:
       value: |
         - OS:
         - LiliaStudio 版本 / commit:
-        - Node / Yarn:
+        - Node / pnpm:
         - Rust:
         - 相关配置:
     validations:

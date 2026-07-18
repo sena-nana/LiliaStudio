@@ -13,9 +13,8 @@ LiliaStudio 是面向 Windows 的世界观与角色逻辑工作台。
 
 ```bash
 npm install --global corepack@0.35.0
-corepack enable yarn
-corepack yarn install
-corepack yarn dev
+corepack enable pnpm pnpm install
+pnpm dev
 ```
 
 更多本地开发命令见[开发启动](./guide/development.md)。

@@ -78,5 +78,5 @@
 ## 维护边界
 
 - 本文件是产品成熟度专项待办，不替代 `plans/development-todo.md` 的 T025-T028 当前技术队列。
-- 文档类改动无需运行 `yarn test`、`yarn build` 或 `cargo test`。
+- 文档类改动无需运行 `pnpm test`、`pnpm build` 或 `cargo test`。
 - 后续实现涉及 Character、Entry 类型或关系数据契约时，必须同步前端类型、Rust domain、SQLite 迁移、API wrapper 和测试。

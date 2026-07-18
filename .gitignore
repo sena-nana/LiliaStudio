@@ -1,6 +1,6 @@
 node_modules/
 .cache/
-.yarn/install-state.gz
+.pnpm/install-state.gz
 dist/
 dist-ssr/
 docs/.vitepress/dist/
@@ -21,6 +21,6 @@ secrets/
 .env
 .env.*
 !.env.example
-!.env.yarn
+!.env.pnpm .worktrees/
 
-.worktrees/
+pnpm-debug.log*

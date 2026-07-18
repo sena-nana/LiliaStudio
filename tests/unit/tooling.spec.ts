@@ -18,11 +18,11 @@ function readWorkspaceFile(path: string) {
 }
 
 describe("Ameya tooling", () => {
-  it("root package.json uses Yarn 4 and project verification scripts", () => {
+  it("root package.json uses pnpm 4 and project verification scripts", () => {
     const pkg = JSON.parse(readWorkspaceFile("package.json"));
 
     expect(pkg.workspaces).toBeUndefined();
-    expect(pkg.packageManager).toBe("yarn@4.17.1+sha512.ccbfabf7d7b6b32075088be9386fb9a2e00bb6887ef07fa56effabc890a56d53da1ccc4128d62db245fcbd3961b236d75335bdf7d5320ed6eafb7588b7ad4697");
+    expect(pkg.packageManager).toBe("pnpm@4.17.1+sha512.ccbfabf7d7b6b32075088be9386fb9a2e00bb6887ef07fa56effabc890a56d53da1ccc4128d62db245fcbd3961b236d75335bdf7d5320ed6eafb7588b7ad4697");
     expect(pkg.scripts).toMatchObject({
       "check:package-manager": "node scripts/check-package-manager.mjs",
       dev: "vite",
@@ -34,14 +34,14 @@ describe("Ameya tooling", () => {
       tauri: "tauri",
       "tauri:dev": "node scripts/tauri-dev.ts",
       "tauri:build": "tauri build",
-      verify: "yarn typecheck && yarn test && yarn build && cargo test --manifest-path src-tauri/Cargo.toml",
+      verify: "pnpm typecheck && pnpm test && pnpm build && cargo test --manifest-path src-tauri/Cargo.toml",
     });
   });
 
-  it("package-manager check accepts Yarn 4 and rejects other entrypoints", () => {
+  it("package-manager check accepts pnpm 4 and rejects other entrypoints", () => {
     const ok = spawnSync("node", ["scripts/check-package-manager.mjs"], {
       cwd: resolve("."),
-      env: scriptEnv({ npm_config_user_agent: "yarn/4.17.1 npm/? node/?" }),
+      env: scriptEnv({ npm_config_user_agent: "pnpm/4.17.1 npm/? node/?" }),
       encoding: "utf-8",
     });
     expect(ok.status).toBe(0);
@@ -52,7 +52,7 @@ describe("Ameya tooling", () => {
       encoding: "utf-8",
     });
     expect(bad.status).toBe(1);
-    expect(bad.stderr).toContain("Ameya requires Yarn 4 through Corepack.");
+    expect(bad.stderr).toContain("Ameya requires pnpm 4 through Corepack.");
   });
 
   it("Tauri dev script dry-run outputs dynamic Ameya port config", () => {
