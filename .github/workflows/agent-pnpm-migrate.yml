@@ -1,0 +1,16 @@
+name: Migrate project workflow to pnpm
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.head_ref == 'agent/migrate-pnpm-workflow'
+    uses: sena-nana/LiliaUI/.github/workflows/reusable-pnpm-migration.yml@bf7531cf4e1d058d91e02b9fac6f73342271e393
+    with:
+      lilia_ui_ref: e29c02261469498891e6ceb651f2dae1a1d70f68
