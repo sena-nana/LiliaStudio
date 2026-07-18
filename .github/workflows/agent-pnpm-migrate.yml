@@ -11,6 +11,6 @@ permissions:
 jobs:
   migrate:
     if: github.head_ref == 'agent/migrate-pnpm-workflow'
-    uses: sena-nana/LiliaUI/.github/workflows/reusable-pnpm-migration-v2.yml@da338d73cb3e0c6c99371198852892985a18e370
+    uses: sena-nana/LiliaUI/.github/workflows/reusable-pnpm-migration-v3.yml@a48d975bedf85d0724656d2dbd55b13a9af7b9f3
     with:
       lilia_ui_ref: 0cbd959c46270d3191a08d1fab3def098d81188a
