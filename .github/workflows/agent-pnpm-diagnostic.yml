@@ -1,0 +1,95 @@
+name: Diagnose pnpm migration install
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout migration branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Fetch migration script
+        uses: actions/checkout@v6
+        with:
+          repository: sena-nana/LiliaUI
+          ref: 1ce38053fb82f1925e9fae9f6e94fec643e85cbf
+          path: .pnpm-migration-tools
+          sparse-checkout: .github/scripts/migrate-pnpm.mjs
+          sparse-checkout-cone-mode: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.14.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26
+
+      - name: Rewrite project
+        shell: bash
+        run: |
+          cp .pnpm-migration-tools/.github/scripts/migrate-pnpm.mjs /tmp/migrate-pnpm.mjs
+          rm -rf .pnpm-migration-tools
+          node /tmp/migrate-pnpm.mjs
+          node --input-type=module <<'NODE'
+          import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+          import { basename, extname, join } from 'node:path';
+          const ref = '0cbd959c46270d3191a08d1fab3def098d81188a';
+          const ignored = new Set(['.git','node_modules','target','dist','build','coverage','.cache','.venv','vendor']);
+          const extensions = new Set(['.md','.mdx','.mjs','.cjs','.js','.ts','.tsx','.vue','.yml','.yaml','.json']);
+          function walk(dir) { return readdirSync(dir,{withFileTypes:true}).flatMap((entry) => { if (entry.isDirectory() && ignored.has(entry.name)) return []; const path=join(dir,entry.name); return entry.isDirectory()?walk(path):entry.isFile()?[path]:[]; }); }
+          for (const path of walk(process.cwd())) {
+            if (statSync(path).size > 1_000_000) continue;
+            if (basename(path) === 'package.json') {
+              const manifest=JSON.parse(readFileSync(path,'utf8')); let changed=false;
+              for (const field of ['dependencies','devDependencies','optionalDependencies','peerDependencies']) {
+                if (!manifest[field]) continue;
+                for (const [name,specifier] of Object.entries(manifest[field])) {
+                  if (typeof specifier !== 'string' || !specifier.startsWith('github:sena-nana/LiliaUI#')) continue;
+                  const match=specifier.match(/&path:(\/packages\/[^&]+)/); if (!match) continue;
+                  manifest[field][name]=`github:sena-nana/LiliaUI#${ref}&path:${match[1]}`; changed=true;
+                }
+              }
+              if (changed) writeFileSync(path,`${JSON.stringify(manifest,null,2)}\n`);
+            } else if (extensions.has(extname(path).toLowerCase())) {
+              const source=readFileSync(path,'utf8');
+              const next=source.replace(/sena-nana\/LiliaUI\/\.github\/actions\/setup-node-(?:yarn|pnpm)@[0-9a-f]{40}/g,`sena-nana/LiliaUI/.github/actions/setup-node-pnpm@${ref}`).replace(/\bcorepack\s+pnpm\s+/g,'pnpm ');
+              if (next !== source) writeFileSync(path,next);
+            }
+          }
+          NODE
+
+      - name: Generate lockfile
+        shell: bash
+        run: |
+          pnpm import || true
+          pnpm install --lockfile-only --no-frozen-lockfile --ignore-scripts
+          find . -type f -name yarn.lock -not -path './.git/*' -delete
+
+      - name: Run frozen install
+        id: install
+        continue-on-error: true
+        shell: bash
+        run: pnpm install --frozen-lockfile > pnpm-migration-install.log 2>&1
+
+      - name: Upload log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pnpm-migration-install-log
+          path: pnpm-migration-install.log
+          retention-days: 1
+
+      - name: Require success
+        if: steps.install.outcome != 'success'
+        run: exit 1
