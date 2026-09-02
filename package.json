@@ -39,7 +39,7 @@
     "@tauri-apps/api": "^2.11.1",
     "@tauri-apps/plugin-opener": "^2.5.4",
     "@tauri-apps/plugin-store": "^2.4.3",
-    "@tiptap/core": "3.26.0",
+    "@tiptap/core": "3.30.4",
     "@tiptap/pm": "3.26.0",
     "@tiptap/starter-kit": "3.26.0",
     "@tiptap/vue-3": "3.26.0",
