@@ -1571,7 +1571,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/core@npm:3.26.0, @tiptap/core@npm:^3.26.0":
+"@tiptap/core@npm:3.30.4":
+  version: 3.30.4
+  resolution: "@tiptap/core@npm:3.30.4"
+  peerDependencies:
+    "@tiptap/pm": 3.30.4
+  checksum: 10c0/51cc37a296eee4b1ec0b969bf1c5a95a29793533d976a0085db15b033b4ac6d5e2765a94225a19266fb1c4eec403ec712ea4aa84cb67269d51cd41ce431b28b7
+  languageName: node
+  linkType: hard
+
+"@tiptap/core@npm:^3.26.0":
   version: 3.26.0
   resolution: "@tiptap/core@npm:3.26.0"
   peerDependencies:
@@ -2659,7 +2668,7 @@ __metadata:
     "@testing-library/dom": "npm:^10.4.1"
     "@testing-library/jest-dom": "npm:^6.9.1"
     "@testing-library/vue": "npm:^8.1.0"
-    "@tiptap/core": "npm:3.26.0"
+    "@tiptap/core": "npm:3.30.4"
     "@tiptap/pm": "npm:3.26.0"
     "@tiptap/starter-kit": "npm:3.26.0"
     "@tiptap/vue-3": "npm:3.26.0"
