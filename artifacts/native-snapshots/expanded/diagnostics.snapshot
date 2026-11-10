@@ -1,0 +1,44 @@
+# page|route=/diagnostics|title=诊断
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-新建项目|group=workspace|action=project_create|x=12|y=46|w=220|h=32|visible=1|enabled=1
+control|id=ctl-搜索|group=workspace|action=none|x=12|y=78|w=220|h=32|visible=1|enabled=1
+control|id=ctl-工作区|group=workspace|action=none|x=12|y=124|w=220|h=28|visible=1|enabled=1
+control|id=ctl-项目|group=workspace|action=none|x=12|y=152|w=220|h=28|visible=1|enabled=1
+control|id=ctl-资料库|group=workspace|action=none|x=12|y=182|w=220|h=28|visible=1|enabled=1
+control|id=ctl-角色成长|group=workspace|action=none|x=12|y=212|w=220|h=28|visible=1|enabled=1
+control|id=ctl-事件时间线|group=workspace|action=none|x=12|y=242|w=220|h=28|visible=1|enabled=1
+control|id=ctl-规则审计|group=workspace|action=none|x=12|y=272|w=220|h=28|visible=1|enabled=1
+control|id=ctl-关系图谱|group=workspace|action=none|x=12|y=302|w=220|h=28|visible=1|enabled=1
+control|id=ctl-分析与检索|group=workspace|action=none|x=12|y=332|w=220|h=28|visible=1|enabled=1
+control|id=ctl-索引|group=workspace|action=none|x=12|y=388|w=220|h=28|visible=1|enabled=1
+control|id=ctl-备份|group=workspace|action=none|x=12|y=418|w=220|h=28|visible=1|enabled=1
+control|id=ctl-模拟|group=workspace|action=none|x=12|y=448|w=220|h=28|visible=1|enabled=1
+control|id=ctl-智能体|group=workspace|action=none|x=12|y=478|w=220|h=28|visible=1|enabled=1
+control|id=ctl-设置|group=workspace|action=none|x=12|y=506|w=220|h=28|visible=1|enabled=1
+control|id=ctl-帮助|group=workspace|action=none|x=12|y=534|w=220|h=28|visible=1|enabled=1
+control|id=ctl-诊断|group=workspace|action=none|x=12|y=562|w=220|h=28|visible=1|enabled=1
+control|id=ctl-任务|group=workspace|action=none|x=12|y=590|w=220|h=28|visible=1|enabled=1
+control|id=ctl-提示词模板|group=workspace|action=none|x=12|y=618|w=220|h=28|visible=1|enabled=1
+control|id=ctl-刷新|group=workspace|action=diagnostics_summary|x=257|y=138|w=48|h=32|visible=1|enabled=1
+control|id=diagnostics|group=workspace|action=diagnostics_summary|x=2|y=2|w=1|h=1|visible=1|enabled=1
+section|id=diagnostics-content|group=workspace|label=诊断 business|kind=business
+status|id=diagnostics-ready|group=status|value=ready|active=1|label=可用
+list|id=diagnostics-list|group=workspace|items=diagnostics|empty=diagnostics-empty|label=诊断 actions
+field|id=diagnostics|group=workspace|label=生成诊断|value=diagnostics_summary|state=diagnostics-ready
+empty|id=diagnostics-empty|group=workspace|text=暂无诊断数据|visible=1
+section|id=diagnostics-summary|group=workspace|label=诊断摘要|title=诊断摘要|description=诊断结果用于定位环境问题，不包含业务正文或 secret。
+status|id=status-diagnostics-summary|group=status|value=safe|active=1|label=只读|detail=diagnostics_summary 不修改数据库。
+field|id=field-diagnostics-summary-status|group=workspace|label=状态|value=safe|state=status-diagnostics-summary|kind=status|source=summary.status|required=0
+field|id=field-diagnostics-summary-dataDir|group=workspace|label=数据目录|value=示例文本|state=status-diagnostics-summary|kind=text|source=summary.dataDir|required=0
+empty|id=empty-diagnostics-summary|group=workspace|text=尚未生成诊断|visible=1|description=生成摘要以确认 native 数据目录和状态。|action=diagnostics
+action|id=diagnostics|supported=1|label=生成诊断|command=diagnostics_summary|kind=query|description=返回 ready 状态和 native dataDir。
+action|id=diagnostics_summary|supported=1
+action|id=save|supported=1
+action|id=diagnostics_summary|supported=1
+action|id=project_create|supported=1

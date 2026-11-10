@@ -1,0 +1,36 @@
+# page|route=/agent|title=智能体
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-这个世界的主食是什么|group=workspace|action=none|x=16|y=90|w=1248|h=96|visible=1|enabled=1
+control|id=ctl-提问|group=workspace|action=ai_agent_ask|x=16|y=186|w=48|h=32|visible=1|enabled=1
+control|id=ctl-保存为报告|group=workspace|action=agent_save_report|x=16|y=334|w=87|h=32|visible=1|enabled=1
+control|id=ctl-保存为任务|group=workspace|action=job_create|x=103|y=334|w=87|h=32|visible=1|enabled=1
+control|id=ask-agent|group=workspace|action=ai_agent_ask|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=provider-settings|group=workspace|action=ai_load_provider_settings|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=agent-content|group=workspace|label=智能体 business|kind=business
+status|id=agent-ready|group=status|value=ready|active=1|label=可用
+list|id=agent-list|group=workspace|items=ask-agent,provider-settings|empty=agent-empty|label=智能体 actions
+field|id=ask-agent|group=workspace|label=询问智能体|value=ai_agent_ask|state=agent-ready
+field|id=provider-settings|group=workspace|label=提供方设置|value=ai_load_provider_settings|state=agent-ready
+empty|id=agent-empty|group=workspace|text=暂无智能体数据|visible=1
+section|id=agent-request|group=workspace|label=智能体请求|title=智能体请求|description=provider 设置和密钥不在页面模型中暴露明文，仅通过 native secret store 管理。
+status|id=status-agent-request|group=status|value=provider-required|active=1|label=需要配置|detail=未配置 provider 时 ai_agent_ask 会返回明确错误。
+field|id=field-agent-request-providerKind|group=workspace|label=提供方|value=示例文本|state=status-agent-request|kind=text|source=job.providerKind|required=0
+field|id=field-agent-request-jobType|group=workspace|label=任务类型|value=示例文本|state=status-agent-request|kind=text|source=job.jobType|required=0
+field|id=field-agent-request-inputSummary|group=workspace|label=输入摘要|value=示例业务内容|state=status-agent-request|kind=multiline|source=job.inputSummary|required=0
+field|id=field-agent-request-outputText|group=workspace|label=输出|value=示例业务内容|state=status-agent-request|kind=multiline|source=job.outputText|required=0
+field|id=field-agent-request-errorMessage|group=workspace|label=错误|value=示例业务内容|state=status-agent-request|kind=multiline|source=job.errorMessage|required=0
+empty|id=empty-agent-request|group=workspace|text=尚未提交请求|visible=1|description=配置 provider 后提交一个 agent 请求。|action=ask-agent
+action|id=ask-agent|supported=1|label=询问智能体|command=ai_agent_ask|kind=execute|description=调用明确配置的 AI provider；不会隐式读取密钥。|inputs=request:请求:args.request
+action|id=provider-settings|supported=1|label=提供方设置|command=ai_load_provider_settings|kind=settings|description=读取 provider 设置视图；密钥仅返回 hasApiKey 和 preview。
+action|id=ai_agent_ask|supported=1
+action|id=ai_load_provider_settings|supported=1
+action|id=save|supported=1
+action|id=agent_save_report|supported=1
+action|id=ai_agent_ask|supported=1
+action|id=job_create|supported=1

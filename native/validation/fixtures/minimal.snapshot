@@ -1,0 +1,6 @@
+# NanaUI adapter snapshot format: one record per line, | separated key/value fields.
+window|x=0|y=0|w=800|h=600
+group|id=main|x=16|y=16|w=768|h=568|left=16|top=16|right=16|bottom=16
+control|id=project-name|group=main|x=32|y=32|w=240|h=32|visible=1|enabled=1
+control|id=run-check|group=main|x=32|y=80|w=120|h=32|visible=1|enabled=1
+action|id=run-check|supported=1

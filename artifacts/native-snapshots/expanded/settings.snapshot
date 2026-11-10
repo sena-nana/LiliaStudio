@@ -1,0 +1,59 @@
+# page|route=/settings|title=设置
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-新建项目|group=workspace|action=project_create|x=12|y=46|w=220|h=32|visible=1|enabled=1
+control|id=ctl-搜索|group=workspace|action=none|x=12|y=78|w=220|h=32|visible=1|enabled=1
+control|id=ctl-工作区|group=workspace|action=none|x=12|y=124|w=220|h=28|visible=1|enabled=1
+control|id=ctl-项目|group=workspace|action=none|x=12|y=152|w=220|h=28|visible=1|enabled=1
+control|id=ctl-资料库|group=workspace|action=none|x=12|y=182|w=220|h=28|visible=1|enabled=1
+control|id=ctl-角色成长|group=workspace|action=none|x=12|y=212|w=220|h=28|visible=1|enabled=1
+control|id=ctl-事件时间线|group=workspace|action=none|x=12|y=242|w=220|h=28|visible=1|enabled=1
+control|id=ctl-规则审计|group=workspace|action=none|x=12|y=272|w=220|h=28|visible=1|enabled=1
+control|id=ctl-关系图谱|group=workspace|action=none|x=12|y=302|w=220|h=28|visible=1|enabled=1
+control|id=ctl-分析与检索|group=workspace|action=none|x=12|y=332|w=220|h=28|visible=1|enabled=1
+control|id=ctl-索引|group=workspace|action=none|x=12|y=388|w=220|h=28|visible=1|enabled=1
+control|id=ctl-备份|group=workspace|action=none|x=12|y=418|w=220|h=28|visible=1|enabled=1
+control|id=ctl-模拟|group=workspace|action=none|x=12|y=448|w=220|h=28|visible=1|enabled=1
+control|id=ctl-智能体|group=workspace|action=none|x=12|y=478|w=220|h=28|visible=1|enabled=1
+control|id=ctl-设置|group=workspace|action=none|x=12|y=506|w=220|h=28|visible=1|enabled=1
+control|id=ctl-帮助|group=workspace|action=none|x=12|y=534|w=220|h=28|visible=1|enabled=1
+control|id=ctl-诊断|group=workspace|action=none|x=12|y=562|w=220|h=28|visible=1|enabled=1
+control|id=ctl-任务|group=workspace|action=none|x=12|y=590|w=220|h=28|visible=1|enabled=1
+control|id=ctl-提示词模板|group=workspace|action=none|x=12|y=618|w=220|h=28|visible=1|enabled=1
+control|id=ctl-外观|group=workspace|action=none|x=241|y=52|w=59|h=32|visible=1|enabled=1
+control|id=ctl-人工智能设置|group=workspace|action=none|x=300|y=52|w=100|h=32|visible=1|enabled=1
+control|id=ctl-命令行提供方|group=workspace|action=none|x=400|y=52|w=100|h=32|visible=1|enabled=1
+control|id=ctl-关于|group=workspace|action=none|x=500|y=52|w=48|h=32|visible=1|enabled=1
+control|id=ctl-切换主题|group=workspace|action=none|x=465|y=122|w=74|h=32|visible=1|enabled=1
+control|id=load-settings|group=workspace|action=ai_load_provider_settings|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=save-settings|group=workspace|action=ai_save_provider_settings|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=settings-content|group=workspace|label=设置 business|kind=business
+status|id=settings-ready|group=status|value=ready|active=1|label=可用
+list|id=settings-list|group=workspace|items=load-settings,save-settings|empty=settings-empty|label=设置 actions
+field|id=load-settings|group=workspace|label=读取设置|value=ai_load_provider_settings|state=settings-ready
+field|id=save-settings|group=workspace|label=保存设置|value=ai_save_provider_settings|state=settings-ready
+empty|id=settings-empty|group=workspace|text=暂无设置数据|visible=1
+section|id=provider-settings|group=workspace|label=AI 提供方|title=AI 提供方|description=支持 OpenAI-compatible、Codex CLI 和 Claude CLI。
+status|id=status-provider-settings|group=status|value=secret-store|active=1|label=安全存储|detail=API key 由 native secret store 管理。
+field|id=field-provider-settings-kind|group=workspace|label=类型|value=示例文本|state=status-provider-settings|kind=text|source=settings.kind|required=0
+field|id=field-provider-settings-baseUrl|group=workspace|label=服务地址|value=示例文本|state=status-provider-settings|kind=text|source=settings.baseUrl|required=0
+field|id=field-provider-settings-apiKeyPreview|group=workspace|label=密钥预览|value=示例文本|state=status-provider-settings|kind=text|source=settings.apiKeyPreview|required=0
+field|id=field-provider-settings-hasApiKey|group=workspace|label=已配置密钥|value=否|state=status-provider-settings|kind=boolean|source=settings.hasApiKey|required=0
+field|id=field-provider-settings-chatModel|group=workspace|label=聊天模型|value=示例文本|state=status-provider-settings|kind=text|source=settings.chatModel|required=0
+field|id=field-provider-settings-embeddingModel|group=workspace|label=向量模型|value=示例文本|state=status-provider-settings|kind=text|source=settings.embeddingModel|required=0
+field|id=field-provider-settings-commandTemplate|group=workspace|label=命令模板|value=示例文本|state=status-provider-settings|kind=text|source=settings.commandTemplate|required=0
+field|id=field-provider-settings-enabled|group=workspace|label=启用|value=否|state=status-provider-settings|kind=boolean|source=settings.enabled|required=0
+list|id=list-provider-settings-providers|group=workspace|items=sample-1,sample-2|empty=empty-provider-settings-providers|label=提供方|item=提供方|source=ai_load_provider_settings|columns=kind:类型:settings.kind,enabled:启用:settings.enabled,hasApiKey:已配置密钥:settings.hasApiKey,chatModel:聊天模型:settings.chatModel,embeddingModel:向量模型:settings.embeddingModel
+empty|id=empty-provider-settings-providers|group=workspace|text=暂无提供方|visible=1|description=读取默认 provider 或保存自定义配置。|action=load-settings
+empty|id=empty-provider-settings|group=workspace|text=尚未读取设置|visible=1|description=读取 provider 配置以开始设置。|action=load-settings
+action|id=load-settings|supported=1|label=读取设置|command=ai_load_provider_settings|kind=settings|description=读取 provider 设置视图，不返回明文密钥。
+action|id=save-settings|supported=1|label=保存设置|command=ai_save_provider_settings|kind=settings|description=通过 native secret store 保存 provider 配置。|inputs=settings:设置:args.settings
+action|id=ai_load_provider_settings|supported=1
+action|id=ai_save_provider_settings|supported=1
+action|id=save|supported=1
+action|id=project_create|supported=1

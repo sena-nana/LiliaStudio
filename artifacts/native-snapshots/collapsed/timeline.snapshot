@@ -1,0 +1,36 @@
+# page|route=/timeline|title=事件时间线
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=12|y=4|w=1262|h=134|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-饥荒之夜-第三纪-214-年冬--北方粮食短缺引|group=workspace|action=none|x=16|y=102|w=66|h=36|visible=1|enabled=1
+control|id=create-event|group=workspace|action=library_create_event|x=14|y=34|w=1|h=1|visible=1|enabled=1
+control|id=update-event|group=workspace|action=library_update_event|x=14|y=38|w=1|h=1|visible=1|enabled=1
+section|id=timeline-content|group=workspace|label=事件时间线 business|kind=business
+status|id=timeline-ready|group=status|value=ready|active=1|label=可用
+list|id=timeline-list|group=workspace|items=create-event,update-event|empty=timeline-empty|label=事件时间线 actions
+field|id=create-event|group=workspace|label=新建事件|value=library_create_event|state=timeline-ready
+field|id=update-event|group=workspace|label=更新事件|value=library_update_event|state=timeline-ready
+empty|id=timeline-empty|group=workspace|text=暂无事件时间线数据|visible=1
+section|id=event-timeline|group=workspace|label=事件时间线|title=事件时间线|description=事件按 sortKey 升序、更新时间倒序排列。
+status|id=status-event-timeline|group=status|value=ready|active=1|label=可用|detail=事件支持参与者和标签等业务字段。
+field|id=field-event-timeline-projectId|group=workspace|label=项目 ID|value=sample-entity-001|state=status-event-timeline|kind=identifier|source=event.projectId|required=0
+field|id=field-event-timeline-title|group=workspace|label=标题|value=示例文本|state=status-event-timeline|kind=text|source=event.title|required=0
+field|id=field-event-timeline-timeLabel|group=workspace|label=时间标签|value=示例文本|state=status-event-timeline|kind=text|source=event.timeLabel|required=0
+field|id=field-event-timeline-startLabel|group=workspace|label=开始|value=示例文本|state=status-event-timeline|kind=text|source=event.startLabel|required=0
+field|id=field-event-timeline-endLabel|group=workspace|label=结束|value=示例文本|state=status-event-timeline|kind=text|source=event.endLabel|required=0
+field|id=field-event-timeline-location|group=workspace|label=地点|value=示例文本|state=status-event-timeline|kind=text|source=event.location|required=0
+field|id=field-event-timeline-importance|group=workspace|label=重要度|value=3|state=status-event-timeline|kind=number|source=event.importance|required=0
+field|id=field-event-timeline-outcome|group=workspace|label=结果|value=示例业务内容|state=status-event-timeline|kind=multiline|source=event.outcome|required=0
+field|id=field-event-timeline-tags|group=workspace|label=标签|value=示例,待整理|state=status-event-timeline|kind=tags|source=event.tags|required=0
+list|id=list-event-timeline-events|group=workspace|items=sample-1,sample-2|empty=empty-event-timeline-events|label=事件|item=事件|source=project.events|columns=id:事件 ID:event.id,title:标题:event.title,timeLabel:时间:event.timeLabel,location:地点:event.location,importance:重要度:event.importance,outcome:结果:event.outcome,tags:标签:event.tags
+empty|id=empty-event-timeline-events|group=workspace|text=暂无事件|visible=1|description=新建事件以建立时间线。|action=create-event
+empty|id=empty-event-timeline|group=workspace|text=暂无事件|visible=1|description=新建事件以建立时间线。|action=create-event
+action|id=create-event|supported=1|label=新建事件|command=library_create_event|kind=mutate|description=按 EventDraft 和 participants 创建事件。|inputs=draft:事件草稿:args.draft,participants:参与者:args.participants
+action|id=update-event|supported=1|label=更新事件|command=library_update_event|kind=mutate|description=使用 id、EventDraft 和 participants 更新事件。|inputs=id:事件 ID:args.id,draft:事件草稿:args.draft,participants:参与者:args.participants
+action|id=library_create_event|supported=1
+action|id=library_update_event|supported=1
+action|id=save|supported=1

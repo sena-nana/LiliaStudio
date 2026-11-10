@@ -1,0 +1,34 @@
+# schema=ameya.native.content-acceptance.v1
+# key|route|snapshot|business-group|section-id|list-id|field-ids|status-id|empty-state-id|control-id=action,...
+expanded/home|/|home.snapshot|workspace|home-content|home-list|open-project,run-check|home-ready|home-empty|open-project=project_list,run-check=health_check
+expanded/projects|/projects|projects.snapshot|workspace|projects-content|projects-list|create-project,library-snapshot|projects-ready|projects-empty|create-project=project_create,library-snapshot=library_project_snapshot
+expanded/growth|/growth|growth.snapshot|workspace|growth-content|growth-list|preview-growth,save-growth|growth-ready|growth-empty|preview-growth=character_growth_preview_trait_delta,save-growth=character_growth_create_record
+expanded/timeline|/timeline|timeline.snapshot|workspace|timeline-content|timeline-list|create-event,update-event|timeline-ready|timeline-empty|create-event=library_create_event,update-event=library_update_event
+expanded/audit|/audit|audit.snapshot|workspace|audit-content|audit-list|audit-facts,repair-suggestions|audit-ready|audit-empty|audit-facts=logic_audit_facts,repair-suggestions=logic_repair_suggestions
+expanded/graph|/graph|graph.snapshot|workspace|graph-content|graph-list|relation-neighborhood,relation-presets|graph-ready|graph-empty|relation-neighborhood=library_relation_neighborhood,relation-presets=library_relation_type_presets
+expanded/search|/search|search.snapshot|workspace|search-content|search-list|keyword-search,semantic-search|search-ready|search-empty|keyword-search=search_entities,semantic-search=search_semantic
+expanded/indexing|/indexing|indexing.snapshot|workspace|indexing-content|indexing-list|index-chunks,index-embeddings|indexing-ready|indexing-empty|index-chunks=rag_index_chunks,index-embeddings=rag_index_embeddings
+expanded/backup|/backup|backup.snapshot|workspace|backup-content|backup-list|export-project,import-project|backup-ready|backup-empty|export-project=archive_export_project,import-project=archive_import_project
+expanded/simulation|/simulation|simulation.snapshot|workspace|simulation-content|simulation-list|run-simulation|simulation-ready|simulation-empty|run-simulation=simulation_run
+expanded/agent|/agent|agent.snapshot|workspace|agent-content|agent-list|ask-agent,provider-settings|agent-ready|agent-empty|ask-agent=ai_agent_ask,provider-settings=ai_load_provider_settings
+expanded/settings|/settings|settings.snapshot|workspace|settings-content|settings-list|load-settings,save-settings|settings-ready|settings-empty|load-settings=ai_load_provider_settings,save-settings=ai_save_provider_settings
+expanded/help|/help|help.snapshot|workspace|help-content|help-list|health-check|help-ready|help-empty|health-check=health_check
+expanded/diagnostics|/diagnostics|diagnostics.snapshot|workspace|diagnostics-content|diagnostics-list|diagnostics|diagnostics-ready|diagnostics-empty|diagnostics=diagnostics_summary
+expanded/jobs|/jobs|jobs.snapshot|workspace|jobs-content|jobs-list|list-jobs,retry-job|jobs-ready|jobs-empty|list-jobs=job_list,retry-job=job_retry
+expanded/prompt-templates|/prompt-templates|prompt-templates.snapshot|workspace|prompt-templates-content|prompt-templates-list|list-prompts,preview-prompt|prompt-templates-ready|prompt-templates-empty|list-prompts=prompt_list_templates,preview-prompt=prompt_preview_template
+collapsed/home|/|home.snapshot|workspace|home-content|home-list|open-project,run-check|home-ready|home-empty|open-project=project_list,run-check=health_check
+collapsed/projects|/projects|projects.snapshot|workspace|projects-content|projects-list|create-project,library-snapshot|projects-ready|projects-empty|create-project=project_create,library-snapshot=library_project_snapshot
+collapsed/growth|/growth|growth.snapshot|workspace|growth-content|growth-list|preview-growth,save-growth|growth-ready|growth-empty|preview-growth=character_growth_preview_trait_delta,save-growth=character_growth_create_record
+collapsed/timeline|/timeline|timeline.snapshot|workspace|timeline-content|timeline-list|create-event,update-event|timeline-ready|timeline-empty|create-event=library_create_event,update-event=library_update_event
+collapsed/audit|/audit|audit.snapshot|workspace|audit-content|audit-list|audit-facts,repair-suggestions|audit-ready|audit-empty|audit-facts=logic_audit_facts,repair-suggestions=logic_repair_suggestions
+collapsed/graph|/graph|graph.snapshot|workspace|graph-content|graph-list|relation-neighborhood,relation-presets|graph-ready|graph-empty|relation-neighborhood=library_relation_neighborhood,relation-presets=library_relation_type_presets
+collapsed/search|/search|search.snapshot|workspace|search-content|search-list|keyword-search,semantic-search|search-ready|search-empty|keyword-search=search_entities,semantic-search=search_semantic
+collapsed/indexing|/indexing|indexing.snapshot|workspace|indexing-content|indexing-list|index-chunks,index-embeddings|indexing-ready|indexing-empty|index-chunks=rag_index_chunks,index-embeddings=rag_index_embeddings
+collapsed/backup|/backup|backup.snapshot|workspace|backup-content|backup-list|export-project,import-project|backup-ready|backup-empty|export-project=archive_export_project,import-project=archive_import_project
+collapsed/simulation|/simulation|simulation.snapshot|workspace|simulation-content|simulation-list|run-simulation|simulation-ready|simulation-empty|run-simulation=simulation_run
+collapsed/agent|/agent|agent.snapshot|workspace|agent-content|agent-list|ask-agent,provider-settings|agent-ready|agent-empty|ask-agent=ai_agent_ask,provider-settings=ai_load_provider_settings
+collapsed/settings|/settings|settings.snapshot|workspace|settings-content|settings-list|load-settings,save-settings|settings-ready|settings-empty|load-settings=ai_load_provider_settings,save-settings=ai_save_provider_settings
+collapsed/help|/help|help.snapshot|workspace|help-content|help-list|health-check|help-ready|help-empty|health-check=health_check
+collapsed/diagnostics|/diagnostics|diagnostics.snapshot|workspace|diagnostics-content|diagnostics-list|diagnostics|diagnostics-ready|diagnostics-empty|diagnostics=diagnostics_summary
+collapsed/jobs|/jobs|jobs.snapshot|workspace|jobs-content|jobs-list|list-jobs,retry-job|jobs-ready|jobs-empty|list-jobs=job_list,retry-job=job_retry
+collapsed/prompt-templates|/prompt-templates|prompt-templates.snapshot|workspace|prompt-templates-content|prompt-templates-list|list-prompts,preview-prompt|prompt-templates-ready|prompt-templates-empty|list-prompts=prompt_list_templates,preview-prompt=prompt_preview_template

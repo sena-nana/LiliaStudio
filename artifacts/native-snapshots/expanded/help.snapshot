@@ -1,0 +1,43 @@
+# page|route=/help|title=帮助
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-新建项目|group=workspace|action=project_create|x=12|y=46|w=220|h=32|visible=1|enabled=1
+control|id=ctl-搜索|group=workspace|action=none|x=12|y=78|w=220|h=32|visible=1|enabled=1
+control|id=ctl-工作区|group=workspace|action=none|x=12|y=124|w=220|h=28|visible=1|enabled=1
+control|id=ctl-项目|group=workspace|action=none|x=12|y=152|w=220|h=28|visible=1|enabled=1
+control|id=ctl-资料库|group=workspace|action=none|x=12|y=182|w=220|h=28|visible=1|enabled=1
+control|id=ctl-角色成长|group=workspace|action=none|x=12|y=212|w=220|h=28|visible=1|enabled=1
+control|id=ctl-事件时间线|group=workspace|action=none|x=12|y=242|w=220|h=28|visible=1|enabled=1
+control|id=ctl-规则审计|group=workspace|action=none|x=12|y=272|w=220|h=28|visible=1|enabled=1
+control|id=ctl-关系图谱|group=workspace|action=none|x=12|y=302|w=220|h=28|visible=1|enabled=1
+control|id=ctl-分析与检索|group=workspace|action=none|x=12|y=332|w=220|h=28|visible=1|enabled=1
+control|id=ctl-索引|group=workspace|action=none|x=12|y=388|w=220|h=28|visible=1|enabled=1
+control|id=ctl-备份|group=workspace|action=none|x=12|y=418|w=220|h=28|visible=1|enabled=1
+control|id=ctl-模拟|group=workspace|action=none|x=12|y=448|w=220|h=28|visible=1|enabled=1
+control|id=ctl-智能体|group=workspace|action=none|x=12|y=478|w=220|h=28|visible=1|enabled=1
+control|id=ctl-设置|group=workspace|action=none|x=12|y=506|w=220|h=28|visible=1|enabled=1
+control|id=ctl-帮助|group=workspace|action=none|x=12|y=534|w=220|h=28|visible=1|enabled=1
+control|id=ctl-诊断|group=workspace|action=none|x=12|y=562|w=220|h=28|visible=1|enabled=1
+control|id=ctl-任务|group=workspace|action=none|x=12|y=590|w=220|h=28|visible=1|enabled=1
+control|id=ctl-提示词模板|group=workspace|action=none|x=12|y=618|w=220|h=28|visible=1|enabled=1
+control|id=health-check|group=workspace|action=health_check|x=2|y=2|w=1|h=1|visible=1|enabled=1
+section|id=help-content|group=workspace|label=帮助 business|kind=business
+status|id=help-ready|group=status|value=ready|active=1|label=可用
+list|id=help-list|group=workspace|items=health-check|empty=help-empty|label=帮助 actions
+field|id=health-check|group=workspace|label=检查连接|value=health_check|state=help-ready
+empty|id=help-empty|group=workspace|text=暂无帮助数据|visible=1
+section|id=help-contract|group=workspace|label=命令契约|title=命令契约|description=每个业务 action 都映射到 NativeCommandHost 的稳定命令名。
+status|id=status-help-contract|group=status|value=documented|active=1|label=已记录|detail=页面模型中的 command 可与 command_names 逐一审计。
+field|id=field-help-contract-command|group=workspace|label=命令名|value=示例文本|state=status-help-contract|kind=text|source=route.action.command|required=0
+field|id=field-help-contract-description|group=workspace|label=用途|value=示例业务内容|state=status-help-contract|kind=multiline|source=route.action.description|required=0
+field|id=field-help-contract-kind|group=workspace|label=动作类型|value=示例文本|state=status-help-contract|kind=text|source=route.action.kind|required=0
+empty|id=empty-help-contract|group=workspace|text=暂无契约信息|visible=1|description=当前路由没有可用命令。|action=none
+action|id=health-check|supported=1|label=检查连接|command=health_check|kind=query|description=检查应用版本、平台和数据目录。
+action|id=health_check|supported=1
+action|id=save|supported=1
+action|id=project_create|supported=1

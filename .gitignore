@@ -1,16 +1,10 @@
-node_modules/
-.cache/
-.yarn/install-state.gz
-dist/
-dist-ssr/
-docs/.vitepress/dist/
-coverage/
-test-results/
-.vite/
-*.local
+target/
 
-src-tauri/target/
-src-tauri/gen/
+native/gen/
+build/
+native/validation/build*/
+__pycache__/
+*.pyc
 *.db
 *.db-shm
 *.db-wal
@@ -21,6 +15,5 @@ secrets/
 .env
 .env.*
 !.env.example
-!.env.yarn
 
 .worktrees/

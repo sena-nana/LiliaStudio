@@ -1,0 +1,6888 @@
+{
+  "schema": "ameya.native.offline.v1",
+  "generator": "ameya-nana --render-pages (HeadlessRuntime real layout) + native/validation/render_snapshots.py",
+  "generatorVersion": "ameya-nana 0.1.0",
+  "gitCommit": "d6093cfa4620f8bcdf3e63db75bdea28f9d1e7cd",
+  "sourceSnapshotSha256": "925e9a4ec998466983b91d985888dd5946cc8fb514be5b8754b871477f740684",
+  "renderer": "native/validation/render_snapshots.py (Pillow deterministic Nana semantic-palette renderer v5)",
+  "layoutTokens": {
+    "contentPadding": 24,
+    "cardPadding": 16,
+    "gap": 16,
+    "appBarHeight": 68,
+    "expandedNavigationWidth": 236,
+    "collapsedNavigationWidth": 72
+  },
+  "font": "Microsoft YaHei (msyh.ttc)",
+  "dpi": 96,
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "states": [
+    "expanded",
+    "collapsed"
+  ],
+  "pixelBaseline": ".snapshot 记录由 nana_runtime HeadlessRuntime 从真实 RuntimeProgram 布局导出（project_accessibility_in_viewport，1280x800、scale 1.0）；PNG 为 render_snapshots.py 的可读性审阅产物，非 GPU 像素基线。",
+  "deterministic": true,
+  "timestampFree": true,
+  "theme": {
+    "expanded": "light",
+    "collapsed": "dark"
+  },
+  "pages": {
+    "collapsed/agent": {
+      "route": "/agent",
+      "title": "智能体",
+      "snapshotSha256": "e9a7141a7f55158c53a6012aa8f397a74d782ff6c1ad4c6bdf09fe2282179595",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-这个世界的主食是什么",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "90",
+          "w": "1248",
+          "h": "96"
+        },
+        {
+          "id": "ctl-提问",
+          "group": "workspace",
+          "action": "ai_agent_ask",
+          "x": "16",
+          "y": "186",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-保存为报告",
+          "group": "workspace",
+          "action": "agent_save_report",
+          "x": "16",
+          "y": "334",
+          "w": "87",
+          "h": "32"
+        },
+        {
+          "id": "ctl-保存为任务",
+          "group": "workspace",
+          "action": "job_create",
+          "x": "103",
+          "y": "334",
+          "w": "87",
+          "h": "32"
+        },
+        {
+          "id": "ask-agent",
+          "group": "workspace",
+          "action": "ai_agent_ask",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "provider-settings",
+          "group": "workspace",
+          "action": "ai_load_provider_settings",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/audit": {
+      "route": "/audit",
+      "title": "规则审计",
+      "snapshotSha256": "6d1fdcbb1f47714dff429d4b23addbaaea0b9185102419dd843221a4acc66de8",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-运行样例审计",
+          "group": "workspace",
+          "action": "logic_audit_facts",
+          "x": "16",
+          "y": "106",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "audit-facts",
+          "group": "workspace",
+          "action": "logic_audit_facts",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "repair-suggestions",
+          "group": "workspace",
+          "action": "logic_repair_suggestions",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/backup": {
+      "route": "/backup",
+      "title": "备份",
+      "snapshotSha256": "b7e4edde187c811bf4b0785aeeb2c89205b98ac637aced4b6961e6042c42caa5",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-导出当前项目",
+          "group": "workspace",
+          "action": "archive_export_project",
+          "x": "16",
+          "y": "90",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "ctl-version--1--project",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "190",
+          "w": "1248",
+          "h": "96"
+        },
+        {
+          "id": "ctl-导入归档",
+          "group": "workspace",
+          "action": "archive_import_project",
+          "x": "16",
+          "y": "286",
+          "w": "74",
+          "h": "32"
+        },
+        {
+          "id": "export-project",
+          "group": "workspace",
+          "action": "archive_export_project",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "import-project",
+          "group": "workspace",
+          "action": "archive_import_project",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/diagnostics": {
+      "route": "/diagnostics",
+      "title": "诊断",
+      "snapshotSha256": "e0a27b43d9fce591c8026dc6064edd928f5cafffb4d35b4aeb9be523a3fe8764",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-刷新",
+          "group": "workspace",
+          "action": "diagnostics_summary",
+          "x": "16",
+          "y": "138",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "diagnostics",
+          "group": "workspace",
+          "action": "diagnostics_summary",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/graph": {
+      "route": "/graph",
+      "title": "关系图谱",
+      "snapshotSha256": "31c2850602195baff043ee7a7cfadfb667c4f8f38388eb640a02f4ceb9e01f89",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系类型",
+          "group": "workspace",
+          "action": "none",
+          "x": "0",
+          "y": "64",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "relation-neighborhood",
+          "group": "workspace",
+          "action": "library_relation_neighborhood",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "relation-presets",
+          "group": "workspace",
+          "action": "library_relation_type_presets",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/growth": {
+      "route": "/growth",
+      "title": "角色成长",
+      "snapshotSha256": "fc979a322f9d685029d653dffce5d979457556916f65b169406fd678d08798ae",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-阿离-记录-0--守夜人",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "414",
+          "w": "168",
+          "h": "36"
+        },
+        {
+          "id": "ctl-勇气---0-50",
+          "group": "workspace",
+          "action": "none",
+          "x": "228",
+          "y": "146",
+          "w": "468",
+          "h": "36"
+        },
+        {
+          "id": "ctl-谨慎---0-25",
+          "group": "workspace",
+          "action": "none",
+          "x": "228",
+          "y": "184",
+          "w": "468",
+          "h": "36"
+        },
+        {
+          "id": "ctl-来源事件",
+          "group": "workspace",
+          "action": "none",
+          "x": "228",
+          "y": "306",
+          "w": "468",
+          "h": "32"
+        },
+        {
+          "id": "ctl-Trait-名称",
+          "group": "workspace",
+          "action": "none",
+          "x": "228",
+          "y": "344",
+          "w": "468",
+          "h": "32"
+        },
+        {
+          "id": "ctl-Delta",
+          "group": "workspace",
+          "action": "none",
+          "x": "228",
+          "y": "382",
+          "w": "468",
+          "h": "32"
+        },
+        {
+          "id": "ctl-饥荒之夜挺身而出",
+          "group": "workspace",
+          "action": "none",
+          "x": "228",
+          "y": "420",
+          "w": "468",
+          "h": "96"
+        },
+        {
+          "id": "ctl-预览变化",
+          "group": "workspace",
+          "action": "character_growth_preview_trait_delta",
+          "x": "228",
+          "y": "522",
+          "w": "74",
+          "h": "32"
+        },
+        {
+          "id": "ctl-饥荒之夜---勇气--0-50-第三纪-214",
+          "group": "workspace",
+          "action": "none",
+          "x": "228",
+          "y": "698",
+          "w": "468",
+          "h": "36"
+        },
+        {
+          "id": "preview-growth",
+          "group": "workspace",
+          "action": "character_growth_preview_trait_delta",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "save-growth",
+          "group": "workspace",
+          "action": "character_growth_create_record",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/help": {
+      "route": "/help",
+      "title": "帮助",
+      "snapshotSha256": "8517ab761c9a993c58c01900043bf42e3495849dfb2173b262907205a9d18bdd",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "health-check",
+          "group": "workspace",
+          "action": "health_check",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/home": {
+      "route": "/",
+      "title": "项目",
+      "snapshotSha256": "01416913be097a5fd55f0f033202798c5fca42c865b86f8318a960484f34888f",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-未命名宇宙",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "90",
+          "w": "1248",
+          "h": "32"
+        },
+        {
+          "id": "ctl-世界观设定的简短描述",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "128",
+          "w": "1248",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "16",
+          "y": "166",
+          "w": "1248",
+          "h": "32"
+        },
+        {
+          "id": "open-project",
+          "group": "workspace",
+          "action": "project_list",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "run-check",
+          "group": "workspace",
+          "action": "health_check",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/indexing": {
+      "route": "/indexing",
+      "title": "索引",
+      "snapshotSha256": "5747458f46fae2b52faee12c7373ed56bde7f67dd63cbf2c351f31789f5dfa75",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-构建嵌入索引",
+          "group": "workspace",
+          "action": "rag_index_embeddings",
+          "x": "16",
+          "y": "174",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "index-chunks",
+          "group": "workspace",
+          "action": "rag_index_chunks",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "index-embeddings",
+          "group": "workspace",
+          "action": "rag_index_embeddings",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/jobs": {
+      "route": "/jobs",
+      "title": "任务",
+      "snapshotSha256": "46a047c8aaa6ef0799955966eb06303f1d3add98913b5db599d08ea407c599f0",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-请求取消",
+          "group": "workspace",
+          "action": "job_cancel",
+          "x": "16",
+          "y": "138",
+          "w": "1248",
+          "h": "32"
+        },
+        {
+          "id": "ctl-日志",
+          "group": "workspace",
+          "action": "job_logs",
+          "x": "564",
+          "y": "222",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-重试",
+          "group": "workspace",
+          "action": "job_retry",
+          "x": "612",
+          "y": "222",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "list-jobs",
+          "group": "workspace",
+          "action": "job_list",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "retry-job",
+          "group": "workspace",
+          "action": "job_retry",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/projects": {
+      "route": "/projects",
+      "title": "资料库",
+      "snapshotSha256": "c614678f290d9df1b1b2c5cc4994465345435761b82c25834d06b22befe56ec1",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-活动项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "0",
+          "y": "80",
+          "w": "1280",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新项目名称",
+          "group": "workspace",
+          "action": "none",
+          "x": "0",
+          "y": "118",
+          "w": "1280",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新项目描述",
+          "group": "workspace",
+          "action": "none",
+          "x": "0",
+          "y": "156",
+          "w": "1280",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "0",
+          "y": "194",
+          "w": "1280",
+          "h": "32"
+        },
+        {
+          "id": "ctl-资料-2",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "541",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-角色-1",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "579",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-事件-1",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "617",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-规则-2",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "655",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-关系-1",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "693",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-新增",
+          "group": "workspace",
+          "action": "none",
+          "x": "341",
+          "y": "292",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-月光金属-1-关联---2026-11-09T0",
+          "group": "workspace",
+          "action": "none",
+          "x": "248",
+          "y": "330",
+          "w": "368",
+          "h": "36"
+        },
+        {
+          "id": "ctl-北方城墙-0-关联---2026-11-09T0",
+          "group": "workspace",
+          "action": "none",
+          "x": "248",
+          "y": "368",
+          "w": "368",
+          "h": "36"
+        },
+        {
+          "id": "ctl-保存",
+          "group": "workspace",
+          "action": "none",
+          "x": "282",
+          "y": "468",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-删除",
+          "group": "workspace",
+          "action": "none",
+          "x": "338",
+          "y": "468",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed",
+          "group": "workspace",
+          "action": "none",
+          "x": "248",
+          "y": "528",
+          "w": "368",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed-2",
+          "group": "workspace",
+          "action": "none",
+          "x": "248",
+          "y": "586",
+          "w": "368",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed-3",
+          "group": "workspace",
+          "action": "none",
+          "x": "248",
+          "y": "644",
+          "w": "368",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed-4",
+          "group": "workspace",
+          "action": "none",
+          "x": "248",
+          "y": "702",
+          "w": "368",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed-5",
+          "group": "workspace",
+          "action": "none",
+          "x": "248",
+          "y": "760",
+          "w": "368",
+          "h": "40"
+        },
+        {
+          "id": "create-project",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "library-snapshot",
+          "group": "workspace",
+          "action": "library_project_snapshot",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/prompt-templates": {
+      "route": "/prompt-templates",
+      "title": "提示词模板",
+      "snapshotSha256": "7c3cb019c979683e675da6d96c8d2967ad403987c372e5a16ec3f5e8f35b54ba",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-选择",
+          "group": "workspace",
+          "action": "none",
+          "x": "233",
+          "y": "74",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-选择-2",
+          "group": "workspace",
+          "action": "none",
+          "x": "299",
+          "y": "106",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-选择-3",
+          "group": "workspace",
+          "action": "none",
+          "x": "276",
+          "y": "138",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-选择-4",
+          "group": "workspace",
+          "action": "none",
+          "x": "284",
+          "y": "170",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-选择-5",
+          "group": "workspace",
+          "action": "none",
+          "x": "235",
+          "y": "202",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新建模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "81",
+          "y": "234",
+          "w": "1199",
+          "h": "32"
+        },
+        {
+          "id": "ctl-角色对白润色",
+          "group": "workspace",
+          "action": "none",
+          "x": "81",
+          "y": "318",
+          "w": "1199",
+          "h": "32"
+        },
+        {
+          "id": "ctl-按角色口吻改写对白",
+          "group": "workspace",
+          "action": "none",
+          "x": "81",
+          "y": "350",
+          "w": "1199",
+          "h": "32"
+        },
+        {
+          "id": "ctl-请以---主角---的口吻改写以下对白",
+          "group": "workspace",
+          "action": "none",
+          "x": "81",
+          "y": "382",
+          "w": "1199",
+          "h": "96"
+        },
+        {
+          "id": "ctl-阿离",
+          "group": "workspace",
+          "action": "none",
+          "x": "81",
+          "y": "494",
+          "w": "1199",
+          "h": "32"
+        },
+        {
+          "id": "ctl-保存",
+          "group": "workspace",
+          "action": "none",
+          "x": "81",
+          "y": "526",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-预览",
+          "group": "workspace",
+          "action": "prompt_preview_template",
+          "x": "129",
+          "y": "526",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-重置内置模板",
+          "group": "workspace",
+          "action": "prompt_reset_builtin_templates",
+          "x": "177",
+          "y": "526",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "list-prompts",
+          "group": "workspace",
+          "action": "prompt_list_templates",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "preview-prompt",
+          "group": "workspace",
+          "action": "prompt_preview_template",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/search": {
+      "route": "/search",
+      "title": "分析与检索",
+      "snapshotSha256": "4f839a2511e49bf54568212b7210509f58612dd76318c382cf0994c0c47e2ec5",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-月光金属",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "90",
+          "w": "1248",
+          "h": "32"
+        },
+        {
+          "id": "ctl-检索",
+          "group": "workspace",
+          "action": "search_entities",
+          "x": "1272",
+          "y": "90",
+          "w": "8",
+          "h": "32"
+        },
+        {
+          "id": "keyword-search",
+          "group": "workspace",
+          "action": "search_entities",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "semantic-search",
+          "group": "workspace",
+          "action": "search_semantic",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/settings": {
+      "route": "/settings",
+      "title": "设置",
+      "snapshotSha256": "478bcf0fd6a8eeb32ebbf7ecdb69e5b0ce472bd70a7d56bb238ca46d6b9fc1c2",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-外观",
+          "group": "workspace",
+          "action": "none",
+          "x": "0",
+          "y": "52",
+          "w": "59",
+          "h": "32"
+        },
+        {
+          "id": "ctl-人工智能设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "59",
+          "y": "52",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "ctl-命令行提供方",
+          "group": "workspace",
+          "action": "none",
+          "x": "159",
+          "y": "52",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "ctl-关于",
+          "group": "workspace",
+          "action": "none",
+          "x": "259",
+          "y": "52",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-切换主题",
+          "group": "workspace",
+          "action": "none",
+          "x": "224",
+          "y": "122",
+          "w": "74",
+          "h": "32"
+        },
+        {
+          "id": "load-settings",
+          "group": "workspace",
+          "action": "ai_load_provider_settings",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "save-settings",
+          "group": "workspace",
+          "action": "ai_save_provider_settings",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/simulation": {
+      "route": "/simulation",
+      "title": "模拟",
+      "snapshotSha256": "5aa8293d7522301f257539a60eaabe198f21a65926f6b3211c9d750c1df460bc",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-运行模拟",
+          "group": "workspace",
+          "action": "simulation_run",
+          "x": "16",
+          "y": "122",
+          "w": "74",
+          "h": "32"
+        },
+        {
+          "id": "run-simulation",
+          "group": "workspace",
+          "action": "simulation_run",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "collapsed/timeline": {
+      "route": "/timeline",
+      "title": "事件时间线",
+      "snapshotSha256": "77851faf4b9ae67c08e005304affbb7002c6b04e8ee35502d87aed1c0b1fcf75",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-饥荒之夜-第三纪-214-年冬--北方粮食短缺引",
+          "group": "workspace",
+          "action": "none",
+          "x": "16",
+          "y": "102",
+          "w": "66",
+          "h": "36"
+        },
+        {
+          "id": "create-event",
+          "group": "workspace",
+          "action": "library_create_event",
+          "x": "14",
+          "y": "34",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "update-event",
+          "group": "workspace",
+          "action": "library_update_event",
+          "x": "14",
+          "y": "38",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/agent": {
+      "route": "/agent",
+      "title": "智能体",
+      "snapshotSha256": "590b4657168f7faf68d2e59ec699b2e87734b0334894f8e038fe5ea24b548b7e",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-这个世界的主食是什么",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "90",
+          "w": "1007",
+          "h": "96"
+        },
+        {
+          "id": "ctl-提问",
+          "group": "workspace",
+          "action": "ai_agent_ask",
+          "x": "257",
+          "y": "186",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-保存为报告",
+          "group": "workspace",
+          "action": "agent_save_report",
+          "x": "257",
+          "y": "334",
+          "w": "87",
+          "h": "32"
+        },
+        {
+          "id": "ctl-保存为任务",
+          "group": "workspace",
+          "action": "job_create",
+          "x": "344",
+          "y": "334",
+          "w": "87",
+          "h": "32"
+        },
+        {
+          "id": "ask-agent",
+          "group": "workspace",
+          "action": "ai_agent_ask",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "provider-settings",
+          "group": "workspace",
+          "action": "ai_load_provider_settings",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/audit": {
+      "route": "/audit",
+      "title": "规则审计",
+      "snapshotSha256": "5d4929b2d3cd38c5acedaebaa30222db30f9a933348baccf0a84c04c6bc40b14",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-运行样例审计",
+          "group": "workspace",
+          "action": "logic_audit_facts",
+          "x": "257",
+          "y": "106",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "audit-facts",
+          "group": "workspace",
+          "action": "logic_audit_facts",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "repair-suggestions",
+          "group": "workspace",
+          "action": "logic_repair_suggestions",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/backup": {
+      "route": "/backup",
+      "title": "备份",
+      "snapshotSha256": "31bb5777e73ad128e86e6ab1b563ea0f1a4a4b1b4396c9007a3484f3ea576eb6",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-导出当前项目",
+          "group": "workspace",
+          "action": "archive_export_project",
+          "x": "257",
+          "y": "90",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "ctl-version--1--project",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "190",
+          "w": "1007",
+          "h": "96"
+        },
+        {
+          "id": "ctl-导入归档",
+          "group": "workspace",
+          "action": "archive_import_project",
+          "x": "257",
+          "y": "286",
+          "w": "74",
+          "h": "32"
+        },
+        {
+          "id": "export-project",
+          "group": "workspace",
+          "action": "archive_export_project",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "import-project",
+          "group": "workspace",
+          "action": "archive_import_project",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/diagnostics": {
+      "route": "/diagnostics",
+      "title": "诊断",
+      "snapshotSha256": "6567765486ba3ddd5222d93a8b5cd4b95f21df2f52ca141e14f71fe126ed6d71",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-刷新",
+          "group": "workspace",
+          "action": "diagnostics_summary",
+          "x": "257",
+          "y": "138",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "diagnostics",
+          "group": "workspace",
+          "action": "diagnostics_summary",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/graph": {
+      "route": "/graph",
+      "title": "关系图谱",
+      "snapshotSha256": "2d2f7853b6826f5f1b8bcfd45d57886a5df315f32dc578a43eb4485845dc81c0",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系类型",
+          "group": "workspace",
+          "action": "none",
+          "x": "241",
+          "y": "64",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "relation-neighborhood",
+          "group": "workspace",
+          "action": "library_relation_neighborhood",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "relation-presets",
+          "group": "workspace",
+          "action": "library_relation_type_presets",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/growth": {
+      "route": "/growth",
+      "title": "角色成长",
+      "snapshotSha256": "831ffd2f62ea10353db045f68792f9cb333734b78a53bc7b6227d46aa35a5fe1",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-阿离-记录-0--守夜人",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "414",
+          "w": "168",
+          "h": "36"
+        },
+        {
+          "id": "ctl-勇气---0-50",
+          "group": "workspace",
+          "action": "none",
+          "x": "469",
+          "y": "146",
+          "w": "468",
+          "h": "36"
+        },
+        {
+          "id": "ctl-谨慎---0-25",
+          "group": "workspace",
+          "action": "none",
+          "x": "469",
+          "y": "184",
+          "w": "468",
+          "h": "36"
+        },
+        {
+          "id": "ctl-来源事件",
+          "group": "workspace",
+          "action": "none",
+          "x": "469",
+          "y": "306",
+          "w": "468",
+          "h": "32"
+        },
+        {
+          "id": "ctl-Trait-名称",
+          "group": "workspace",
+          "action": "none",
+          "x": "469",
+          "y": "344",
+          "w": "468",
+          "h": "32"
+        },
+        {
+          "id": "ctl-Delta",
+          "group": "workspace",
+          "action": "none",
+          "x": "469",
+          "y": "382",
+          "w": "468",
+          "h": "32"
+        },
+        {
+          "id": "ctl-饥荒之夜挺身而出",
+          "group": "workspace",
+          "action": "none",
+          "x": "469",
+          "y": "420",
+          "w": "468",
+          "h": "96"
+        },
+        {
+          "id": "ctl-预览变化",
+          "group": "workspace",
+          "action": "character_growth_preview_trait_delta",
+          "x": "469",
+          "y": "522",
+          "w": "74",
+          "h": "32"
+        },
+        {
+          "id": "ctl-饥荒之夜---勇气--0-50-第三纪-214",
+          "group": "workspace",
+          "action": "none",
+          "x": "469",
+          "y": "698",
+          "w": "468",
+          "h": "36"
+        },
+        {
+          "id": "preview-growth",
+          "group": "workspace",
+          "action": "character_growth_preview_trait_delta",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "save-growth",
+          "group": "workspace",
+          "action": "character_growth_create_record",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/help": {
+      "route": "/help",
+      "title": "帮助",
+      "snapshotSha256": "6970f3c8ad639c1b49afb2ddfa97769a6ab97b06fbad09dec2a40040ee80f0d1",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "health-check",
+          "group": "workspace",
+          "action": "health_check",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/home": {
+      "route": "/",
+      "title": "项目",
+      "snapshotSha256": "925e9a4ec998466983b91d985888dd5946cc8fb514be5b8754b871477f740684",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-未命名宇宙",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "90",
+          "w": "1007",
+          "h": "32"
+        },
+        {
+          "id": "ctl-世界观设定的简短描述",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "128",
+          "w": "1007",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新建项目-2",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "257",
+          "y": "166",
+          "w": "1007",
+          "h": "32"
+        },
+        {
+          "id": "open-project",
+          "group": "workspace",
+          "action": "project_list",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "run-check",
+          "group": "workspace",
+          "action": "health_check",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/indexing": {
+      "route": "/indexing",
+      "title": "索引",
+      "snapshotSha256": "9004aaba9ab32b150f8792ae80bb28088713625b4360f8df619f8b2c18fa73a4",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-构建嵌入索引",
+          "group": "workspace",
+          "action": "rag_index_embeddings",
+          "x": "257",
+          "y": "174",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "index-chunks",
+          "group": "workspace",
+          "action": "rag_index_chunks",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "index-embeddings",
+          "group": "workspace",
+          "action": "rag_index_embeddings",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/jobs": {
+      "route": "/jobs",
+      "title": "任务",
+      "snapshotSha256": "74834ffd299925e928df47ce33d6ff2e89167665311661c7e72dc39a73c4bc48",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-请求取消",
+          "group": "workspace",
+          "action": "job_cancel",
+          "x": "257",
+          "y": "138",
+          "w": "1007",
+          "h": "32"
+        },
+        {
+          "id": "ctl-日志",
+          "group": "workspace",
+          "action": "job_logs",
+          "x": "805",
+          "y": "222",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-重试",
+          "group": "workspace",
+          "action": "job_retry",
+          "x": "853",
+          "y": "222",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "list-jobs",
+          "group": "workspace",
+          "action": "job_list",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "retry-job",
+          "group": "workspace",
+          "action": "job_retry",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/projects": {
+      "route": "/projects",
+      "title": "资料库",
+      "snapshotSha256": "22d65ae399a7615667736df16cd313e63dac1b6481bf4b07ab520e3f1a590016",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-活动项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "241",
+          "y": "80",
+          "w": "1039",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新项目名称",
+          "group": "workspace",
+          "action": "none",
+          "x": "241",
+          "y": "118",
+          "w": "1039",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新项目描述",
+          "group": "workspace",
+          "action": "none",
+          "x": "241",
+          "y": "156",
+          "w": "1039",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新建项目-2",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "241",
+          "y": "194",
+          "w": "1039",
+          "h": "32"
+        },
+        {
+          "id": "ctl-资料-2",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "541",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-角色-1",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "579",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-事件-1",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "617",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-规则-2",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "655",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-关系-1",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "693",
+          "w": "188",
+          "h": "36"
+        },
+        {
+          "id": "ctl-新增",
+          "group": "workspace",
+          "action": "none",
+          "x": "582",
+          "y": "292",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-月光金属-1-关联---2026-11-09T0",
+          "group": "workspace",
+          "action": "none",
+          "x": "489",
+          "y": "330",
+          "w": "368",
+          "h": "36"
+        },
+        {
+          "id": "ctl-北方城墙-0-关联---2026-11-09T0",
+          "group": "workspace",
+          "action": "none",
+          "x": "489",
+          "y": "368",
+          "w": "368",
+          "h": "36"
+        },
+        {
+          "id": "ctl-保存",
+          "group": "workspace",
+          "action": "none",
+          "x": "523",
+          "y": "468",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-删除",
+          "group": "workspace",
+          "action": "none",
+          "x": "579",
+          "y": "468",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed",
+          "group": "workspace",
+          "action": "none",
+          "x": "489",
+          "y": "528",
+          "w": "368",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed-2",
+          "group": "workspace",
+          "action": "none",
+          "x": "489",
+          "y": "586",
+          "w": "368",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed-3",
+          "group": "workspace",
+          "action": "none",
+          "x": "489",
+          "y": "644",
+          "w": "368",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed-4",
+          "group": "workspace",
+          "action": "none",
+          "x": "489",
+          "y": "702",
+          "w": "368",
+          "h": "32"
+        },
+        {
+          "id": "ctl-unnamed-5",
+          "group": "workspace",
+          "action": "none",
+          "x": "489",
+          "y": "760",
+          "w": "368",
+          "h": "40"
+        },
+        {
+          "id": "create-project",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "library-snapshot",
+          "group": "workspace",
+          "action": "library_project_snapshot",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/prompt-templates": {
+      "route": "/prompt-templates",
+      "title": "提示词模板",
+      "snapshotSha256": "604d3b1cd169f143e70c97be3c809f613eed3e61511fb23a5f7716e7d27a486d",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-选择",
+          "group": "workspace",
+          "action": "none",
+          "x": "474",
+          "y": "74",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-选择-2",
+          "group": "workspace",
+          "action": "none",
+          "x": "540",
+          "y": "106",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-选择-3",
+          "group": "workspace",
+          "action": "none",
+          "x": "517",
+          "y": "138",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-选择-4",
+          "group": "workspace",
+          "action": "none",
+          "x": "525",
+          "y": "170",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-选择-5",
+          "group": "workspace",
+          "action": "none",
+          "x": "476",
+          "y": "202",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-新建模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "322",
+          "y": "234",
+          "w": "958",
+          "h": "32"
+        },
+        {
+          "id": "ctl-角色对白润色",
+          "group": "workspace",
+          "action": "none",
+          "x": "322",
+          "y": "318",
+          "w": "958",
+          "h": "32"
+        },
+        {
+          "id": "ctl-按角色口吻改写对白",
+          "group": "workspace",
+          "action": "none",
+          "x": "322",
+          "y": "350",
+          "w": "958",
+          "h": "32"
+        },
+        {
+          "id": "ctl-请以---主角---的口吻改写以下对白",
+          "group": "workspace",
+          "action": "none",
+          "x": "322",
+          "y": "382",
+          "w": "958",
+          "h": "96"
+        },
+        {
+          "id": "ctl-阿离",
+          "group": "workspace",
+          "action": "none",
+          "x": "322",
+          "y": "494",
+          "w": "958",
+          "h": "32"
+        },
+        {
+          "id": "ctl-保存",
+          "group": "workspace",
+          "action": "none",
+          "x": "322",
+          "y": "526",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-预览",
+          "group": "workspace",
+          "action": "prompt_preview_template",
+          "x": "370",
+          "y": "526",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-重置内置模板",
+          "group": "workspace",
+          "action": "prompt_reset_builtin_templates",
+          "x": "418",
+          "y": "526",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "list-prompts",
+          "group": "workspace",
+          "action": "prompt_list_templates",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "preview-prompt",
+          "group": "workspace",
+          "action": "prompt_preview_template",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/search": {
+      "route": "/search",
+      "title": "分析与检索",
+      "snapshotSha256": "2606a58e157ae50823bdd83ccebee87360d05bf0c01c1ea86c2105fedb5e5c0a",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-月光金属",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "90",
+          "w": "1007",
+          "h": "32"
+        },
+        {
+          "id": "ctl-检索",
+          "group": "workspace",
+          "action": "search_entities",
+          "x": "1272",
+          "y": "90",
+          "w": "8",
+          "h": "32"
+        },
+        {
+          "id": "keyword-search",
+          "group": "workspace",
+          "action": "search_entities",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "semantic-search",
+          "group": "workspace",
+          "action": "search_semantic",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/settings": {
+      "route": "/settings",
+      "title": "设置",
+      "snapshotSha256": "b7662576ef353e1d2100c92e270b4135d71bada02379f1a9b5c4a987799d4d88",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-外观",
+          "group": "workspace",
+          "action": "none",
+          "x": "241",
+          "y": "52",
+          "w": "59",
+          "h": "32"
+        },
+        {
+          "id": "ctl-人工智能设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "300",
+          "y": "52",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "ctl-命令行提供方",
+          "group": "workspace",
+          "action": "none",
+          "x": "400",
+          "y": "52",
+          "w": "100",
+          "h": "32"
+        },
+        {
+          "id": "ctl-关于",
+          "group": "workspace",
+          "action": "none",
+          "x": "500",
+          "y": "52",
+          "w": "48",
+          "h": "32"
+        },
+        {
+          "id": "ctl-切换主题",
+          "group": "workspace",
+          "action": "none",
+          "x": "465",
+          "y": "122",
+          "w": "74",
+          "h": "32"
+        },
+        {
+          "id": "load-settings",
+          "group": "workspace",
+          "action": "ai_load_provider_settings",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "save-settings",
+          "group": "workspace",
+          "action": "ai_save_provider_settings",
+          "x": "2",
+          "y": "6",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/simulation": {
+      "route": "/simulation",
+      "title": "模拟",
+      "snapshotSha256": "215a6ac256cd0010f01f024b5374b2021eaf6788619d345534f304030a3e4fd3",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-运行模拟",
+          "group": "workspace",
+          "action": "simulation_run",
+          "x": "257",
+          "y": "122",
+          "w": "74",
+          "h": "32"
+        },
+        {
+          "id": "run-simulation",
+          "group": "workspace",
+          "action": "simulation_run",
+          "x": "2",
+          "y": "2",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    },
+    "expanded/timeline": {
+      "route": "/timeline",
+      "title": "事件时间线",
+      "snapshotSha256": "926d7521fd3f64ebf0cb8dfa51321f39fc0349a0bbb695b7df259d3a1f693477",
+      "controls": [
+        {
+          "id": "ctl-切换侧栏",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-切换到浅色",
+          "group": "workspace",
+          "action": "none",
+          "x": "40",
+          "y": "4",
+          "w": "560",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最小化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1186",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-最大化",
+          "group": "workspace",
+          "action": "none",
+          "x": "1216",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关闭",
+          "group": "workspace",
+          "action": "none",
+          "x": "1246",
+          "y": "4",
+          "w": "28",
+          "h": "28"
+        },
+        {
+          "id": "ctl-新建项目",
+          "group": "workspace",
+          "action": "project_create",
+          "x": "12",
+          "y": "46",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-搜索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "78",
+          "w": "220",
+          "h": "32"
+        },
+        {
+          "id": "ctl-工作区",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "124",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-项目",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "152",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-资料库",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "182",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-角色成长",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "212",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-事件时间线",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "242",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-规则审计",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "272",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-关系图谱",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "302",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-分析与检索",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "332",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-索引",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "388",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-备份",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "418",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-模拟",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "448",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-智能体",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "478",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-设置",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "506",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-帮助",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "534",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-诊断",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "562",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-任务",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "590",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-提示词模板",
+          "group": "workspace",
+          "action": "none",
+          "x": "12",
+          "y": "618",
+          "w": "220",
+          "h": "28"
+        },
+        {
+          "id": "ctl-饥荒之夜-第三纪-214-年冬--北方粮食短缺引",
+          "group": "workspace",
+          "action": "none",
+          "x": "257",
+          "y": "102",
+          "w": "66",
+          "h": "36"
+        },
+        {
+          "id": "create-event",
+          "group": "workspace",
+          "action": "library_create_event",
+          "x": "14",
+          "y": "34",
+          "w": "1",
+          "h": "1"
+        },
+        {
+          "id": "update-event",
+          "group": "workspace",
+          "action": "library_update_event",
+          "x": "14",
+          "y": "38",
+          "w": "1",
+          "h": "1"
+        }
+      ],
+      "contentRecords": true
+    }
+  },
+  "contentAcceptance": {
+    "schema": "ameya.native.content-acceptance.v1",
+    "contract": "content-acceptance.tsv",
+    "requiredRecords": [
+      "section",
+      "field",
+      "list",
+      "status",
+      "empty"
+    ],
+    "routes": [
+      {
+        "key": "expanded/home",
+        "route": "/",
+        "state": "expanded",
+        "snapshot": "expanded/home.snapshot",
+        "section": "home-content",
+        "list": "home-list",
+        "fields": [
+          "open-project",
+          "run-check"
+        ],
+        "status": "home-ready",
+        "empty": "home-empty",
+        "actions": {
+          "open-project": "project_list",
+          "run-check": "health_check"
+        }
+      },
+      {
+        "key": "expanded/projects",
+        "route": "/projects",
+        "state": "expanded",
+        "snapshot": "expanded/projects.snapshot",
+        "section": "projects-content",
+        "list": "projects-list",
+        "fields": [
+          "create-project",
+          "library-snapshot"
+        ],
+        "status": "projects-ready",
+        "empty": "projects-empty",
+        "actions": {
+          "create-project": "project_create",
+          "library-snapshot": "library_project_snapshot"
+        }
+      },
+      {
+        "key": "expanded/growth",
+        "route": "/growth",
+        "state": "expanded",
+        "snapshot": "expanded/growth.snapshot",
+        "section": "growth-content",
+        "list": "growth-list",
+        "fields": [
+          "preview-growth",
+          "save-growth"
+        ],
+        "status": "growth-ready",
+        "empty": "growth-empty",
+        "actions": {
+          "preview-growth": "character_growth_preview_trait_delta",
+          "save-growth": "character_growth_create_record"
+        }
+      },
+      {
+        "key": "expanded/timeline",
+        "route": "/timeline",
+        "state": "expanded",
+        "snapshot": "expanded/timeline.snapshot",
+        "section": "timeline-content",
+        "list": "timeline-list",
+        "fields": [
+          "create-event",
+          "update-event"
+        ],
+        "status": "timeline-ready",
+        "empty": "timeline-empty",
+        "actions": {
+          "create-event": "library_create_event",
+          "update-event": "library_update_event"
+        }
+      },
+      {
+        "key": "expanded/audit",
+        "route": "/audit",
+        "state": "expanded",
+        "snapshot": "expanded/audit.snapshot",
+        "section": "audit-content",
+        "list": "audit-list",
+        "fields": [
+          "audit-facts",
+          "repair-suggestions"
+        ],
+        "status": "audit-ready",
+        "empty": "audit-empty",
+        "actions": {
+          "audit-facts": "logic_audit_facts",
+          "repair-suggestions": "logic_repair_suggestions"
+        }
+      },
+      {
+        "key": "expanded/graph",
+        "route": "/graph",
+        "state": "expanded",
+        "snapshot": "expanded/graph.snapshot",
+        "section": "graph-content",
+        "list": "graph-list",
+        "fields": [
+          "relation-neighborhood",
+          "relation-presets"
+        ],
+        "status": "graph-ready",
+        "empty": "graph-empty",
+        "actions": {
+          "relation-neighborhood": "library_relation_neighborhood",
+          "relation-presets": "library_relation_type_presets"
+        }
+      },
+      {
+        "key": "expanded/search",
+        "route": "/search",
+        "state": "expanded",
+        "snapshot": "expanded/search.snapshot",
+        "section": "search-content",
+        "list": "search-list",
+        "fields": [
+          "keyword-search",
+          "semantic-search"
+        ],
+        "status": "search-ready",
+        "empty": "search-empty",
+        "actions": {
+          "keyword-search": "search_entities",
+          "semantic-search": "search_semantic"
+        }
+      },
+      {
+        "key": "expanded/indexing",
+        "route": "/indexing",
+        "state": "expanded",
+        "snapshot": "expanded/indexing.snapshot",
+        "section": "indexing-content",
+        "list": "indexing-list",
+        "fields": [
+          "index-chunks",
+          "index-embeddings"
+        ],
+        "status": "indexing-ready",
+        "empty": "indexing-empty",
+        "actions": {
+          "index-chunks": "rag_index_chunks",
+          "index-embeddings": "rag_index_embeddings"
+        }
+      },
+      {
+        "key": "expanded/backup",
+        "route": "/backup",
+        "state": "expanded",
+        "snapshot": "expanded/backup.snapshot",
+        "section": "backup-content",
+        "list": "backup-list",
+        "fields": [
+          "export-project",
+          "import-project"
+        ],
+        "status": "backup-ready",
+        "empty": "backup-empty",
+        "actions": {
+          "export-project": "archive_export_project",
+          "import-project": "archive_import_project"
+        }
+      },
+      {
+        "key": "expanded/simulation",
+        "route": "/simulation",
+        "state": "expanded",
+        "snapshot": "expanded/simulation.snapshot",
+        "section": "simulation-content",
+        "list": "simulation-list",
+        "fields": [
+          "run-simulation"
+        ],
+        "status": "simulation-ready",
+        "empty": "simulation-empty",
+        "actions": {
+          "run-simulation": "simulation_run"
+        }
+      },
+      {
+        "key": "expanded/agent",
+        "route": "/agent",
+        "state": "expanded",
+        "snapshot": "expanded/agent.snapshot",
+        "section": "agent-content",
+        "list": "agent-list",
+        "fields": [
+          "ask-agent",
+          "provider-settings"
+        ],
+        "status": "agent-ready",
+        "empty": "agent-empty",
+        "actions": {
+          "ask-agent": "ai_agent_ask",
+          "provider-settings": "ai_load_provider_settings"
+        }
+      },
+      {
+        "key": "expanded/settings",
+        "route": "/settings",
+        "state": "expanded",
+        "snapshot": "expanded/settings.snapshot",
+        "section": "settings-content",
+        "list": "settings-list",
+        "fields": [
+          "load-settings",
+          "save-settings"
+        ],
+        "status": "settings-ready",
+        "empty": "settings-empty",
+        "actions": {
+          "load-settings": "ai_load_provider_settings",
+          "save-settings": "ai_save_provider_settings"
+        }
+      },
+      {
+        "key": "expanded/help",
+        "route": "/help",
+        "state": "expanded",
+        "snapshot": "expanded/help.snapshot",
+        "section": "help-content",
+        "list": "help-list",
+        "fields": [
+          "health-check"
+        ],
+        "status": "help-ready",
+        "empty": "help-empty",
+        "actions": {
+          "health-check": "health_check"
+        }
+      },
+      {
+        "key": "expanded/diagnostics",
+        "route": "/diagnostics",
+        "state": "expanded",
+        "snapshot": "expanded/diagnostics.snapshot",
+        "section": "diagnostics-content",
+        "list": "diagnostics-list",
+        "fields": [
+          "diagnostics"
+        ],
+        "status": "diagnostics-ready",
+        "empty": "diagnostics-empty",
+        "actions": {
+          "diagnostics": "diagnostics_summary"
+        }
+      },
+      {
+        "key": "expanded/jobs",
+        "route": "/jobs",
+        "state": "expanded",
+        "snapshot": "expanded/jobs.snapshot",
+        "section": "jobs-content",
+        "list": "jobs-list",
+        "fields": [
+          "list-jobs",
+          "retry-job"
+        ],
+        "status": "jobs-ready",
+        "empty": "jobs-empty",
+        "actions": {
+          "list-jobs": "job_list",
+          "retry-job": "job_retry"
+        }
+      },
+      {
+        "key": "expanded/prompt-templates",
+        "route": "/prompt-templates",
+        "state": "expanded",
+        "snapshot": "expanded/prompt-templates.snapshot",
+        "section": "prompt-templates-content",
+        "list": "prompt-templates-list",
+        "fields": [
+          "list-prompts",
+          "preview-prompt"
+        ],
+        "status": "prompt-templates-ready",
+        "empty": "prompt-templates-empty",
+        "actions": {
+          "list-prompts": "prompt_list_templates",
+          "preview-prompt": "prompt_preview_template"
+        }
+      },
+      {
+        "key": "collapsed/home",
+        "route": "/",
+        "state": "collapsed",
+        "snapshot": "collapsed/home.snapshot",
+        "section": "home-content",
+        "list": "home-list",
+        "fields": [
+          "open-project",
+          "run-check"
+        ],
+        "status": "home-ready",
+        "empty": "home-empty",
+        "actions": {
+          "open-project": "project_list",
+          "run-check": "health_check"
+        }
+      },
+      {
+        "key": "collapsed/projects",
+        "route": "/projects",
+        "state": "collapsed",
+        "snapshot": "collapsed/projects.snapshot",
+        "section": "projects-content",
+        "list": "projects-list",
+        "fields": [
+          "create-project",
+          "library-snapshot"
+        ],
+        "status": "projects-ready",
+        "empty": "projects-empty",
+        "actions": {
+          "create-project": "project_create",
+          "library-snapshot": "library_project_snapshot"
+        }
+      },
+      {
+        "key": "collapsed/growth",
+        "route": "/growth",
+        "state": "collapsed",
+        "snapshot": "collapsed/growth.snapshot",
+        "section": "growth-content",
+        "list": "growth-list",
+        "fields": [
+          "preview-growth",
+          "save-growth"
+        ],
+        "status": "growth-ready",
+        "empty": "growth-empty",
+        "actions": {
+          "preview-growth": "character_growth_preview_trait_delta",
+          "save-growth": "character_growth_create_record"
+        }
+      },
+      {
+        "key": "collapsed/timeline",
+        "route": "/timeline",
+        "state": "collapsed",
+        "snapshot": "collapsed/timeline.snapshot",
+        "section": "timeline-content",
+        "list": "timeline-list",
+        "fields": [
+          "create-event",
+          "update-event"
+        ],
+        "status": "timeline-ready",
+        "empty": "timeline-empty",
+        "actions": {
+          "create-event": "library_create_event",
+          "update-event": "library_update_event"
+        }
+      },
+      {
+        "key": "collapsed/audit",
+        "route": "/audit",
+        "state": "collapsed",
+        "snapshot": "collapsed/audit.snapshot",
+        "section": "audit-content",
+        "list": "audit-list",
+        "fields": [
+          "audit-facts",
+          "repair-suggestions"
+        ],
+        "status": "audit-ready",
+        "empty": "audit-empty",
+        "actions": {
+          "audit-facts": "logic_audit_facts",
+          "repair-suggestions": "logic_repair_suggestions"
+        }
+      },
+      {
+        "key": "collapsed/graph",
+        "route": "/graph",
+        "state": "collapsed",
+        "snapshot": "collapsed/graph.snapshot",
+        "section": "graph-content",
+        "list": "graph-list",
+        "fields": [
+          "relation-neighborhood",
+          "relation-presets"
+        ],
+        "status": "graph-ready",
+        "empty": "graph-empty",
+        "actions": {
+          "relation-neighborhood": "library_relation_neighborhood",
+          "relation-presets": "library_relation_type_presets"
+        }
+      },
+      {
+        "key": "collapsed/search",
+        "route": "/search",
+        "state": "collapsed",
+        "snapshot": "collapsed/search.snapshot",
+        "section": "search-content",
+        "list": "search-list",
+        "fields": [
+          "keyword-search",
+          "semantic-search"
+        ],
+        "status": "search-ready",
+        "empty": "search-empty",
+        "actions": {
+          "keyword-search": "search_entities",
+          "semantic-search": "search_semantic"
+        }
+      },
+      {
+        "key": "collapsed/indexing",
+        "route": "/indexing",
+        "state": "collapsed",
+        "snapshot": "collapsed/indexing.snapshot",
+        "section": "indexing-content",
+        "list": "indexing-list",
+        "fields": [
+          "index-chunks",
+          "index-embeddings"
+        ],
+        "status": "indexing-ready",
+        "empty": "indexing-empty",
+        "actions": {
+          "index-chunks": "rag_index_chunks",
+          "index-embeddings": "rag_index_embeddings"
+        }
+      },
+      {
+        "key": "collapsed/backup",
+        "route": "/backup",
+        "state": "collapsed",
+        "snapshot": "collapsed/backup.snapshot",
+        "section": "backup-content",
+        "list": "backup-list",
+        "fields": [
+          "export-project",
+          "import-project"
+        ],
+        "status": "backup-ready",
+        "empty": "backup-empty",
+        "actions": {
+          "export-project": "archive_export_project",
+          "import-project": "archive_import_project"
+        }
+      },
+      {
+        "key": "collapsed/simulation",
+        "route": "/simulation",
+        "state": "collapsed",
+        "snapshot": "collapsed/simulation.snapshot",
+        "section": "simulation-content",
+        "list": "simulation-list",
+        "fields": [
+          "run-simulation"
+        ],
+        "status": "simulation-ready",
+        "empty": "simulation-empty",
+        "actions": {
+          "run-simulation": "simulation_run"
+        }
+      },
+      {
+        "key": "collapsed/agent",
+        "route": "/agent",
+        "state": "collapsed",
+        "snapshot": "collapsed/agent.snapshot",
+        "section": "agent-content",
+        "list": "agent-list",
+        "fields": [
+          "ask-agent",
+          "provider-settings"
+        ],
+        "status": "agent-ready",
+        "empty": "agent-empty",
+        "actions": {
+          "ask-agent": "ai_agent_ask",
+          "provider-settings": "ai_load_provider_settings"
+        }
+      },
+      {
+        "key": "collapsed/settings",
+        "route": "/settings",
+        "state": "collapsed",
+        "snapshot": "collapsed/settings.snapshot",
+        "section": "settings-content",
+        "list": "settings-list",
+        "fields": [
+          "load-settings",
+          "save-settings"
+        ],
+        "status": "settings-ready",
+        "empty": "settings-empty",
+        "actions": {
+          "load-settings": "ai_load_provider_settings",
+          "save-settings": "ai_save_provider_settings"
+        }
+      },
+      {
+        "key": "collapsed/help",
+        "route": "/help",
+        "state": "collapsed",
+        "snapshot": "collapsed/help.snapshot",
+        "section": "help-content",
+        "list": "help-list",
+        "fields": [
+          "health-check"
+        ],
+        "status": "help-ready",
+        "empty": "help-empty",
+        "actions": {
+          "health-check": "health_check"
+        }
+      },
+      {
+        "key": "collapsed/diagnostics",
+        "route": "/diagnostics",
+        "state": "collapsed",
+        "snapshot": "collapsed/diagnostics.snapshot",
+        "section": "diagnostics-content",
+        "list": "diagnostics-list",
+        "fields": [
+          "diagnostics"
+        ],
+        "status": "diagnostics-ready",
+        "empty": "diagnostics-empty",
+        "actions": {
+          "diagnostics": "diagnostics_summary"
+        }
+      },
+      {
+        "key": "collapsed/jobs",
+        "route": "/jobs",
+        "state": "collapsed",
+        "snapshot": "collapsed/jobs.snapshot",
+        "section": "jobs-content",
+        "list": "jobs-list",
+        "fields": [
+          "list-jobs",
+          "retry-job"
+        ],
+        "status": "jobs-ready",
+        "empty": "jobs-empty",
+        "actions": {
+          "list-jobs": "job_list",
+          "retry-job": "job_retry"
+        }
+      },
+      {
+        "key": "collapsed/prompt-templates",
+        "route": "/prompt-templates",
+        "state": "collapsed",
+        "snapshot": "collapsed/prompt-templates.snapshot",
+        "section": "prompt-templates-content",
+        "list": "prompt-templates-list",
+        "fields": [
+          "list-prompts",
+          "preview-prompt"
+        ],
+        "status": "prompt-templates-ready",
+        "empty": "prompt-templates-empty",
+        "actions": {
+          "list-prompts": "prompt_list_templates",
+          "preview-prompt": "prompt_preview_template"
+        }
+      }
+    ]
+  },
+  "visualEvidence": {
+    "reviewedStates": [
+      "expanded",
+      "collapsed"
+    ],
+    "reviewedRoutes": 16,
+    "reviewedImages": [
+      "collapsed/agent.png",
+      "collapsed/audit.png",
+      "collapsed/backup.png",
+      "collapsed/diagnostics.png",
+      "collapsed/graph.png",
+      "collapsed/growth.png",
+      "collapsed/help.png",
+      "collapsed/home.png",
+      "collapsed/indexing.png",
+      "collapsed/jobs.png",
+      "collapsed/projects.png",
+      "collapsed/prompt-templates.png",
+      "collapsed/search.png",
+      "collapsed/settings.png",
+      "collapsed/simulation.png",
+      "collapsed/timeline.png",
+      "expanded/agent.png",
+      "expanded/audit.png",
+      "expanded/backup.png",
+      "expanded/diagnostics.png",
+      "expanded/graph.png",
+      "expanded/growth.png",
+      "expanded/help.png",
+      "expanded/home.png",
+      "expanded/indexing.png",
+      "expanded/jobs.png",
+      "expanded/projects.png",
+      "expanded/prompt-templates.png",
+      "expanded/search.png",
+      "expanded/settings.png",
+      "expanded/simulation.png",
+      "expanded/timeline.png"
+    ],
+    "imagesSha256": {
+      "collapsed/agent.png": "c299f57a6203210b424b77cdcd9bdb13861a3df8274b15980f7e29a9938d4593",
+      "collapsed/audit.png": "3308644ccab9c8efd5fca04ac851538737d16a24b9a791e557a6daf499453cd4",
+      "collapsed/backup.png": "3c773aabaa5ca6d8e3cae743bc09788e6c5c0e0243853642a359c8f2e9b5e6a6",
+      "collapsed/diagnostics.png": "4955ac2fb05fca647fa590e2c6384eb9cf6882040dc29b96d70ded24de2eaf8a",
+      "collapsed/graph.png": "c4a2650679d96bfb732131b8918da6197b35439664eaea3716ec498bfa3b87cf",
+      "collapsed/growth.png": "b7a9786f23db7fae0bfeaa7a90e2033a57ad1f3d4335d4cae565da53b844cc7f",
+      "collapsed/help.png": "de3ec6b6e52ae75d7d5d9b0d6c5eaa6b5140c344432dba7ec44f50a0100f894a",
+      "collapsed/home.png": "d5e0533612ff8fe587bb0cef36b1418c0c6a28ce5ddc38b56988122cf40c662f",
+      "collapsed/indexing.png": "742d6f0870e0bc37a54446107063513445870781a2028b08dd39e9eb938142de",
+      "collapsed/jobs.png": "1120f1cde57eb7930befdef300f3e4b9b0c55bdf2275420bf154e19a6bc4092f",
+      "collapsed/projects.png": "d523a2ef22fdf99210572e6894c482588358b8358e901364a630f1272c735f4a",
+      "collapsed/prompt-templates.png": "dd175250ee0009d3a0de65aec7fee5e99ca02e3d167a0e3b5f02b8ec8e5019d0",
+      "collapsed/search.png": "55ca5d7c9bd9cecec4e6fe2e5b602335dfaea8d6b53c9ab2b5f6686142d63206",
+      "collapsed/settings.png": "1bbe60264793e6bdd6484ecbc016a1d57064edbdc1f0793294e0cd0891a1e676",
+      "collapsed/simulation.png": "d3c66fac98138cff4491f727d80085fe49e0d15b2ec96a19786b53ec9c4fddd1",
+      "collapsed/timeline.png": "1f945059ccfcae32881745576e3225906052e22ede6aeea2e6f1b71cb7cc61ef",
+      "expanded/agent.png": "5fd6f1edabd54dc0ce676a7c854d3247dfde79b5f4e34cf977e22d0ed0e78fb1",
+      "expanded/audit.png": "a57cbce45465ab8ed7dfda6c847ce8d61e9fa7ae6fe591294a9323626d75f735",
+      "expanded/backup.png": "447e868ba12d521724a3c36952117c105cc6cf8f32977ece704934594a0c02b3",
+      "expanded/diagnostics.png": "b4ee9928caa569abbcbfd081fb4a2b6604261e6e566be4d0397d16a1cb7b3514",
+      "expanded/graph.png": "5626ef7db1e42d78ff0a9e41432f8ee961382200141f33e4a1e087316fe59af6",
+      "expanded/growth.png": "5274bd656166b9fde0539e1f3e5c3989c3b7b240bcb04687c0b39fbcb6c17a2d",
+      "expanded/help.png": "faa6e55c0fecb49f582fd868a5bde5c308214efade88da0e3fbcf2e5e3e312cb",
+      "expanded/home.png": "80247fd822f7ea28aff0ba55214618b4f4c3d6581559fe06650d35a679f42eb1",
+      "expanded/indexing.png": "9f0665e235e749377ca0ca5d982b1eb411fe16d906d644fa137d4fa49f3106a5",
+      "expanded/jobs.png": "7912054f3c6af4a3ac0664c0da1dc42d19a049c182ddbd763ebb14bf28c3b186",
+      "expanded/projects.png": "2867d93ddce002159acdeffb896b4ec7977a97f478f11fefa44b11d5c3153955",
+      "expanded/prompt-templates.png": "b9d9b4fc441e9a2ba5bbee41c9e5751ac56ceb828ebd6b4c2c62653d4142553e",
+      "expanded/search.png": "7b327bee9cbc8c548b28cba62e0489f08334c7622d6a927840275bd6b92b754b",
+      "expanded/settings.png": "4b0596cf8525148bedd8e14fdcd6b2577fbe13686f871c0e25343ec7df5bf008",
+      "expanded/simulation.png": "6fae189dbe66172d4f1a05cd903697f1f751cf51b9a41f2e5b39c7421592c4a6",
+      "expanded/timeline.png": "2ae5db4d30b38a4ddc223686a15e15e6d87922e711f653d68285c267e207df38"
+    }
+  },
+  "layoutSemantics": {
+    "descriptor": "native/src/page_model.rs::PageLayout",
+    "hostedConsumption": "native/src/lib.rs::nana_view_for_runtime",
+    "controls": [
+      "TextInput",
+      "TextArea",
+      "NumberInput",
+      "Table",
+      "TableRow",
+      "TableCell"
+    ],
+    "pixelBaseline": "design aid; not GPU hosted pixels"
+  },
+  "palette": {
+    "source": "native/validation/nana_theme.py → nana_ui_core::SemanticPalette::{light,dark} + AccentRamp::{LIGHT,DARK}",
+    "light": {
+      "background": "#ffffff",
+      "surface": "#f3f4f6",
+      "subtle": "#f7f8fa",
+      "text": "#1a1a1f",
+      "muted": "#5a616e",
+      "border": "#e3e5e8",
+      "accent": "#4991d7",
+      "success": "#107e39",
+      "warning": "#b8771c"
+    },
+    "dark": {
+      "background": "#181818",
+      "surface": "#202020",
+      "subtle": "#1c1c1c",
+      "text": "#dddddd",
+      "muted": "#a3a3a3",
+      "border": "#2a2a2a",
+      "accent": "#7bb9f0",
+      "success": "#3fb950",
+      "warning": "#d4a85b"
+    }
+  },
+  "visualReview": {
+    "notes": "Spacing audit: shared 24px content padding, 16px card padding/gap, stable ASCII navigation glyphs, header primary action separated from quick actions, and explicit empty-state labels."
+  }
+}

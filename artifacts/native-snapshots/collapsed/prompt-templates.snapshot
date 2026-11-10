@@ -1,0 +1,47 @@
+# page|route=/prompt-templates|title=提示词模板
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-选择|group=workspace|action=none|x=233|y=74|w=48|h=32|visible=1|enabled=1
+control|id=ctl-选择-2|group=workspace|action=none|x=299|y=106|w=48|h=32|visible=1|enabled=1
+control|id=ctl-选择-3|group=workspace|action=none|x=276|y=138|w=48|h=32|visible=1|enabled=1
+control|id=ctl-选择-4|group=workspace|action=none|x=284|y=170|w=48|h=32|visible=1|enabled=1
+control|id=ctl-选择-5|group=workspace|action=none|x=235|y=202|w=48|h=32|visible=1|enabled=1
+control|id=ctl-新建模板|group=workspace|action=none|x=81|y=234|w=1199|h=32|visible=1|enabled=1
+control|id=ctl-角色对白润色|group=workspace|action=none|x=81|y=318|w=1199|h=32|visible=1|enabled=1
+control|id=ctl-按角色口吻改写对白|group=workspace|action=none|x=81|y=350|w=1199|h=32|visible=1|enabled=1
+control|id=ctl-请以---主角---的口吻改写以下对白|group=workspace|action=none|x=81|y=382|w=1199|h=96|visible=1|enabled=1
+control|id=ctl-阿离|group=workspace|action=none|x=81|y=494|w=1199|h=32|visible=1|enabled=1
+control|id=ctl-保存|group=workspace|action=none|x=81|y=526|w=48|h=32|visible=1|enabled=1
+control|id=ctl-预览|group=workspace|action=prompt_preview_template|x=129|y=526|w=48|h=32|visible=1|enabled=1
+control|id=ctl-重置内置模板|group=workspace|action=prompt_reset_builtin_templates|x=177|y=526|w=100|h=32|visible=1|enabled=1
+control|id=list-prompts|group=workspace|action=prompt_list_templates|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=preview-prompt|group=workspace|action=prompt_preview_template|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=prompt-templates-content|group=workspace|label=提示词模板 business|kind=business
+status|id=prompt-templates-ready|group=status|value=ready|active=1|label=可用
+list|id=prompt-templates-list|group=workspace|items=list-prompts,preview-prompt|empty=prompt-templates-empty|label=提示词模板 actions
+field|id=list-prompts|group=workspace|label=模板列表|value=prompt_list_templates|state=prompt-templates-ready
+field|id=preview-prompt|group=workspace|label=预览模板|value=prompt_preview_template|state=prompt-templates-ready
+empty|id=prompt-templates-empty|group=workspace|text=暂无提示词模板数据|visible=1
+section|id=prompt-library|group=workspace|label=模板库|title=模板库|description=模板包含用途、正文、变量和 builtIn 标识。
+status|id=status-prompt-library|group=status|value=ready|active=1|label=可用|detail=内置模板由服务启动时补齐。
+field|id=field-prompt-library-id|group=workspace|label=模板 ID|value=sample-entity-001|state=status-prompt-library|kind=identifier|source=template.id|required=0
+field|id=field-prompt-library-name|group=workspace|label=名称|value=示例文本|state=status-prompt-library|kind=text|source=template.name|required=0
+field|id=field-prompt-library-purpose|group=workspace|label=用途|value=示例文本|state=status-prompt-library|kind=text|source=template.purpose|required=0
+field|id=field-prompt-library-template|group=workspace|label=模板正文|value=示例业务内容|state=status-prompt-library|kind=multiline|source=template.template|required=0
+field|id=field-prompt-library-variables|group=workspace|label=变量定义|value={}|state=status-prompt-library|kind=json|source=template.variables|required=0
+field|id=field-prompt-library-builtIn|group=workspace|label=内置|value=否|state=status-prompt-library|kind=boolean|source=template.builtIn|required=0
+list|id=list-prompt-library-templates|group=workspace|items=sample-1,sample-2|empty=empty-prompt-library-templates|label=模板|item=模板|source=prompt_list_templates|columns=id:模板 ID:template.id,name:名称:template.name,purpose:用途:template.purpose,builtIn:内置:template.builtIn,variables:变量:template.variables,updatedAt:更新时间:template.updatedAt
+empty|id=empty-prompt-library-templates|group=workspace|text=暂无模板|visible=1|description=读取内置模板或保存一个自定义模板。|action=list-prompts
+empty|id=empty-prompt-library|group=workspace|text=暂无模板|visible=1|description=读取模板列表以开始编辑。|action=list-prompts
+action|id=list-prompts|supported=1|label=模板列表|command=prompt_list_templates|kind=query|description=读取并确保内置模板存在。
+action|id=preview-prompt|supported=1|label=预览模板|command=prompt_preview_template|kind=preview|description=替换已提供变量并报告 missingVariables。|inputs=request:预览请求:args.request
+action|id=prompt_list_templates|supported=1
+action|id=prompt_preview_template|supported=1
+action|id=save|supported=1
+action|id=prompt_preview_template|supported=1
+action|id=prompt_reset_builtin_templates|supported=1

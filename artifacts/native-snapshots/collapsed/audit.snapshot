@@ -1,0 +1,36 @@
+# page|route=/audit|title=规则审计
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-运行样例审计|group=workspace|action=logic_audit_facts|x=16|y=106|w=100|h=32|visible=1|enabled=1
+control|id=audit-facts|group=workspace|action=logic_audit_facts|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=repair-suggestions|group=workspace|action=logic_repair_suggestions|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=audit-content|group=workspace|label=规则审计 business|kind=business
+status|id=audit-ready|group=status|value=ready|active=1|label=可用
+list|id=audit-list|group=workspace|items=audit-facts,repair-suggestions|empty=audit-empty|label=规则审计 actions
+field|id=audit-facts|group=workspace|label=运行审计|value=logic_audit_facts|state=audit-ready
+field|id=repair-suggestions|group=workspace|label=修复建议|value=logic_repair_suggestions|state=audit-ready
+empty|id=audit-empty|group=workspace|text=暂无规则审计数据|visible=1
+section|id=logic-audit|group=workspace|label=事实冲突|title=事实冲突|description=冲突键为 subject、predicate、scopeTime、scopeLocation；object 不同即构成冲突。
+status|id=status-logic-audit|group=status|value=deterministic|active=1|label=可复现|detail=审计在本地纯函数中执行，不修改数据。
+field|id=field-logic-audit-id|group=workspace|label=事实 ID|value=sample-entity-001|state=status-logic-audit|kind=identifier|source=fact.id|required=0
+field|id=field-logic-audit-subject|group=workspace|label=主体|value=示例文本|state=status-logic-audit|kind=text|source=fact.subject|required=0
+field|id=field-logic-audit-predicate|group=workspace|label=谓词|value=示例文本|state=status-logic-audit|kind=text|source=fact.predicate|required=0
+field|id=field-logic-audit-object|group=workspace|label=客体|value=示例文本|state=status-logic-audit|kind=text|source=fact.object|required=0
+field|id=field-logic-audit-scopeTime|group=workspace|label=时间范围|value=示例文本|state=status-logic-audit|kind=text|source=fact.scopeTime|required=0
+field|id=field-logic-audit-scopeLocation|group=workspace|label=地点范围|value=示例文本|state=status-logic-audit|kind=text|source=fact.scopeLocation|required=0
+list|id=list-logic-audit-facts|group=workspace|items=sample-1,sample-2|empty=empty-logic-audit-facts|label=事实|item=事实|source=args.facts|columns=id:事实 ID:fact.id,subject:主体:fact.subject,predicate:谓词:fact.predicate,object:客体:fact.object,scopeTime:时间范围:fact.scopeTime,scopeLocation:地点范围:fact.scopeLocation
+empty|id=empty-logic-audit-facts|group=workspace|text=暂无事实|visible=1|description=提供事实后运行审计。|action=audit-facts
+list|id=list-logic-audit-conflicts|group=workspace|items=sample-1,sample-2|empty=empty-logic-audit-conflicts|label=冲突|item=冲突|source=audit.conflicts|columns=conflictType:冲突类型:conflict.conflictType,factIds:事实 ID:conflict.factIds,message:说明:conflict.message
+empty|id=empty-logic-audit-conflicts|group=workspace|text=未发现冲突|visible=1|description=当前事实集合通过互斥规则检查。|action=none
+empty|id=empty-logic-audit|group=workspace|text=暂无审计结果|visible=1|description=运行审计后显示事实冲突和修复建议。|action=audit-facts
+action|id=audit-facts|supported=1|label=运行审计|command=logic_audit_facts|kind=execute|description=检测事实集合中的互斥公理。|inputs=facts:事实列表:args.facts
+action|id=repair-suggestions|supported=1|label=修复建议|command=logic_repair_suggestions|kind=preview|description=根据单个 LogicConflict 给出候选修复。|inputs=conflict:冲突:args.conflict
+action|id=logic_audit_facts|supported=1
+action|id=logic_repair_suggestions|supported=1
+action|id=save|supported=1
+action|id=logic_audit_facts|supported=1

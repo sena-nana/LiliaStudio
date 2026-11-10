@@ -1,0 +1,4 @@
+window|x=0|y=0|w=800|h=600
+group|id=main|x=16|y=16|w=200|h=160|left=120|top=8|right=100|bottom=8
+control|id=run-check|group=main|x=136|y=24|w=20|h=20|visible=1|enabled=1
+action|id=run-check|supported=1

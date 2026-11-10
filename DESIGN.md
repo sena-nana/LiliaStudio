@@ -1,4 +1,4 @@
-# Tauri Template 视觉设计标准
+# Nana Template 视觉设计标准
 
 ## 0. 适用范围
 
@@ -30,7 +30,7 @@
 
 ## 3. 色彩令牌
 
-优先使用 `src/styles.css` 中已有 CSS 变量。
+优先沿用 NanaUI view/builder 的主题令牌与组件间距。
 
 | 令牌 | 用途 |
 | --- | --- |
@@ -56,10 +56,10 @@ soft 令牌只用于状态底色、选中底色和危险 hover,不要扩大成�
 
 ## 4. 样式组织
 
-- `src/styles.css` 只保留主题令牌、reset、字体、滚动条、selection、基础表单控件和全局工具类。
-- 桌面壳布局放在 `src/styles/shell.css`,由壳层入口显式导入。
-- 页面通用结构放在 `src/styles/page.css`,例如 `.page-header`、`.card`、`.kv`。
-- 组件私有样式保留在对应 SFC 的 scoped style 中,避免把局部类名继续堆进全局样式。
+- 主题令牌、reset、字体、滚动条、selection 和基础控件由 NanaUI 原生 view/builder 统一管理。
+- 桌面壳布局由 NanaUI view/builder 负责，保持标题栏、侧栏和主区的明确分组。
+- 页面通用结构使用原生分组与控件表达，例如 header、card、kv 和状态区。
+- 组件私有样式应保持在对应 view/builder 范围内，避免引入隐式全局布局。
 - 新增样式先判断归属:跨页面复用才进入页面通用样式,壳层专属才进入 shell 样式,单组件行为留在组件内。
 
 ## 5. 组件语言

@@ -1,0 +1,62 @@
+# page|route=/growth|title=角色成长
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-新建项目|group=workspace|action=project_create|x=12|y=46|w=220|h=32|visible=1|enabled=1
+control|id=ctl-搜索|group=workspace|action=none|x=12|y=78|w=220|h=32|visible=1|enabled=1
+control|id=ctl-工作区|group=workspace|action=none|x=12|y=124|w=220|h=28|visible=1|enabled=1
+control|id=ctl-项目|group=workspace|action=none|x=12|y=152|w=220|h=28|visible=1|enabled=1
+control|id=ctl-资料库|group=workspace|action=none|x=12|y=182|w=220|h=28|visible=1|enabled=1
+control|id=ctl-角色成长|group=workspace|action=none|x=12|y=212|w=220|h=28|visible=1|enabled=1
+control|id=ctl-事件时间线|group=workspace|action=none|x=12|y=242|w=220|h=28|visible=1|enabled=1
+control|id=ctl-规则审计|group=workspace|action=none|x=12|y=272|w=220|h=28|visible=1|enabled=1
+control|id=ctl-关系图谱|group=workspace|action=none|x=12|y=302|w=220|h=28|visible=1|enabled=1
+control|id=ctl-分析与检索|group=workspace|action=none|x=12|y=332|w=220|h=28|visible=1|enabled=1
+control|id=ctl-索引|group=workspace|action=none|x=12|y=388|w=220|h=28|visible=1|enabled=1
+control|id=ctl-备份|group=workspace|action=none|x=12|y=418|w=220|h=28|visible=1|enabled=1
+control|id=ctl-模拟|group=workspace|action=none|x=12|y=448|w=220|h=28|visible=1|enabled=1
+control|id=ctl-智能体|group=workspace|action=none|x=12|y=478|w=220|h=28|visible=1|enabled=1
+control|id=ctl-设置|group=workspace|action=none|x=12|y=506|w=220|h=28|visible=1|enabled=1
+control|id=ctl-帮助|group=workspace|action=none|x=12|y=534|w=220|h=28|visible=1|enabled=1
+control|id=ctl-诊断|group=workspace|action=none|x=12|y=562|w=220|h=28|visible=1|enabled=1
+control|id=ctl-任务|group=workspace|action=none|x=12|y=590|w=220|h=28|visible=1|enabled=1
+control|id=ctl-提示词模板|group=workspace|action=none|x=12|y=618|w=220|h=28|visible=1|enabled=1
+control|id=ctl-阿离-记录-0--守夜人|group=workspace|action=none|x=257|y=414|w=168|h=36|visible=1|enabled=1
+control|id=ctl-勇气---0-50|group=workspace|action=none|x=469|y=146|w=468|h=36|visible=1|enabled=1
+control|id=ctl-谨慎---0-25|group=workspace|action=none|x=469|y=184|w=468|h=36|visible=1|enabled=1
+control|id=ctl-来源事件|group=workspace|action=none|x=469|y=306|w=468|h=32|visible=1|enabled=1
+control|id=ctl-Trait-名称|group=workspace|action=none|x=469|y=344|w=468|h=32|visible=1|enabled=1
+control|id=ctl-Delta|group=workspace|action=none|x=469|y=382|w=468|h=32|visible=1|enabled=1
+control|id=ctl-饥荒之夜挺身而出|group=workspace|action=none|x=469|y=420|w=468|h=96|visible=1|enabled=1
+control|id=ctl-预览变化|group=workspace|action=character_growth_preview_trait_delta|x=469|y=522|w=74|h=32|visible=1|enabled=1
+control|id=ctl-饥荒之夜---勇气--0-50-第三纪-214|group=workspace|action=none|x=469|y=698|w=468|h=36|visible=1|enabled=1
+control|id=preview-growth|group=workspace|action=character_growth_preview_trait_delta|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=save-growth|group=workspace|action=character_growth_create_record|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=growth-content|group=workspace|label=角色成长 business|kind=business
+status|id=growth-ready|group=status|value=ready|active=1|label=可用
+list|id=growth-list|group=workspace|items=preview-growth,save-growth|empty=growth-empty|label=角色成长 actions
+field|id=preview-growth|group=workspace|label=预览成长|value=character_growth_preview_trait_delta|state=growth-ready
+field|id=save-growth|group=workspace|label=保存成长|value=character_growth_create_record|state=growth-ready
+empty|id=growth-empty|group=workspace|text=暂无角色成长数据|visible=1
+section|id=trait-state|group=workspace|label=角色特质状态|title=角色特质状态|description=状态由 CharacterTraitDeltaRecord 按角色聚合，数值限制在 -1 到 1。
+status|id=status-trait-state|group=status|value=ready|active=1|label=可计算|detail=已有记录会生成每个角色的特质值和来源链。
+field|id=field-trait-state-projectId|group=workspace|label=项目 ID|value=sample-entity-001|state=status-trait-state|kind=identifier|source=args.projectId|required=0
+field|id=field-trait-state-characterId|group=workspace|label=角色 ID|value=sample-entity-001|state=status-trait-state|kind=identifier|source=record.characterId|required=0
+field|id=field-trait-state-traitName|group=workspace|label=特质名称|value=示例文本|state=status-trait-state|kind=text|source=record.traitName|required=0
+field|id=field-trait-state-delta|group=workspace|label=变化量|value=0.75|state=status-trait-state|kind=decimal|source=record.delta|required=0
+field|id=field-trait-state-sourceEventId|group=workspace|label=来源事件|value=sample-entity-001|state=status-trait-state|kind=identifier|source=record.sourceEventId|required=0
+field|id=field-trait-state-reason|group=workspace|label=变化原因|value=示例业务内容|state=status-trait-state|kind=multiline|source=record.reason|required=0
+list|id=list-trait-state-growth-records|group=workspace|items=sample-1,sample-2|empty=empty-trait-state-growth-records|label=成长记录|item=记录|source=character_growth_workspace.records|columns=id:记录 ID:record.id,characterId:角色 ID:record.characterId,traitName:特质:record.traitName,delta:变化量:record.delta,reason:原因:record.reason
+empty|id=empty-trait-state-growth-records|group=workspace|text=暂无成长记录|visible=1|description=从一个已存在的角色和事件创建第一条变化记录。|action=save-growth
+empty|id=empty-trait-state|group=workspace|text=暂无角色状态|visible=1|description=读取成长工作区后，按角色显示聚合特质状态。|action=preview-growth
+action|id=preview-growth|supported=1|label=预览成长|command=character_growth_preview_trait_delta|kind=preview|description=在内存中应用一个 trait delta，不写入数据库。|inputs=state:当前状态:args.state,delta:变化记录:args.delta
+action|id=save-growth|supported=1|label=保存成长|command=character_growth_create_record|kind=mutate|description=校验项目、角色和来源事件均为 active 后创建记录。|inputs=draft:成长记录草稿:args.draft
+action|id=character_growth_preview_trait_delta|supported=1
+action|id=character_growth_create_record|supported=1
+action|id=save|supported=1
+action|id=character_growth_preview_trait_delta|supported=1
+action|id=project_create|supported=1

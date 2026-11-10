@@ -1,0 +1,36 @@
+# page|route=/indexing|title=索引
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-构建嵌入索引|group=workspace|action=rag_index_embeddings|x=16|y=174|w=100|h=32|visible=1|enabled=1
+control|id=index-chunks|group=workspace|action=rag_index_chunks|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=index-embeddings|group=workspace|action=rag_index_embeddings|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=indexing-content|group=workspace|label=索引 business|kind=business
+status|id=indexing-ready|group=status|value=ready|active=1|label=可用
+list|id=indexing-list|group=workspace|items=index-chunks,index-embeddings|empty=indexing-empty|label=索引 actions
+field|id=index-chunks|group=workspace|label=索引文本|value=rag_index_chunks|state=indexing-ready
+field|id=index-embeddings|group=workspace|label=生成向量|value=rag_index_embeddings|state=indexing-ready
+empty|id=indexing-empty|group=workspace|text=暂无索引数据|visible=1
+section|id=rag-index|group=workspace|label=RAG 索引|title=RAG 索引|description=索引来源包含 entry、character、event、axiom。
+status|id=status-rag-index|group=status|value=ready|active=1|label=可检查|detail=状态区分 chunk、embedding、缺失和过期数量。
+field|id=field-rag-index-projectId|group=workspace|label=项目 ID|value=sample-entity-001|state=status-rag-index|kind=identifier|source=args.projectId|required=0
+field|id=field-rag-index-maxChars|group=workspace|label=分块上限|value=3|state=status-rag-index|kind=number|source=args.maxChars|required=0
+field|id=field-rag-index-chunkCount|group=workspace|label=分块数|value=3|state=status-rag-index|kind=number|source=status.chunkCount|required=0
+field|id=field-rag-index-embeddingCount|group=workspace|label=向量数|value=3|state=status-rag-index|kind=number|source=status.embeddingCount|required=0
+field|id=field-rag-index-missingEmbeddingCount|group=workspace|label=缺失向量|value=3|state=status-rag-index|kind=number|source=status.missingEmbeddingCount|required=0
+field|id=field-rag-index-staleEmbeddingCount|group=workspace|label=过期向量|value=3|state=status-rag-index|kind=number|source=status.staleEmbeddingCount|required=0
+field|id=field-rag-index-model|group=workspace|label=模型|value=示例文本|state=status-rag-index|kind=text|source=status.model|required=0
+field|id=field-rag-index-message|group=workspace|label=说明|value=示例文本|state=status-rag-index|kind=text|source=status.message|required=0
+list|id=list-rag-index-chunks|group=workspace|items=sample-1,sample-2|empty=empty-rag-index-chunks|label=文档块|item=文档块|source=rag_index_chunks|columns=id:分块 ID:chunk.id,sourceType:来源类型:chunk.sourceType,sourceId:来源 ID:chunk.sourceId,ordinal:序号:chunk.ordinal,estimatedTokens:估算 token:chunk.estimatedTokens,updatedAt:更新时间:chunk.updatedAt
+empty|id=empty-rag-index-chunks|group=workspace|text=暂无索引分块|visible=1|description=运行索引文本以生成文档块。|action=index-chunks
+empty|id=empty-rag-index|group=workspace|text=索引尚未建立|visible=1|description=为项目生成文本分块后才能进行向量检索。|action=index-chunks
+action|id=index-chunks|supported=1|label=索引文本|command=rag_index_chunks|kind=execute|description=按 maxChars 重建项目文本分块。|inputs=projectId:项目 ID:args.projectId,maxChars:分块上限:args.maxChars
+action|id=index-embeddings|supported=1|label=生成向量|command=rag_index_embeddings|kind=execute|description=生成索引状态所需的 embedding（需配置 provider）。|inputs=projectId:项目 ID:args.projectId,maxChars:分块上限:args.maxChars
+action|id=rag_index_chunks|supported=1
+action|id=rag_index_embeddings|supported=1
+action|id=save|supported=1
+action|id=rag_index_embeddings|supported=1

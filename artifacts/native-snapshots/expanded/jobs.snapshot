@@ -1,0 +1,58 @@
+# page|route=/jobs|title=任务
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-新建项目|group=workspace|action=project_create|x=12|y=46|w=220|h=32|visible=1|enabled=1
+control|id=ctl-搜索|group=workspace|action=none|x=12|y=78|w=220|h=32|visible=1|enabled=1
+control|id=ctl-工作区|group=workspace|action=none|x=12|y=124|w=220|h=28|visible=1|enabled=1
+control|id=ctl-项目|group=workspace|action=none|x=12|y=152|w=220|h=28|visible=1|enabled=1
+control|id=ctl-资料库|group=workspace|action=none|x=12|y=182|w=220|h=28|visible=1|enabled=1
+control|id=ctl-角色成长|group=workspace|action=none|x=12|y=212|w=220|h=28|visible=1|enabled=1
+control|id=ctl-事件时间线|group=workspace|action=none|x=12|y=242|w=220|h=28|visible=1|enabled=1
+control|id=ctl-规则审计|group=workspace|action=none|x=12|y=272|w=220|h=28|visible=1|enabled=1
+control|id=ctl-关系图谱|group=workspace|action=none|x=12|y=302|w=220|h=28|visible=1|enabled=1
+control|id=ctl-分析与检索|group=workspace|action=none|x=12|y=332|w=220|h=28|visible=1|enabled=1
+control|id=ctl-索引|group=workspace|action=none|x=12|y=388|w=220|h=28|visible=1|enabled=1
+control|id=ctl-备份|group=workspace|action=none|x=12|y=418|w=220|h=28|visible=1|enabled=1
+control|id=ctl-模拟|group=workspace|action=none|x=12|y=448|w=220|h=28|visible=1|enabled=1
+control|id=ctl-智能体|group=workspace|action=none|x=12|y=478|w=220|h=28|visible=1|enabled=1
+control|id=ctl-设置|group=workspace|action=none|x=12|y=506|w=220|h=28|visible=1|enabled=1
+control|id=ctl-帮助|group=workspace|action=none|x=12|y=534|w=220|h=28|visible=1|enabled=1
+control|id=ctl-诊断|group=workspace|action=none|x=12|y=562|w=220|h=28|visible=1|enabled=1
+control|id=ctl-任务|group=workspace|action=none|x=12|y=590|w=220|h=28|visible=1|enabled=1
+control|id=ctl-提示词模板|group=workspace|action=none|x=12|y=618|w=220|h=28|visible=1|enabled=1
+control|id=ctl-请求取消|group=workspace|action=job_cancel|x=257|y=138|w=1007|h=32|visible=1|enabled=1
+control|id=ctl-日志|group=workspace|action=job_logs|x=805|y=222|w=48|h=32|visible=1|enabled=1
+control|id=ctl-重试|group=workspace|action=job_retry|x=853|y=222|w=48|h=32|visible=1|enabled=1
+control|id=list-jobs|group=workspace|action=job_list|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=retry-job|group=workspace|action=job_retry|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=jobs-content|group=workspace|label=任务 business|kind=business
+status|id=jobs-ready|group=status|value=ready|active=1|label=可用
+list|id=jobs-list|group=workspace|items=list-jobs,retry-job|empty=jobs-empty|label=任务 actions
+field|id=list-jobs|group=workspace|label=任务列表|value=job_list|state=jobs-ready
+field|id=retry-job|group=workspace|label=重试任务|value=job_retry|state=jobs-ready
+empty|id=jobs-empty|group=workspace|text=暂无任务数据|visible=1
+section|id=job-queue|group=workspace|label=AI 任务队列|title=AI 任务队列|description=任务状态包括 queued、running、succeeded、failed、cancelled。
+status|id=status-job-queue|group=status|value=observable|active=1|label=可观测|detail=job_list 返回完整任务列表，job_current 返回当前 running 任务。
+field|id=field-job-queue-id|group=workspace|label=任务 ID|value=sample-entity-001|state=status-job-queue|kind=identifier|source=job.id|required=0
+field|id=field-job-queue-status|group=workspace|label=状态|value=observable|state=status-job-queue|kind=status|source=job.status|required=0
+field|id=field-job-queue-startedAt|group=workspace|label=开始时间|value=2026-11-09T00:00:00Z|state=status-job-queue|kind=timestamp|source=job.startedAt|required=0
+field|id=field-job-queue-finishedAt|group=workspace|label=完成时间|value=2026-11-09T00:00:00Z|state=status-job-queue|kind=timestamp|source=job.finishedAt|required=0
+field|id=field-job-queue-cancelRequestedAt|group=workspace|label=取消请求|value=2026-11-09T00:00:00Z|state=status-job-queue|kind=timestamp|source=job.cancelRequestedAt|required=0
+field|id=field-job-queue-retryOfJobId|group=workspace|label=重试来源|value=sample-entity-001|state=status-job-queue|kind=identifier|source=job.retryOfJobId|required=0
+list|id=list-job-queue-jobs|group=workspace|items=sample-1,sample-2|empty=empty-job-queue-jobs|label=任务|item=任务|source=job_list|columns=id:任务 ID:job.id,providerKind:提供方:job.providerKind,jobType:任务类型:job.jobType,status:状态:job.status,inputSummary:输入摘要:job.inputSummary,errorMessage:错误:job.errorMessage,updatedAt:更新时间:job.updatedAt
+empty|id=empty-job-queue-jobs|group=workspace|text=暂无任务|visible=1|description=提交一个智能体请求后，任务会出现在这里。|action=none
+empty|id=empty-job-queue|group=workspace|text=暂无任务|visible=1|description=当前没有 queued 或历史 AI 任务。|action=list-jobs
+action|id=list-jobs|supported=1|label=任务列表|command=job_list|kind=query|description=读取 AI 任务队列。
+action|id=retry-job|supported=1|label=重试任务|command=job_retry|kind=mutate|description=从指定 jobId 创建同输入的新 queued 任务。|inputs=jobId:任务 ID:args.jobId
+action|id=job_list|supported=1
+action|id=job_retry|supported=1
+action|id=save|supported=1
+action|id=job_cancel|supported=1
+action|id=job_logs|supported=1
+action|id=job_retry|supported=1
+action|id=project_create|supported=1

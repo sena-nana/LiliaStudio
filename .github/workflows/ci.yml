@@ -26,9 +26,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up Node.js and Yarn
-        uses: sena-nana/LiliaUI/.github/actions/setup-node-yarn@8cdf9fce6f86b903a475ac852bce0627f237baf5
-
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
 
@@ -38,25 +35,22 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            src-tauri/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.lock') }}
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-
 
-      - name: Verify LiliaStudio
-        run: corepack yarn verify
+      - name: Verify NanaUI native layout
+        shell: pwsh
+        run: |
+          cmake -S native -B build/native-validation
+          cmake --build build/native-validation --config Debug
+          ctest --test-dir build/native-validation --output-on-failure -C Debug
 
-  build-docs:
-    name: Build docs
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+      - name: Verify Rust workspace
+        run: cargo test --workspace
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Set up Node.js and Yarn
-        uses: sena-nana/LiliaUI/.github/actions/setup-node-yarn@8cdf9fce6f86b903a475ac852bce0627f237baf5
-
-      - name: Build docs
-        run: corepack yarn docs:build
+      - name: Verify NanaUI host
+        run: |
+          cargo test --manifest-path native/Cargo.toml
+          cargo check --manifest-path native/Cargo.toml --features nana-runtime

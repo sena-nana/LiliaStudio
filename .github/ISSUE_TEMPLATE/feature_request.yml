@@ -44,7 +44,7 @@ body:
       description: 选择最主要的影响区域。
       options:
         - 桌面端界面
-        - Tauri / Rust 后端
+        - NanaUI / Rust 后端
         - AI / 提示词
         - 内容库 / 工作流
         - 构建 / 发布

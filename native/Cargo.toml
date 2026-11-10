@@ -1,0 +1,53 @@
+[package]
+name = "ameya-nana"
+version = "0.1.0"
+edition = "2021"
+description = "Ameya native NanaUI view/builder host"
+publish = false
+
+[lib]
+name = "ameya_nana"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ameya-nana"
+path = "src/main.rs"
+
+[features]
+default = ["headless"]
+headless = []
+# Desktop builds enable the real NanaUI hosted runtime; headless builds keep the
+# same view/builder contract for deterministic layout validation.
+nana-runtime = ["dep:nana-ui", "dep:nana-ui-platform", "dep:nana-gpu", "dep:pollster", "dep:wgpu", "nana-ui/hosted", "nana-ui/view-macro", "nana-ui/graph-canvas"]
+
+[dependencies]
+ameya-core = { path = ".." }
+anyhow = "1.0.102"
+rusqlite = { version = "0.37.0", features = ["bundled", "chrono", "functions", "serde_json"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.150"
+time = { version = "0.3.47", features = ["formatting", "macros"] }
+thiserror = "2.0.18"
+uuid = { version = "1.23.3", features = ["v4", "serde"] }
+# The NanaUI host is enabled only for the desktop distribution; headless tests
+# keep the same builder contract without pulling GPU/window backends.
+nana-ui = { git = "https://github.com/sena-nana/NanaUI", rev = "596930d22261bf048f12a94bdcb4f1ee2703e250", package = "nana-ui", default-features = false, optional = true }
+nana-ui-platform = { git = "https://github.com/sena-nana/NanaUI", rev = "596930d22261bf048f12a94bdcb4f1ee2703e250", package = "nana-ui-platform", optional = true }
+nana-gpu = { git = "https://github.com/sena-nana/NanaUI", rev = "596930d22261bf048f12a94bdcb4f1ee2703e250", package = "nana-gpu", optional = true }
+pollster = { version = "1.0", optional = true }
+wgpu = { version = "=30.0.0", default-features = false, features = ["std", "parking_lot", "wgsl", "dx12"], optional = true }
+
+# 系统凭据库（service "ameya.ai"），按平台选择 keyring 后端：
+# Windows Credential Manager / macOS Keychain / Linux secret-service。
+# 各平台只拉取自己的后端依赖；Windows 侧镜像 Tauri 的 keyring 配置。
+[target.'cfg(windows)'.dependencies]
+keyring = { version = "3.6.3", features = ["windows-native"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+keyring = { version = "3.6.3", features = ["apple-native"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+keyring = { version = "3.6.3", features = ["linux-native-sync-persistent"] }
+
+[dev-dependencies]
+tempfile = "3.27.0"

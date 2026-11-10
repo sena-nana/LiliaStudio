@@ -1,0 +1,74 @@
+# page|route=/projects|title=资料库
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-新建项目|group=workspace|action=project_create|x=12|y=46|w=220|h=32|visible=1|enabled=1
+control|id=ctl-搜索|group=workspace|action=none|x=12|y=78|w=220|h=32|visible=1|enabled=1
+control|id=ctl-工作区|group=workspace|action=none|x=12|y=124|w=220|h=28|visible=1|enabled=1
+control|id=ctl-项目|group=workspace|action=none|x=12|y=152|w=220|h=28|visible=1|enabled=1
+control|id=ctl-资料库|group=workspace|action=none|x=12|y=182|w=220|h=28|visible=1|enabled=1
+control|id=ctl-角色成长|group=workspace|action=none|x=12|y=212|w=220|h=28|visible=1|enabled=1
+control|id=ctl-事件时间线|group=workspace|action=none|x=12|y=242|w=220|h=28|visible=1|enabled=1
+control|id=ctl-规则审计|group=workspace|action=none|x=12|y=272|w=220|h=28|visible=1|enabled=1
+control|id=ctl-关系图谱|group=workspace|action=none|x=12|y=302|w=220|h=28|visible=1|enabled=1
+control|id=ctl-分析与检索|group=workspace|action=none|x=12|y=332|w=220|h=28|visible=1|enabled=1
+control|id=ctl-索引|group=workspace|action=none|x=12|y=388|w=220|h=28|visible=1|enabled=1
+control|id=ctl-备份|group=workspace|action=none|x=12|y=418|w=220|h=28|visible=1|enabled=1
+control|id=ctl-模拟|group=workspace|action=none|x=12|y=448|w=220|h=28|visible=1|enabled=1
+control|id=ctl-智能体|group=workspace|action=none|x=12|y=478|w=220|h=28|visible=1|enabled=1
+control|id=ctl-设置|group=workspace|action=none|x=12|y=506|w=220|h=28|visible=1|enabled=1
+control|id=ctl-帮助|group=workspace|action=none|x=12|y=534|w=220|h=28|visible=1|enabled=1
+control|id=ctl-诊断|group=workspace|action=none|x=12|y=562|w=220|h=28|visible=1|enabled=1
+control|id=ctl-任务|group=workspace|action=none|x=12|y=590|w=220|h=28|visible=1|enabled=1
+control|id=ctl-提示词模板|group=workspace|action=none|x=12|y=618|w=220|h=28|visible=1|enabled=1
+control|id=ctl-活动项目|group=workspace|action=none|x=241|y=80|w=1039|h=32|visible=1|enabled=1
+control|id=ctl-新项目名称|group=workspace|action=none|x=241|y=118|w=1039|h=32|visible=1|enabled=1
+control|id=ctl-新项目描述|group=workspace|action=none|x=241|y=156|w=1039|h=32|visible=1|enabled=1
+control|id=ctl-新建项目-2|group=workspace|action=project_create|x=241|y=194|w=1039|h=32|visible=1|enabled=1
+control|id=ctl-资料-2|group=workspace|action=none|x=257|y=541|w=188|h=36|visible=1|enabled=1
+control|id=ctl-角色-1|group=workspace|action=none|x=257|y=579|w=188|h=36|visible=1|enabled=1
+control|id=ctl-事件-1|group=workspace|action=none|x=257|y=617|w=188|h=36|visible=1|enabled=1
+control|id=ctl-规则-2|group=workspace|action=none|x=257|y=655|w=188|h=36|visible=1|enabled=1
+control|id=ctl-关系-1|group=workspace|action=none|x=257|y=693|w=188|h=36|visible=1|enabled=1
+control|id=ctl-新增|group=workspace|action=none|x=582|y=292|w=48|h=32|visible=1|enabled=1
+control|id=ctl-月光金属-1-关联---2026-11-09T0|group=workspace|action=none|x=489|y=330|w=368|h=36|visible=1|enabled=1
+control|id=ctl-北方城墙-0-关联---2026-11-09T0|group=workspace|action=none|x=489|y=368|w=368|h=36|visible=1|enabled=1
+control|id=ctl-保存|group=workspace|action=none|x=523|y=468|w=48|h=32|visible=1|enabled=1
+control|id=ctl-删除|group=workspace|action=none|x=579|y=468|w=48|h=32|visible=1|enabled=1
+control|id=ctl-unnamed|group=workspace|action=none|x=489|y=528|w=368|h=32|visible=1|enabled=1
+control|id=ctl-unnamed-2|group=workspace|action=none|x=489|y=586|w=368|h=32|visible=1|enabled=1
+control|id=ctl-unnamed-3|group=workspace|action=none|x=489|y=644|w=368|h=32|visible=1|enabled=1
+control|id=ctl-unnamed-4|group=workspace|action=none|x=489|y=702|w=368|h=32|visible=1|enabled=1
+control|id=ctl-unnamed-5|group=workspace|action=none|x=489|y=760|w=368|h=40|visible=1|enabled=1
+control|id=create-project|group=workspace|action=project_create|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=library-snapshot|group=workspace|action=library_project_snapshot|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=projects-content|group=workspace|label=资料库 business|kind=business
+status|id=projects-ready|group=status|value=ready|active=1|label=可用
+list|id=projects-list|group=workspace|items=create-project,library-snapshot|empty=projects-empty|label=资料库 actions
+field|id=create-project|group=workspace|label=新建项目|value=project_create|state=projects-ready
+field|id=library-snapshot|group=workspace|label=资料库快照|value=library_project_snapshot|state=projects-ready
+empty|id=projects-empty|group=workspace|text=暂无资料库数据|visible=1
+section|id=project-list|group=workspace|label=项目列表|title=项目列表|description=按更新时间倒序显示未归档项目。
+status|id=status-project-list|group=status|value=ready|active=1|label=可用|detail=project_list 返回 active projects。
+field|id=field-project-list-projectId|group=workspace|label=项目 ID|value=sample-entity-001|state=status-project-list|kind=identifier|source=project.id|required=0
+field|id=field-project-list-name|group=workspace|label=项目名称|value=示例文本|state=status-project-list|kind=text|source=project.name|required=1
+field|id=field-project-list-description|group=workspace|label=项目描述|value=示例业务内容|state=status-project-list|kind=multiline|source=project.description|required=0
+field|id=field-project-list-updatedAt|group=workspace|label=最近更新|value=2026-11-09T00:00:00Z|state=status-project-list|kind=timestamp|source=project.updatedAt|required=0
+field|id=field-project-list-archivedAt|group=workspace|label=归档时间|value=2026-11-09T00:00:00Z|state=status-project-list|kind=timestamp|source=project.archivedAt|required=0
+list|id=list-project-list-projects|group=workspace|items=sample-1,sample-2|empty=empty-project-list-projects|label=项目|item=项目|source=project_list|columns=id:项目 ID:project.id,name:名称:project.name,description:描述:project.description,updatedAt:更新时间:project.updatedAt,archivedAt:归档状态:project.archivedAt
+empty|id=empty-project-list-projects|group=workspace|text=还没有项目|visible=1|description=创建一个项目开始整理世界观资料。|action=create-project
+list|id=list-project-list-characters|group=workspace|items=sample-1,sample-2|empty=empty-project-list-characters|label=角色|item=角色|source=project.characters|columns=id:角色 ID:character.id,name:姓名:character.name,aliases:别名:character.aliases,summary:摘要:character.summary,faction:阵营:character.faction,tags:标签:character.tags,updatedAt:更新时间:character.updatedAt
+empty|id=empty-project-list-characters|group=workspace|text=暂无角色|visible=1|description=为项目建立第一个角色。|action=none
+list|id=list-project-list-axioms|group=workspace|items=sample-1,sample-2|empty=empty-project-list-axioms|label=世界规则|item=公理|source=project.axioms|columns=id:公理 ID:axiom.id,subject:主体:axiom.subject,predicate:谓词:axiom.predicate,object:客体:axiom.object,scopeTime:时间范围:axiom.scopeTime,scopeLocation:地点范围:axiom.scopeLocation,certainty:确定性:axiom.certainty
+empty|id=empty-project-list-axioms|group=workspace|text=暂无公理|visible=1|description=为项目记录第一条世界规则。|action=none
+empty|id=empty-project-list|group=workspace|text=还没有项目|visible=1|description=创建一个项目开始整理世界观资料。|action=create-project
+action|id=create-project|supported=1|label=新建项目|command=project_create|kind=mutate|description=使用 draft.name 和 draft.description 创建项目。|inputs=draft.name:项目名称:args.draft.name,draft.description:项目描述:args.draft.description
+action|id=library-snapshot|supported=1|label=资料库快照|command=library_project_snapshot|kind=query|description=读取项目及其条目、角色、事件等关联数据。|inputs=projectId:项目 ID:args.projectId
+action|id=project_create|supported=1
+action|id=library_project_snapshot|supported=1
+action|id=save|supported=1
+action|id=project_create|supported=1

@@ -1,0 +1,29 @@
+# page|route=/simulation|title=模拟
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-运行模拟|group=workspace|action=simulation_run|x=16|y=122|w=74|h=32|visible=1|enabled=1
+control|id=run-simulation|group=workspace|action=simulation_run|x=2|y=2|w=1|h=1|visible=1|enabled=1
+section|id=simulation-content|group=workspace|label=模拟 business|kind=business
+status|id=simulation-ready|group=status|value=ready|active=1|label=可用
+list|id=simulation-list|group=workspace|items=run-simulation|empty=simulation-empty|label=模拟 actions
+field|id=run-simulation|group=workspace|label=运行模拟|value=simulation_run|state=simulation-ready
+empty|id=simulation-empty|group=workspace|text=暂无模拟数据|visible=1
+section|id=simulation-report|group=workspace|label=模拟报告|title=模拟报告|description=模拟输出固定包含短期、中期阶段和资源来源风险提示。
+status|id=status-simulation-report|group=status|value=deterministic|active=1|label=可执行|detail=当前模拟服务为纯函数，不修改数据库。
+field|id=field-simulation-report-projectId|group=workspace|label=项目 ID|value=sample-entity-001|state=status-simulation-report|kind=identifier|source=report.projectId|required=0
+field|id=field-simulation-report-scenario|group=workspace|label=场景|value=示例业务内容|state=status-simulation-report|kind=multiline|source=report.scenario|required=0
+field|id=field-simulation-report-referencedEntities|group=workspace|label=引用实体|value={}|state=status-simulation-report|kind=json|source=report.referencedEntities|required=0
+field|id=field-simulation-report-phases|group=workspace|label=阶段|value={}|state=status-simulation-report|kind=json|source=report.phases|required=0
+field|id=field-simulation-report-risks|group=workspace|label=风险|value={}|state=status-simulation-report|kind=json|source=report.risks|required=0
+list|id=list-simulation-report-phases|group=workspace|items=sample-1,sample-2|empty=empty-simulation-report-phases|label=推演阶段|item=阶段|source=report.phases|columns=label:阶段:phase.label,summary:摘要:phase.summary
+empty|id=empty-simulation-report-phases|group=workspace|text=暂无模拟阶段|visible=1|description=运行模拟后显示阶段推演。|action=run-simulation
+empty|id=empty-simulation-report|group=workspace|text=尚未运行模拟|visible=1|description=描述一个场景并引用相关实体。|action=run-simulation
+action|id=run-simulation|supported=1|label=运行模拟|command=simulation_run|kind=execute|description=根据项目、场景和引用实体生成 SimulationReport。|inputs=projectId:项目 ID:args.projectId,scenario:场景:args.scenario,referencedEntities:引用实体:args.referencedEntities
+action|id=simulation_run|supported=1
+action|id=save|supported=1
+action|id=simulation_run|supported=1

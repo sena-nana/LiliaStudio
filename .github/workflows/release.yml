@@ -55,9 +55,6 @@ jobs:
         with:
           ref: ${{ steps.release_ref.outputs.ref || github.ref }}
 
-      - name: Set up Node.js and Yarn
-        uses: sena-nana/LiliaUI/.github/actions/setup-node-yarn@8cdf9fce6f86b903a475ac852bce0627f237baf5
-
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
 
@@ -67,13 +64,13 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            src-tauri/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.lock') }}
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-
 
-      - name: Verify LiliaStudio
-        run: corepack yarn verify
+      - name: Verify Rust workspace
+        run: cargo test --workspace
 
   publish-windows:
     name: Publish Windows bundle
@@ -87,9 +84,6 @@ jobs:
         with:
           ref: ${{ needs.verify.outputs.ref || github.ref }}
 
-      - name: Set up Node.js and Yarn
-        uses: sena-nana/LiliaUI/.github/actions/setup-node-yarn@8cdf9fce6f86b903a475ac852bce0627f237baf5
-
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
 
@@ -99,19 +93,22 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            src-tauri/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.lock') }}
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-
 
-      - name: Build and publish Windows bundle
-        uses: tauri-apps/tauri-action@v1
+      - name: Build NanaUI Windows host
+        run: cargo build --manifest-path native/Cargo.toml --release --features nana-runtime
+
+      - name: Publish NanaUI bundle
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: .
-          tauriScript: corepack yarn tauri
-          tagName: ${{ needs.verify.outputs.tag }}
-          releaseName: LiliaStudio ${{ needs.verify.outputs.tag }}
-          releaseDraft: true
-          generateReleaseNotes: true
+          tag_name: ${{ needs.verify.outputs.tag }}
+          name: LiliaStudio ${{ needs.verify.outputs.tag }}
+          draft: true
+          generate_release_notes: true
+          files: |
+            target/release/ameya-nana.exe

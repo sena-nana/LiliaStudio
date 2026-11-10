@@ -1,0 +1,27 @@
+[package]
+name = "ameya-core"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Ameya persistence, domain, AI, search, and logic core for the NanaUI host."
+
+[workspace]
+members = ["native"]
+resolver = "2"
+
+[lib]
+name = "ameya_core"
+path = "src/lib.rs"
+
+[dependencies]
+anyhow = "1.0.102"
+rusqlite = { version = "0.37.0", features = ["bundled", "chrono", "functions", "serde_json"] }
+ureq = { version = "3.3.0", features = ["json"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.150"
+thiserror = "2.0.18"
+time = { version = "0.3.47", features = ["formatting", "macros"] }
+uuid = { version = "1.23.3", features = ["v4", "serde"] }
+
+[dev-dependencies]
+tempfile = "3.27.0"

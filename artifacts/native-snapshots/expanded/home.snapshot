@@ -1,0 +1,60 @@
+# page|route=/|title=项目
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-新建项目|group=workspace|action=project_create|x=12|y=46|w=220|h=32|visible=1|enabled=1
+control|id=ctl-搜索|group=workspace|action=none|x=12|y=78|w=220|h=32|visible=1|enabled=1
+control|id=ctl-工作区|group=workspace|action=none|x=12|y=124|w=220|h=28|visible=1|enabled=1
+control|id=ctl-项目|group=workspace|action=none|x=12|y=152|w=220|h=28|visible=1|enabled=1
+control|id=ctl-资料库|group=workspace|action=none|x=12|y=182|w=220|h=28|visible=1|enabled=1
+control|id=ctl-角色成长|group=workspace|action=none|x=12|y=212|w=220|h=28|visible=1|enabled=1
+control|id=ctl-事件时间线|group=workspace|action=none|x=12|y=242|w=220|h=28|visible=1|enabled=1
+control|id=ctl-规则审计|group=workspace|action=none|x=12|y=272|w=220|h=28|visible=1|enabled=1
+control|id=ctl-关系图谱|group=workspace|action=none|x=12|y=302|w=220|h=28|visible=1|enabled=1
+control|id=ctl-分析与检索|group=workspace|action=none|x=12|y=332|w=220|h=28|visible=1|enabled=1
+control|id=ctl-索引|group=workspace|action=none|x=12|y=388|w=220|h=28|visible=1|enabled=1
+control|id=ctl-备份|group=workspace|action=none|x=12|y=418|w=220|h=28|visible=1|enabled=1
+control|id=ctl-模拟|group=workspace|action=none|x=12|y=448|w=220|h=28|visible=1|enabled=1
+control|id=ctl-智能体|group=workspace|action=none|x=12|y=478|w=220|h=28|visible=1|enabled=1
+control|id=ctl-设置|group=workspace|action=none|x=12|y=506|w=220|h=28|visible=1|enabled=1
+control|id=ctl-帮助|group=workspace|action=none|x=12|y=534|w=220|h=28|visible=1|enabled=1
+control|id=ctl-诊断|group=workspace|action=none|x=12|y=562|w=220|h=28|visible=1|enabled=1
+control|id=ctl-任务|group=workspace|action=none|x=12|y=590|w=220|h=28|visible=1|enabled=1
+control|id=ctl-提示词模板|group=workspace|action=none|x=12|y=618|w=220|h=28|visible=1|enabled=1
+control|id=ctl-未命名宇宙|group=workspace|action=none|x=257|y=90|w=1007|h=32|visible=1|enabled=1
+control|id=ctl-世界观设定的简短描述|group=workspace|action=none|x=257|y=128|w=1007|h=32|visible=1|enabled=1
+control|id=ctl-新建项目-2|group=workspace|action=project_create|x=257|y=166|w=1007|h=32|visible=1|enabled=1
+control|id=open-project|group=workspace|action=project_list|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=run-check|group=workspace|action=health_check|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=home-content|group=workspace|label=项目 business|kind=business
+status|id=home-ready|group=status|value=ready|active=1|label=可用
+list|id=home-list|group=workspace|items=open-project,run-check|empty=home-empty|label=项目 actions
+field|id=open-project|group=workspace|label=打开项目|value=project_list|state=home-ready
+field|id=run-check|group=workspace|label=运行校验|value=health_check|state=home-ready
+empty|id=home-empty|group=workspace|text=暂无项目数据|visible=1
+section|id=project-overview|group=workspace|label=当前项目|title=当前项目|description=项目身份、描述和最近更新时间。
+status|id=status-project-overview|group=status|value=ready|active=1|label=可用|detail=项目列表可读取；未选项目时显示空态。
+field|id=field-project-overview-projectId|group=workspace|label=项目 ID|value=sample-entity-001|state=status-project-overview|kind=identifier|source=project.id|required=0
+field|id=field-project-overview-name|group=workspace|label=项目名称|value=示例文本|state=status-project-overview|kind=text|source=project.name|required=1
+field|id=field-project-overview-description|group=workspace|label=项目描述|value=示例业务内容|state=status-project-overview|kind=multiline|source=project.description|required=0
+field|id=field-project-overview-updatedAt|group=workspace|label=最近更新|value=2026-11-09T00:00:00Z|state=status-project-overview|kind=timestamp|source=project.updatedAt|required=0
+field|id=field-project-overview-archivedAt|group=workspace|label=归档时间|value=2026-11-09T00:00:00Z|state=status-project-overview|kind=timestamp|source=project.archivedAt|required=0
+list|id=list-project-overview-recent-entries|group=workspace|items=sample-1,sample-2|empty=empty-project-overview-recent-entries|label=最近更新条目|item=条目|source=project.entries|columns=id:条目 ID:entry.id,entryType:类型:entry.entryType,title:标题:entry.title,summary:摘要:entry.summary,status:状态:entry.status,tags:标签:entry.tags,updatedAt:更新时间:entry.updatedAt
+empty|id=empty-project-overview-recent-entries|group=workspace|text=暂无条目|visible=1|description=创建第一条资料库条目后，它会出现在这里。|action=open-project
+empty|id=empty-project-overview|group=workspace|text=尚未选择项目|visible=1|description=打开一个项目以查看业务内容。|action=open-project
+section|id=connection-health|group=workspace|label=连接状态|title=连接状态|description=本地数据库和 native 命令边界的运行信息。
+status|id=status-connection-health|group=status|value=local|active=1|label=本地模式|detail=数据通过 NativeCommandHost 访问。
+field|id=field-connection-health-appVersion|group=workspace|label=应用版本|value=示例文本|state=status-connection-health|kind=text|source=health.appVersion|required=0
+field|id=field-connection-health-platform|group=workspace|label=平台|value=示例文本|state=status-connection-health|kind=text|source=health.platform|required=0
+field|id=field-connection-health-appDataDir|group=workspace|label=数据目录|value=示例文本|state=status-connection-health|kind=text|source=health.appDataDir|required=0
+empty|id=empty-connection-health|group=workspace|text=尚未检查连接|visible=1|description=运行健康检查以读取 native 环境信息。|action=run-check
+action|id=open-project|supported=1|label=打开项目|command=project_list|kind=query|description=读取未归档项目列表。
+action|id=run-check|supported=1|label=运行校验|command=health_check|kind=query|description=读取应用版本、平台和数据目录。
+action|id=project_list|supported=1
+action|id=health_check|supported=1
+action|id=save|supported=1
+action|id=project_create|supported=1

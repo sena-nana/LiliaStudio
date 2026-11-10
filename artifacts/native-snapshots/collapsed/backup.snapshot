@@ -1,0 +1,37 @@
+# page|route=/backup|title=备份
+window|x=0|y=0|w=1280|h=800
+group|id=workspace|x=0|y=0|w=1280|h=800|left=0|top=0|right=0|bottom=0
+control|id=ctl-切换侧栏|group=workspace|action=none|x=12|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-切换到浅色|group=workspace|action=none|x=40|y=4|w=560|h=28|visible=1|enabled=1
+control|id=ctl-最小化|group=workspace|action=none|x=1186|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-最大化|group=workspace|action=none|x=1216|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-关闭|group=workspace|action=none|x=1246|y=4|w=28|h=28|visible=1|enabled=1
+control|id=ctl-导出当前项目|group=workspace|action=archive_export_project|x=16|y=90|w=100|h=32|visible=1|enabled=1
+control|id=ctl-version--1--project|group=workspace|action=none|x=16|y=190|w=1248|h=96|visible=1|enabled=1
+control|id=ctl-导入归档|group=workspace|action=archive_import_project|x=16|y=286|w=74|h=32|visible=1|enabled=1
+control|id=export-project|group=workspace|action=archive_export_project|x=2|y=2|w=1|h=1|visible=1|enabled=1
+control|id=import-project|group=workspace|action=archive_import_project|x=2|y=6|w=1|h=1|visible=1|enabled=1
+section|id=backup-content|group=workspace|label=备份 business|kind=business
+status|id=backup-ready|group=status|value=ready|active=1|label=可用
+list|id=backup-list|group=workspace|items=export-project,import-project|empty=backup-empty|label=备份 actions
+field|id=export-project|group=workspace|label=导出项目|value=archive_export_project|state=backup-ready
+field|id=import-project|group=workspace|label=导入项目|value=archive_import_project|state=backup-ready
+empty|id=backup-empty|group=workspace|text=暂无备份数据|visible=1
+section|id=project-archive|group=workspace|label=项目归档|title=项目归档|description=归档包含项目、条目、角色、事件、公理和关系。
+status|id=status-project-archive|group=status|value=versioned|active=1|label=版本化|detail=当前导出 archive.version 为 2。
+field|id=field-project-archive-projectId|group=workspace|label=项目 ID|value=sample-entity-001|state=status-project-archive|kind=identifier|source=args.projectId|required=0
+field|id=field-project-archive-version|group=workspace|label=归档版本|value=3|state=status-project-archive|kind=number|source=archive.version|required=0
+field|id=field-project-archive-project|group=workspace|label=项目|value={}|state=status-project-archive|kind=json|source=archive.project|required=0
+field|id=field-project-archive-entries|group=workspace|label=条目|value={}|state=status-project-archive|kind=json|source=archive.entries|required=0
+field|id=field-project-archive-characters|group=workspace|label=角色|value={}|state=status-project-archive|kind=json|source=archive.characters|required=0
+field|id=field-project-archive-events|group=workspace|label=事件|value={}|state=status-project-archive|kind=json|source=archive.events|required=0
+field|id=field-project-archive-axioms|group=workspace|label=公理|value={}|state=status-project-archive|kind=json|source=archive.axioms|required=0
+field|id=field-project-archive-relations|group=workspace|label=关系|value={}|state=status-project-archive|kind=json|source=archive.relations|required=0
+empty|id=empty-project-archive|group=workspace|text=暂无归档|visible=1|description=选择项目后导出 ProjectArchive；导入会创建带“副本”后缀的新项目。|action=export-project
+action|id=export-project|supported=1|label=导出项目|command=archive_export_project|kind=export|description=导出版本化 ProjectArchive。|inputs=projectId:项目 ID:args.projectId
+action|id=import-project|supported=1|label=导入项目|command=archive_import_project|kind=import|description=导入 ProjectArchive 并创建项目副本。|inputs=archive:项目归档:args.archive
+action|id=archive_export_project|supported=1
+action|id=archive_import_project|supported=1
+action|id=save|supported=1
+action|id=archive_export_project|supported=1
+action|id=archive_import_project|supported=1
